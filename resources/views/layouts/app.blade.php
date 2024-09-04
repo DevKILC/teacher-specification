@@ -16,7 +16,7 @@
         rel="stylesheet">
 
     <!-- Datatable -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/di st/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
 
@@ -29,14 +29,17 @@
 
 <body class="font-poppins antialiased" x-data="{ open: false }">
     <x-banner />
-
+    
     <div class="min-h-screen bg-gray-100">
+        <x-sidebar />
         <!-- Page Heading -->
+        {{-- @livewire('sidebar') --}}
+
         @if (isset($header))
         <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 flex flex-row space-x-2 sm:px-6 lg:px-8 items-center">
                 <!-- Toggle Button -->
-                <button @click="open = !open" aria-label="Toggle Sidebar" class="text-gray-500 focus:outline-none pr-7 border-r-2">
+                <button @click="open = !open" @click.away="open = false" aria-label="Toggle Sidebar" class="text-gray-500 focus:outline-none pr-7 border-r-2">
                     <!-- Hamburger Icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="black">
@@ -46,7 +49,6 @@
                 {{ $header }}
             </div>
             <!-- Sidebar Component -->
-            <x-sidebar />
         </header>
         @endif
         <!-- Page Content -->
