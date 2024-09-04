@@ -1,2 +1,2 @@
 
-<img src="{{ asset('img/lclogonobg.png') }}" class="w-[80px] h-5"  alt=""  {{ $attributes }}>
+<img src="{{ asset('img/lclogonobg.png') }}" class="w-[150px] h-[60px]"  alt=""  {{ $attributes }}>

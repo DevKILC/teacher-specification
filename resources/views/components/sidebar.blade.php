@@ -1,6 +1,6 @@
 <nav x-show="open"
      :class="open ? 'block' : 'hidden'"
-     class="bg-white border-r border-gray-100 h-full w-64 fixed transform transition-transform duration-300 ease-in-out top-0 left-0" >
+     class="bg-white border-r border-gray-100 h-full w-64 fixed transform transition-transform duration-300 ease-in-out top-0 left-0 z-[1000000]" >
      
     <!-- Primary Navigation Menu -->
     <div class="flex flex-col justify-between h-full">
