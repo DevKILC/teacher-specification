@@ -7,7 +7,7 @@ use App\Http\Controllers\RecordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::middleware([
@@ -17,6 +17,8 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/dashboard',[TeacherController::class,'index'])->name('dashboard');
+
+    Route::get('/teacher',[TeacherSkillController::class,'index']);
 
     // Rute resource untuk TeacherController
     Route::resource('teacher', TeacherController::class);
