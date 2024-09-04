@@ -87,16 +87,44 @@
             <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
                 <h2 class="text-xl font-semibold mb-4">{{ __('Create Skill') }}</h2>
                 <form id="create-skill-form">
+                    @csrf
+                    <!-- Skill Name -->
                     <div class="col-span-6 sm:col-span-4">
                         <x-label for="name" value="{{ __('Name Skill') }}" />
                         <x-input id="name" type="text" class="mt-1 block w-full"/>
                         <x-input-error for="name" class="mt-2" />
                     </div> 
+                        
+                    <!-- Skill Description -->
                     <div class="col-span-6 sm:col-span-4">
-                        <x-label for="name" value="{{ __('Name Category') }}" />
-                        <x-input id="name" type="text" class="mt-1 block w-full"/>
-                        <x-input-error for="name" class="mt-2" />
-                    </div> 
+                        <x-label for="description" value="{{ __('Skill Description') }}" />
+                        <x-textarea id="description" class="mt-1 block w-full"  />
+                        <x-input-error for="description" class="mt-2" />
+                    </div>
+            
+                    <!-- Skill Category -->
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="category" value="{{ __('Skill Category') }}" />
+                        <select id="category" class="mt-1 block w-full form-select">
+                            <option value="">{{ __('Select Category') }}</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        <x-input-error for="category_id" class="mt-2" />
+                    </div>
+
+                    <!-- Skill Type -->
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="type" value="{{ __('Skill Type') }}" />
+                        <select id="type" class="mt-1 block w-full form-select">
+                            <option value="">{{ __('Select Type') }}</option>
+                            <option value="online">{{ __('Online') }}</option>
+                            <option value="offline">{{ __('Offline') }}</option>
+                        </select>
+                        <x-input-error for="type" class="mt-2" />
+                    </div>
+                    
                     <div class="flex flex-row justify-end gap-5 py-5">
                         <x-button>
                             {{ __('Create Skill') }}
