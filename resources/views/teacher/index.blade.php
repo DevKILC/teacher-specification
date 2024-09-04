@@ -13,11 +13,5 @@
     </div>
 
     <!-- Script -->
-    @push('scripts')
-        <script>
-            $(document).ready(function() {
-                $('#teachers-table').DataTable();
-            });
-        </script>
-    @endpush
+   
 </x-app-layout>

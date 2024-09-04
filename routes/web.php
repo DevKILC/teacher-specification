@@ -24,15 +24,4 @@ Route::middleware([
 
     Route::get('/teacher',[TeacherSkillController::class,'index']);
 
-    // Rute resource untuk TeacherController
-    Route::resource('teacher', TeacherController::class);
-
-    // Rute resource untuk TeacherSkillController
-    Route::resource('teacher.skills', TeacherSkillController::class);
-
-    // Rute resource untuk SkillController
-    Route::resource('skill', SkillController::class);
-
-    // Rute resource untuk RecordController
-    Route::resource('record', RecordController::class);
 });
