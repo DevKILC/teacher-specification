@@ -57,13 +57,13 @@
                                     Number
                                 </th>
                                 <th>
-                                    Certifications 1
+                                    Certifications
                                 </th>
                                 <th>
-                                    Certifications 2
+                                    Certifications
                                 </th>
                                 <th>
-                                    Certifications 3
+                                    Certifications
                                 </th>
                             </tr>
                         </thead>
@@ -102,34 +102,34 @@
         <!-- Script -->
         @push('scripts')
         <script>
-        $(document).ready(function() {
-            $('#teachers-table').DataTable();
-        });
+            $(document).ready(function() {
+                $('#teachers-table').DataTable();
+            });
 
-        const ctx = document.getElementById('myChart').getContext('2d');
-                const myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                            labels: @json($labels), // Labels from controller
-                            datasets: [{
-                            label: 'Teachers Total',
-                            data: @json($data), // Data from controller
-                            backgroundColor: '#fcce00',
-                            borderColor: '#ddd',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    stepSize: 20,
-                                }
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                        labels: @json($labels), // Labels from controller
+                        datasets: [{
+                        label: 'Teachers Total',
+                        data: @json($data), // Data from controller
+                        backgroundColor: '#fcce00',
+                        borderColor: '#ddd',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 20,
                             }
                         }
                     }
-                });
+                }
+            });
         </script>
         @endpush
 </x-app-layout>
