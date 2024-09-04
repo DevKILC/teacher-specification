@@ -31,4 +31,8 @@ Route::middleware([
 
     Route::resource('record', RecordController::class);
 
+    Route::get('all', function(){
+        return 'all';
+    });
+
 });
