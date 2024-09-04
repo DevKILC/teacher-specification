@@ -22,8 +22,6 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/dashboard',[DahsboardController::class,'index'])->name('dashboard');
-    
-    Route::get('/teacher',[TeacherSkillController::class,'index']);
 
     // Rute resource untuk TeacherController
     Route::resource('teacher', TeacherController::class);
