@@ -23,4 +23,12 @@ Route::middleware([
 
     Route::get('/dashboard',[DahsboardController::class,'index'])->name('dashboard');
 
+    Route::resource('teacher', TeacherController::class);
+
+    Route::resource('skill', SkillController::class);
+
+    Route::resource('teacher-skill', TeacherSkillController::class);
+
+    Route::resource('record', RecordController::class);
+
 });
