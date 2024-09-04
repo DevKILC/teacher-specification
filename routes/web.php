@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DahsboardController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\SkillController;
@@ -20,8 +21,6 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/dashboard',[TeacherController::class,'index'])->name('dashboard');
-
-    Route::get('/teacher',[TeacherSkillController::class,'index']);
+    Route::get('/dashboard',[DahsboardController::class,'index'])->name('dashboard');
 
 });
