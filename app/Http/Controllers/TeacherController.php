@@ -12,9 +12,12 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teachers = Teacher::all();
+        $teachers =  Teacher::with('certifications')->paginate(10);
 
-        return view('teacher.index', compact('teachers'));
+
+        return view('dashboard',[
+            'teachers' => $teachers,
+        ]);
     }
 
     /**

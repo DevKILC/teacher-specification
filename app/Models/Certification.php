@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Certification extends Model
 {
     use HasFactory;
+    protected $table = 'certifications';
+
+    public function certifications()
+    {   
+    return $this->belongsTo(Teacher::class, 'id_teacher', 'id');
+    }
 }
