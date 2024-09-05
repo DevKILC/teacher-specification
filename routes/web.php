@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DahsboardController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TeacherSkillController;
@@ -31,8 +32,7 @@ Route::middleware([
 
     Route::resource('record', RecordController::class);
 
-    Route::get('all', function(){
-        return 'all';
-    });
+    
+    Route::resource('category', CategoryController::class);
 
 });

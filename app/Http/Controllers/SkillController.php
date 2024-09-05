@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Skill;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,10 @@ class SkillController extends Controller
      */
     public function index()
     {
-        //
+        return view('skill.index',[
+            'skills' => Skill::all(),
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -20,7 +24,7 @@ class SkillController extends Controller
      */
     public function create()
     {
-        //
+        return view('skill.create');
     }
 
     /**
@@ -28,7 +32,19 @@ class SkillController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'category_id' => 'required'
+        ]);
+
+        Skill::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'category_id' => $request->category,
+            'type' => $request->type
+        ]);
+
+        return redirect()->route('skill.index');
     }
 
     /**

@@ -28,7 +28,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        Category::create([
+            'name' => $request->name
+        ]);
+
+        // make flash message
+        session()->flash('success', 'Category created successfully');
+        return redirect()->route('skill.index');
     }
 
     /**
