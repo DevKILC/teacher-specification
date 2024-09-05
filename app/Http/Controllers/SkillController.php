@@ -39,12 +39,12 @@ class SkillController extends Controller
 
         Skill::create([
             'name' => $request->name,
-            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'category_id' => $request->category,
             'type' => $request->type
         ]);
 
-        // return redirect()->route('skill.index');
-        session()->flash('success', 'Skill created successfully');
+        return redirect()->route('skill.index');
     }
 
     /**
