@@ -32,19 +32,26 @@ class SkillController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'category_id' => 'required'
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'type' => 'required|in:ONLINE,OFFLINE',
         ]);
 
-        Skill::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'category_id' => $request->category,
-            'type' => $request->type
-        ]);
-
-        return redirect()->route('skill.index');
+        try {
+    
+            Skill::create($validated);
+    
+            return redirect()->route('skill.index')->with('success', 'Skill created successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation exceptions
+            return redirect()->back()->withErrors($e->validator->errors())->withInput();
+            
+        } catch (\Exception $e) {
+            // Handle general exceptions
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**
