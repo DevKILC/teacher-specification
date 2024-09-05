@@ -25,7 +25,7 @@
 
     <!-- Styles -->
     @livewireStyles
-    @livewire('modal')
+   
 </head>
 
 <body class="font-poppins antialiased" x-data="{ open: false }">
