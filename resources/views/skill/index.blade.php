@@ -11,6 +11,8 @@
     </x-slot>
 
     <div x-data="{ openSkillModal: false, openCategoryModal: false }">
+        
+
         {{-- SKILLS --}}
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
             <div class="flex flex-row justify-end py-10">
@@ -82,22 +84,119 @@
             </div>
         </div>
         
-        {{-- Modal  --}}
-        <div x-show="openSkillModal" @click.away="openSkillModal = false" class="fixed inset-0 flex items-center justify-center z-50">
-            @livewire('skill.create')
-        </div>
+        {{-- Skill Modal --}}
+        <x-general.modal :open="'openSkillModal'" :title="__('Create Skill')">
+            <x-general.form-section :submit="route('skill.store')">
+                <!-- Form fields slot -->
+                <x-slot name="form">
+                    <!-- Skill Name -->
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="name" value="{{ __('Skill Name') }}" />
+                        <x-input id="skillName" type="text" name="name" value="{{ old('name') }}" required />
+                        <x-input-error for="name" class="mt-2" />
+                    </div>
+        
+                    <!-- Skill Description -->
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="description" value="{{ __('Skill Description') }}" />
+                        <x-textarea id="skillDescription" name="description" rows="3">{{ old('description') }}</x-textarea>
+                        <x-input-error for="description" class="mt-2" />
+                    </div>
+        
+                    <!-- Skill Category -->
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="category_id" value="{{ __('Skill Category') }}" />
+                        <x-select id="skillCategory" name="category_id" required>
+                            <option value="">{{ __('Select a category') }}</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </x-select>
+                        <x-input-error for="category_id" class="mt-2" />
+                    </div>
+        
+                    <!-- Skill Type -->
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="type" value="{{ __('Type') }}" />
+                        <x-select id="type" name="type" required>
+                            <option value="">{{ __('Select Type') }}</option>
+                            <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
+                            <option value="OFFLINE" {{ old('type') == 'OFFLINE' ? 'selected' : '' }}>{{ __('Offline') }}</option>
+                        </x-select>
+                        <x-input-error for="type" class="mt-2" />
+                    </div>
+                </x-slot>
+        
+                <!-- Actions slot (optional) -->
+                <x-slot name="actions">
+                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                        {{ __('Save') }}
+                    </x-button>
+                    <x-button type="button" class="ml-4" @click="openSkillModal = false">
+                        {{ __('Cancel') }}
+                    </x-button>
+                </x-slot>
+            </x-general.form-section>
+        </x-general.modal>
 
         {{-- Modal  --}}
-        <div x-show="openCategoryModal" @click.away="openCategoryModal = false" class="fixed inset-0 flex items-center justify-center z-50">
-            @livewire('category.create')
-        </div>
+        <x-general.modal :open="'openCategoryModal'" :title="__('Create Category')">
+            <x-general.form-section :submit="route('category.store')">
+                <!-- Form fields slot -->
+                <x-slot name="form">
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="name" value="{{ __('Category Name') }}" />
+                        <x-input id="CategoryName" type="text" name="name" value="{{ old('name') }}" />
+                        <x-input-error for="name" class="mt-2" />
+                    </div>
+                </x-slot>
+            
+                <!-- Actions slot (optional) -->
+                <x-slot name="actions">
+                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                        {{ __('Save') }}
+                    </x-button>
+                    <x-button type="button" class="ml-4">
+                        {{ __('Cancel') }}
+                    </x-button>
+                </x-slot>
+            </x-general.form-section>
+        </x-general.modal>
+
+        
     </div>
     @push('scripts')
-    <script>
-        $(document).ready(function() {
-            $('#skills-table').DataTable();
-            $('#categories-table').DataTable();
-        });
-    </script>
+        <script>
+            $(document).ready(function() {
+                $('#skills-table').DataTable();
+                $('#categories-table').DataTable();
+            });
+
+            @if (Session::has('success'))
+                Swal.fire({
+                    icon: 'success',
+                    text: '{{ Session::get('success') }}',
+                    toast: true,
+                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
+                    showConfirmButton: false,
+                    timer: 2000,  // Toast will automatically disappear after 2 seconds
+                    timerProgressBar: true
+                });
+            @endif
+
+            @if (Session::has('error'))
+                Swal.fire({
+                    icon: 'error',
+                    text: '{{ Session::get('error') }}',
+                    toast: true,
+                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
+                    showConfirmButton: false,
+                    timer: 2000,  // Toast will automatically disappear after 2 seconds
+                    timerProgressBar: true
+                });
+            @endif
+        </script>
     @endpush
 </x-app-layout>
