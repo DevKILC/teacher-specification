@@ -32,44 +32,50 @@
                     <!-- Picture -->
                     @if($teachers && $teachers->img_url)
                     <img src="{{ str_contains($teachers->img_url, 'http') ? $teachers->img_url : 'https://s3.ap-southeast-1.wasabisys.com/file-members.kampunginggris.id/' . $teachers->img_url }}"
-                        alt="Teacher Picture" class="w-full h-[350px] bg-yellow-400 mx-auto rounded-md">
+                        alt="Teacher Picture" class="w-full h-[350px] bg-yellow-400 mx-auto rounded-md object-cover">
+
                     @else
-                   
                     <p class="text-center text-gray-500 mt-2">This Teacher Doesn't Have Any Picture</p>
                     @endif
 
                     <!-- Data -->
-                    <ul class="w-full h-auto mx-auto mt-10 space-y-4 list-none">
-                        <li class="text-2xl md:text-3xl font-thin border-b-2 border-yellow-400 pb-2">
-                            <span class="inline-block w-28">Name</span>
-                            <span class="inline-block">:<span class="ml-4">Test</span></span>
-                        </li>
-                        <li class="pl-5">
-                            <span class="inline-block w-28">ID</span>
-                            <span class="inline-block">:<span
-                                    class="ml-4 text-gray-500 text-justify font-light">Test</span></span>
-                        </li>
-                        <li class="pl-5">
-                            <span class="inline-block w-28">Username</span>
-                            <span class="inline-block">:<span
-                                    class="ml-4 text-gray-500 text-justify font-light">Test</span></span>
-                        </li>
-                        <li class="pl-5">
-                            <span class="inline-block w-28">Email</span>
-                            <span class="inline-block">:<span
-                                    class="ml-4 text-gray-500 text-justify font-light">Test</span></span>
-                        </li>
-                        <li class="pl-5">
-                            <span class="inline-block w-28">Address</span>
-                            <span class="inline-block">:<span
-                                    class="ml-4 text-gray-500 text-justify font-light">Test</span></span>
-                        </li>
-                        <li class="pl-5">
-                            <span class="inline-block w-28">Phone</span>
-                            <span class="inline-block">:<span
-                                    class="ml-4 text-gray-500 text-justify font-light">Test</span></span>
-                        </li>
-                    </ul>
+                    <!-- Data Table -->
+                    <table class="w-full h-[300px] mx-auto mt-10 border-collapse border-b-2 border-yellow-400">
+                        <tbody>
+                            <tr class="border-b-2 border-yellow-400 pb-2 font-thin">
+                                <td class="w-28 text-lg sm:text-xl md:text-2xl lg:text-3xl">Name</td>
+                                <td class="text-base sm:text-lg md:text-xl lg:text-2xl">: <span
+                                        class="ml-4">{{ $teachers->name }}</span></td>
+                            </tr>
+                            <tr class="pl-5">
+                                <td class="w-28 text-lg sm:text-xl font-light">ID</td>
+                                <td class="text-base sm:text-lg font-light">: <span
+                                        class="ml-4 text-gray-500">{{ $teachers->id }}</span></td>
+                            </tr>
+                            <tr class="pl-5">
+                                <td class="w-28 text-lg sm:text-xl font-light">Username</td>
+                                <td class="text-base sm:text-lg font-light">: <span
+                                        class="ml-4 text-gray-500">{{ $teachers->username }}</span></td>
+                            </tr>
+                            <tr class="pl-5 overflow-x ">
+                                <td class="w-28 text-lg sm:text-xl font-light">Email</td>
+                                <td class="text-base sm:text-lg font-light">: <span
+                                        class="ml-4 text-gray-500">{{ $teachers->email }}</span></td>
+                            </tr>
+                            <tr class="pl-5">
+                                <td class="w-28 text-lg sm:text-xl font-light">Address</td>
+                                <td class="text-base sm:text-lg font-light">: <span
+                                        class="ml-4 text-gray-500">{{ $teachers->address }}</span></td>
+                            </tr>
+                            <tr class="pl-5">
+                                <td class="w-28 text-lg sm:text-xl font-light">Phone</td>
+                                <td class="text-base sm:text-lg font-light">: <span
+                                        class="ml-4 text-gray-500">{{ $teachers->phone }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- End Data Table -->
+
 
                 </div>
                 <!-- End profile -->
@@ -77,20 +83,75 @@
                 <!-- Skills container -->
                 <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6">
                     <!-- Header skill -->
-                    <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2">
+                    <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2"
+                        x-data="{ openAddSkillModel: false }">
                         <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list</h1>
 
                         <!-- Trigger Button for Modal -->
-                        <button  
-                    class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">
-                + Add New Skill
-            </button>
+                        <button @click="openAddSkillModal = true"
+                            class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">
+                            + Add New Skill
+                        </button>
+
+
+                        {{-- Modal  --}}
+                        <div x-show="openAddSkillModal" @click.away="openAddSkillModal = false"
+                            class="fixed inset-0 flex items-center justify-center z-50">
+                            @livewire('teacher.addskill')
+                        </div>
 
                     </div>
                     <!-- Skills list (Empty table for now) -->
-                    <table class="mt-4">
-                        <!-- Skill items go here -->
+                    <!-- Skill Table -->
+                    <table class="w-full mt-4 border-collapse">
+                        @if(!$teachers)
+                        <tr>
+                            <td colspan="3" class="text-center text-gray-500">No teachers available.</td>
+                        </tr>
+                        @else
+                        @forelse($teachers->teacherSkills as $index => $teacherSkill)
+                        <tr class="border-b border-gray-300">
+                            <td class="py-2 text-gray-800 font-medium">{{ $index + 1 }}</td>
+                            <td class="py-2 text-gray-700">{{ $teacherSkill->skills->name ?? 'No skills available' }}
+                            </td>
+                            <td class="py-2 text-right">
+                                <div x-data="{ open: false }" class="relative">
+                                    <!-- Dropdown Button -->
+                                    <button @click="open = !open"
+                                        class="p-2 rounded hover:bg-gray-100 focus:outline-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                            width="24px" fill="#5f6368">
+                                            <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
+                                        </svg>
+                                    </button>
+
+                                    <!-- Dropdown Content -->
+                                    <div x-show="open" @click.away="open = false"
+                                        class="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+                                        <form action="{{ route('delete-teacher-skill') }}" method="POST" class="p-2">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="id_teacher" value="{{ $teachers->id }}">
+                                            <input type="hidden" name="id_skill"
+                                                value="{{ $teacherSkill->skills->id_skill }}">
+                                            <button type="submit"
+                                                class="w-full text-left text-red-600 hover:bg-red-100 py-1 px-3 rounded-md"
+                                                onclick="return confirm('Are you sure you want to remove this skill from {{ $teachers->name }}?')">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center text-gray-500">No skills available.</td>
+                        </tr>
+                        @endforelse
+                        @endif
                     </table>
+
                     <!-- End skills -->
                 </div>
                 <!-- End skills container -->
