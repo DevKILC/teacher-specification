@@ -35,7 +35,7 @@
                         alt="Teacher Picture" class="w-full h-[350px] bg-yellow-400 mx-auto rounded-md object-cover">
 
                     @else
-                    <p class="text-center text-gray-500 mt-2">This Teacher Doesn't Have Any Picture</p>
+                    <p class="text-center text-white items-center w-full h-[350px] bg-yellow-400 mx-auto rounded-md">This Teacher Doesn't Have Any Picture</p>
                     @endif
 
                     <!-- Data -->
@@ -45,32 +45,32 @@
                             <tr class="border-b-2 border-yellow-400 pb-2 font-thin">
                                 <td class="w-28 text-lg sm:text-xl md:text-2xl lg:text-3xl">Name</td>
                                 <td class="text-base sm:text-lg md:text-xl lg:text-2xl">: <span
-                                        class="ml-4">{{ $teachers->name }}</span></td>
+                                        class="ml-4">{{ $teachers->name  ?? 'Select Teacher first' }}</span></td>
                             </tr>
                             <tr class="pl-5">
                                 <td class="w-28 text-lg sm:text-xl font-light">ID</td>
                                 <td class="text-base sm:text-lg font-light">: <span
-                                        class="ml-4 text-gray-500">{{ $teachers->id }}</span></td>
+                                        class="ml-4 text-gray-500">{{ $teachers->id ?? 'N/A' }}</span></td>
                             </tr>
                             <tr class="pl-5">
                                 <td class="w-28 text-lg sm:text-xl font-light">Username</td>
                                 <td class="text-base sm:text-lg font-light">: <span
-                                        class="ml-4 text-gray-500">{{ $teachers->username }}</span></td>
+                                        class="ml-4 text-gray-500">{{ $teachers->username ?? 'Not Found' }}</span></td>
                             </tr>
                             <tr class="pl-5 overflow-x ">
                                 <td class="w-28 text-lg sm:text-xl font-light">Email</td>
                                 <td class="text-base sm:text-lg font-light">: <span
-                                        class="ml-4 text-gray-500">{{ $teachers->email }}</span></td>
+                                        class="ml-4 text-gray-500">{{ $teachers->email  ?? 'Not Found' }}</span></td>
                             </tr>
                             <tr class="pl-5">
                                 <td class="w-28 text-lg sm:text-xl font-light">Address</td>
                                 <td class="text-base sm:text-lg font-light">: <span
-                                        class="ml-4 text-gray-500">{{ $teachers->address }}</span></td>
+                                        class="ml-4 text-gray-500">{{ $teachers->address  ?? 'Not Found' }}</span></td>
                             </tr>
                             <tr class="pl-5">
                                 <td class="w-28 text-lg sm:text-xl font-light">Phone</td>
                                 <td class="text-base sm:text-lg font-light">: <span
-                                        class="ml-4 text-gray-500">{{ $teachers->phone }}</span></td>
+                                        class="ml-4 text-gray-500">{{ $teachers->phone  ?? 'Not Found' }}</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -81,10 +81,10 @@
                 <!-- End profile -->
 
                 <!-- Skills container -->
-                <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6">
+                <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6"  x-data="{ openAddSkillModal: false }">
                     <!-- Header skill -->
                     <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2"
-                        x-data="{ openAddSkillModel: false }">
+                       >
                         <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list</h1>
 
                         <!-- Trigger Button for Modal -->
@@ -94,11 +94,39 @@
                         </button>
 
 
-                        {{-- Modal  --}}
-                        <div x-show="openAddSkillModal" @click.away="openAddSkillModal = false"
-                            class="fixed inset-0 flex items-center justify-center z-50">
-                            @livewire('teacher.addskill')
-                        </div>
+                        {{-- Add Skill Modal  --}}
+                        <x-general.modal :open="'openAddSkillModal'" :title="__('Add Skill')">
+                            <x-general.form-section :submit="route('addskill.store', ['id' => $teachers->id ?? 'null' ])">
+                            <x-slot name="form">
+                                <div class="col-span-6 sm:col-span-4">
+                                    @csrf
+                                    <input type="hidden" name="teacher_id" value="{{ $request->id ?? 'null' }}">
+                                    <!-- Form Add SKill -->
+                                    <label for="skillSelect" class="block mb-2 text-sm">Choose Skill Name</label>
+                                    <div class="space-y-3">
+                                        @foreach($allSkills as $skill)
+                                        <div class="flex items-center space-x-2">
+                                            <input type="checkbox" id="skill_{{ $skill->id_skill }}" name="id_skill[]"
+                                                value="{{ $skill->id_skill }}" @if(in_array($skill->id_skill,
+                                            $teachersSkillsGetValidation)) disabled checked @endif>
+                                            <label for="skill_{{ $skill->id_skill }}">{{ $skill->name }}</label>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    <x-input-error for="name" class="mt-2" />
+                                </div>
+                            </x-slot>
+                                <!-- Actions slot (optional) -->
+                                <x-slot name="actions">
+                                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                                        {{ __('Save') }}
+                                    </x-button>
+                                    <x-button type="button" class="ml-4" @click="openSkillModal = false">
+                                        {{ __('Cancel') }}
+                                    </x-button>
+                                </x-slot>
+                            </x-general.form-section>
+                        </x-general.modal>
 
                     </div>
                     <!-- Skills list (Empty table for now) -->

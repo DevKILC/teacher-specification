@@ -18,18 +18,18 @@ class TeacherSkillController extends Controller
     {
        
         $allTeachers = Teacher::all();
-        $allSkills = Skill::all();
+        $allSkills =DB::table('skills')->get();
         
         // Langsung ambil teacher berdasarkan id, atau null jika tidak ada
         $teachers = Teacher::with('teacherSkills.skills')
             ->find($request->id);
     
-        // Validasi skill jika $teachers dan teacherAllSkills ada, jika tidak gunakan collection kosong
-        $teachersSkillsGetValidation = $teachers && $teachers->teacherAllSkills
-            ? $teachers->teacherAllSkills->pluck('skills.skill_id')
+        // Validasi skill jika $teachers dan teacherSkills ada, jika tidak gunakan collection kosong
+        $teachersSkillsGetValidation = $teachers && $teachers->teacherSkills
+            ? $teachers->teacherSkills->pluck('skills.skill_id')
             : collect([]);
     
-
+return $allSkills;
         return view('teacher.index', [
             'teachers' => $teachers,
             'allTeachers' => $allTeachers,

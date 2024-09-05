@@ -20,7 +20,7 @@ class Skill extends Model
     ];
     public function skills()
     {
-        return $this->hasMany(TeacherSkill::class, 'skill_id' , 'id_skill');
+        return $this->hasMany(TeacherSkill::class, 'id_skill','skill_id');
     }
 
     public function categories()
