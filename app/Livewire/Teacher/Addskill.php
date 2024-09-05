@@ -32,7 +32,7 @@ class Addskill extends Component
             }
         }
     
-        public function updatedSelectedSkills($value)
+        public function addSelectedSkills($value)
         {
             $this->selectedSkills = $value;
         }
@@ -45,7 +45,7 @@ class Addskill extends Component
                 'selectedSkills.*' => 'exists:skills,id_skill',
             ]);
     
-            try {
+         
                 $data = [];
                 foreach ($this->selectedSkills as $skillId) {
                     $data[] = [
@@ -56,11 +56,8 @@ class Addskill extends Component
     
                 DB::table('teacher_skills')->insert($data);
     
-                session()->flash('success', 'Skills added successfully');
-                $this->emit('refreshTeacherSkills'); // Emit event to refresh the parent component if needed
-            } catch (\Exception $e) {
-                session()->flash('error', 'Failed to add skills. Please try again.');
-            }
+                $this->redirect('/teacher');
+             
         }
     
     

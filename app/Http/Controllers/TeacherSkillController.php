@@ -71,11 +71,11 @@ class TeacherSkillController extends Controller
             DB::table('teacher_skills')->insert($data);
             
             // Redirect dengan pesan sukses
-            return redirect()->route('teacherSearchByID', ['id' => $id_teacher])
+            return redirect()->route('teacher.index', ['id' => $id_teacher])
                 ->with('success', 'Skills added successfully');
         } catch (\Exception $e) {
             // Redirect dengan pesan gagal jika terjadi exception
-            return redirect()->route('teacherSearchByID', ['id' => $id_teacher])
+            return redirect()->route('teacher.index', ['id' => $id_teacher])
                 ->with('error', 'Failed to add skills. Please try again.');
         }
     }
