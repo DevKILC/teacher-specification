@@ -2,55 +2,97 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Teacher;
+use App\models\Skill;
 use App\Models\TeacherSkill;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
 
 class TeacherSkillController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('skill.index');
-    }
+       
+        $allTeachers = Teacher::all();
+        $allSkills = Skill::all();
+        
+        // Langsung ambil teacher berdasarkan id, atau null jika tidak ada
+        $teachers = Teacher::with('teacherSkills.skills')
+            ->find($request->id);
+    
+        // Validasi skill jika $teachers dan teacherAllSkills ada, jika tidak gunakan collection kosong
+        $teachersSkillsGetValidation = $teachers && $teachers->teacherAllSkills
+            ? $teachers->teacherAllSkills->pluck('skills.skill_id')
+            : collect([]);
+    
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('teacher.index', [
+            'teachers' => $teachers,
+            'allTeachers' => $allTeachers,
+            'allSkills' => $allSkills,
+            'teachersSkillsGetValidation' => $teachersSkillsGetValidation,
+        ]);
     }
+    
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        // Ambil array id_skill dari checkbox
+        $skills = $request->input('skill_id');
+        $id_teacher = $request->input('teacher_id');
+        
+        // Validasi input
+        $request->validate([
+            'teacher_id' => 'required|exists:teachers,id',
+            'skill_id' => 'required|array',
+            'skill_id.*' => 'exists:skills,id_skill', // Validasi untuk setiap skill yang dipilih
+        ]);
+        
+        try {
+            // Siapkan array untuk push data
+            $data = [];
+            
+            // Menggunakan array push untuk mengumpulkan data
+            foreach ($skills as $id_skill) {
+                array_push($data, [
+                    'teacher_id' => $id_teacher,
+                    'skill_id' => $id_skill,
+                ]);
+            }
+            
+            // Batch insert semua data sekaligus
+            DB::table('teacher_skills')->insert($data);
+            
+            // Redirect dengan pesan sukses
+            return redirect()->route('teacherSearchByID', ['id' => $id_teacher])
+                ->with('success', 'Skills added successfully');
+        } catch (\Exception $e) {
+            // Redirect dengan pesan gagal jika terjadi exception
+            return redirect()->route('teacherSearchByID', ['id' => $id_teacher])
+                ->with('error', 'Failed to add skills. Please try again.');
+        }
     }
+    
 
     /**
      * Display the specified resource.
      */
-    public function show(TeacherSkill $teacherSkill)
+    public function show(Teacher $teachers)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TeacherSkill $teacherSkill)
-    {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TeacherSkill $teacherSkill)
+    public function update(Request $request, Teacher $teachers)
     {
         //
     }
@@ -58,8 +100,30 @@ class TeacherSkillController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TeacherSkill $teacherSkill)
+    public function destroy(Request $request)
     {
-        //
+        // Validasi input
+        $request->validate([
+            'teacher_id' => 'required|exists:teachers,id',
+            'skill_id' => 'required|exists:skills,id_skill',
+        ]);
+    
+        try {
+            // Menghapus skill dari teacher
+            DB::table('teacher_skills')
+                ->where('teacher_id', $request->teacher_id)
+                ->where('skill_id', $request->skill_id)
+                ->delete();
+    
+            // Redirect dengan pesan sukses
+            return redirect()->route('delete-teacher-skill', ['id' => $request->teacher_id])
+                ->with('success', 'Skill deleted successfully.');
+        } catch (\Exception $e) {
+            // Redirect dengan pesan gagal jika terjadi exception
+            return redirect()->route('delete-teacher-skill', ['id' => $request->teacher_id])
+                ->with('error', 'Failed to delete skill.');
+        }
     }
-}
+    
+    }
+

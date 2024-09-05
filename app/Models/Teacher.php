@@ -16,7 +16,7 @@ class Teacher extends Model
     // Relasi tabel certifications dengan teachers
     return $this->hasMany(Certification::class, 'teacher_id', 'id');
 }
-    public function teacherAllSkills()
+    public function teacherSkills()
 {
     return $this->hasMany(TeacherSkill::class, 'teacher_id', 'id');
 }

@@ -12,6 +12,6 @@ class Certification extends Model
 
     public function certifications()
     {   
-    return $this->belongsTo(Teacher::class, 'id_teacher', 'id');
+    return $this->belongsTo(Teacher::class, 'teacher_id', 'id');
     }
 }
