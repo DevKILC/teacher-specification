@@ -10,10 +10,21 @@ class Skill extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'skills';
+
     protected $fillable = [
         'name',
         'description',
         'category_id',
         'type',
     ];
+    public function skills()
+    {
+        return $this->hasMany(TeacherSkill::class, 'skill_id' , 'id_skill');
+    }
+
+    public function categories()
+    { 
+        return $this->hasOne(Category::class, 'category_id', 'id_category');
+    }
 }
