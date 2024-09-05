@@ -43,7 +43,10 @@ class SkillController extends Controller
     
             Skill::create($validated);
     
-            return redirect()->route('skill.index')->with('success', 'Skill created successfully!');
+            // make flash message
+            session()->flash('success', 'Skill created successfully');
+            return redirect()->route('skill.index');
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation exceptions
             return redirect()->back()->withErrors($e->validator->errors())->withInput();

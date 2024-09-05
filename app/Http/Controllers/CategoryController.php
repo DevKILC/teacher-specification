@@ -32,13 +32,20 @@ class CategoryController extends Controller
             'name' => 'required'
         ]);
 
-        Category::create([
-            'name' => $request->name
-        ]);
+        try {
+            Category::create([
+                'name' => $request->name
+            ]);
+    
+            // make flash message
+            session()->flash('success', 'Category created successfully');
+            return redirect()->route('skill.index');
+        } catch (\Throwable $th) {
 
-        // make flash message
-        session()->flash('success', 'Category created successfully');
-        return redirect()->route('skill.index');
+            // make flash message
+            session()->flash('error', $th->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**

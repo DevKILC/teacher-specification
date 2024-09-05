@@ -85,156 +85,87 @@
         </div>
         
         {{-- Skill Modal --}}
-        <div x-show="openSkillModal" @click.away="openSkillModal = false" class="fixed inset-0 flex items-center justify-center z-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-                <!-- Modal Header -->
-                <div class="flex justify-between items-center border-b pb-2 mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">
-                        {{ __('Create Skill') }}
-                    </h2>
-                    <button @click="openSkillModal = false" class="text-gray-500 hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24" fill="black">
-                            <path d="M720 936 528 744 336 936l-72-72 192-192-192-192 72-72 192 192 192-192 72 72-192 192 192 192-72 72Z"/>
-                        </svg>
-                    </button>
-                </div>
-    
-                <!-- Modal Body -->
-                <form method="POST" action="{{ route('skill.store') }}">
-                    @csrf
-    
+        <x-general.modal :open="'openSkillModal'" :title="__('Create Skill')">
+            <x-general.form-section :submit="route('skill.store')">
+                <!-- Form fields slot -->
+                <x-slot name="form">
                     <!-- Skill Name -->
-                    <div class="mb-4">
-                        <label for="skillName" class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('Skill Name') }}
-                        </label>
-                        <input type="text" id="skillName" name="name" required
-                               class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="name" value="{{ __('Skill Name') }}" />
+                        <x-input id="skillName" type="text" name="name" value="{{ old('name') }}" required />
+                        <x-input-error for="name" class="mt-2" />
                     </div>
-    
+        
                     <!-- Skill Description -->
-                    <div class="mb-4">
-                        <label for="skillDescription" class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('Skill Description') }}
-                        </label>
-                        <textarea id="skillDescription" name="description" rows="3"
-                                  class="form-textarea mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="description" value="{{ __('Skill Description') }}" />
+                        <x-textarea id="skillDescription" name="description" rows="3">{{ old('description') }}</x-textarea>
+                        <x-input-error for="description" class="mt-2" />
                     </div>
-    
+        
                     <!-- Skill Category -->
-                    <div class="mb-4">
-                        <label for="skillCategory" class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('Skill Category') }}
-                        </label>
-                        <select id="skillCategory" name="category_id" required
-                                class="form-select mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                            <option value="">Select a category</option>
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="category_id" value="{{ __('Skill Category') }}" />
+                        <x-select id="skillCategory" name="category_id" required>
+                            <option value="">{{ __('Select a category') }}</option>
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
                             @endforeach
-                        </select>
+                        </x-select>
+                        <x-input-error for="category_id" class="mt-2" />
                     </div>
-
-                    <div class="mb-4">
-                        <div class="col-span-6 sm:col-span-4">
-                            <x-label for="type" value="{{ __('Type') }}" />
-                            <select id="type" class="mt-1 block w-full form-select" name="type">
-                                <option value="">{{ __('Select Type') }}</option>
-                                <option value="OFFLINE">{{ __('Online') }}</option>
-                                <option value="ONLINE">{{ __('Offline') }}</option>
-                            </select>
-                            <x-input-error for="type" class="mt-2" />
-                        </div>
+        
+                    <!-- Skill Type -->
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="type" value="{{ __('Type') }}" />
+                        <x-select id="type" name="type" required>
+                            <option value="">{{ __('Select Type') }}</option>
+                            <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
+                            <option value="OFFLINE" {{ old('type') == 'OFFLINE' ? 'selected' : '' }}>{{ __('Offline') }}</option>
+                        </x-select>
+                        <x-input-error for="type" class="mt-2" />
                     </div>
-    
-                    <!-- Submit Button -->
-                    <div class="flex items-center justify-end">
-                        <x-button type="submit" class="bg-blue-500 text-white hover:bg-blue-600">
-                            {{ __('Save') }}
-                        </x-button>
-                        <x-button @click="openSkillModal = false" class="ml-4">
-                            {{ __('Cancel') }}
-                        </x-button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                </x-slot>
+        
+                <!-- Actions slot (optional) -->
+                <x-slot name="actions">
+                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                        {{ __('Save') }}
+                    </x-button>
+                    <x-button type="button" class="ml-4" @click="openSkillModal = false">
+                        {{ __('Cancel') }}
+                    </x-button>
+                </x-slot>
+            </x-general.form-section>
+        </x-general.modal>
 
         {{-- Modal  --}}
-        <div x-show="openCategoryModal" @click.away="openCategoryModal = false" class="fixed inset-0 flex items-center justify-center z-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-                <!-- Modal Header -->
-                <div class="flex justify-between items-center border-b pb-2 mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">
-                        {{ __('Create Category') }}
-                    </h2>
-                    <button @click="oepnCategoryModal = false" class="text-gray-500 hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24" fill="black">
-                            <path d="M720 936 528 744 336 936l-72-72 192-192-192-192 72-72 192 192 192-192 72 72-192 192 192 192-72 72Z"/>
-                        </svg>
-                    </button>
-                </div>
-    
-                <!-- Modal Body -->
-                <form method="POST" action="{{ route('category.store') }}">
-                    @csrf
-    
-                    <!-- Skill Name -->
-                    <div class="mb-4">
-                        <label for="skillName" class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('Skill Name') }}
-                        </label>
-                        <input type="text" id="skillName" name="name" required
-                               class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+        <x-general.modal :open="'openCategoryModal'" :title="__('Create Category')">
+            <x-general.form-section :submit="route('category.store')">
+                <!-- Form fields slot -->
+                <x-slot name="form">
+                    <div class="col-span-6 sm:col-span-4">
+                        <x-label for="name" value="{{ __('Category Name') }}" />
+                        <x-input id="CategoryName" type="text" name="name" value="{{ old('name') }}" />
+                        <x-input-error for="name" class="mt-2" />
                     </div>
-    
-                    <!-- Skill Description -->
-                    <div class="mb-4">
-                        <label for="skillDescription" class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('Skill Description') }}
-                        </label>
-                        <textarea id="skillDescription" name="description" rows="3"
-                                  class="form-textarea mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
-                    </div>
-    
-                    <!-- Skill Category -->
-                    <div class="mb-4">
-                        <label for="skillCategory" class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('Skill Category') }}
-                        </label>
-                        <select id="skillCategory" name="category_id" required
-                                class="form-select mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                            <option value="">Select a category</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                </x-slot>
+            
+                <!-- Actions slot (optional) -->
+                <x-slot name="actions">
+                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                        {{ __('Save') }}
+                    </x-button>
+                    <x-button type="button" class="ml-4">
+                        {{ __('Cancel') }}
+                    </x-button>
+                </x-slot>
+            </x-general.form-section>
+        </x-general.modal>
 
-                    <div class="mb-4">
-                        <div class="col-span-6 sm:col-span-4">
-                            <x-label for="type" value="{{ __('Type') }}" />
-                            <select id="type" class="mt-1 block w-full form-select" name="type">
-                                <option value="">{{ __('Select Type') }}</option>
-                                <option value="OFFLINE">{{ __('Online') }}</option>
-                                <option value="ONLINE">{{ __('Offline') }}</option>
-                            </select>
-                            <x-input-error for="type" class="mt-2" />
-                        </div>
-                    </div>
-    
-                    <!-- Submit Button -->
-                    <div class="flex items-center justify-end">
-                        <x-button type="submit" class="bg-blue-500 text-white hover:bg-blue-600">
-                            {{ __('Save') }}
-                        </x-button>
-                        <x-button @click="oepnCategoryModal = false" class="ml-4">
-                            {{ __('Cancel') }}
-                        </x-button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        
     </div>
     @push('scripts')
         <script>
@@ -246,16 +177,24 @@
             @if (Session::has('success'))
                 Swal.fire({
                     icon: 'success',
-                    title: 'Berhasil',
                     text: '{{ Session::get('success') }}',
+                    toast: true,
+                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
+                    showConfirmButton: false,
+                    timer: 2000,  // Toast will automatically disappear after 2 seconds
+                    timerProgressBar: true
                 });
             @endif
 
             @if (Session::has('error'))
                 Swal.fire({
                     icon: 'error',
-                    title: 'Gagal',
                     text: '{{ Session::get('error') }}',
+                    toast: true,
+                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
+                    showConfirmButton: false,
+                    timer: 2000,  // Toast will automatically disappear after 2 seconds
+                    timerProgressBar: true
                 });
             @endif
         </script>
