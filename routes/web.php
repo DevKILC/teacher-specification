@@ -31,7 +31,6 @@ Route::middleware([
     Route::resource('teacher-skill', TeacherSkillController::class);
 
     Route::resource('record', RecordController::class);
-
     
     Route::resource('category', CategoryController::class);
 

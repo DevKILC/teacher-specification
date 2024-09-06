@@ -99,9 +99,7 @@
                                     <div class="space-y-3">
                                         @foreach($allSkills as $skill)
                                         <div class="flex items-center space-x-2">
-                                            <input type="checkbox" id="skill_{{ $skill->id}}" name="id_skill[]"
-                                                value="{{ $skill->id }}" @if(in_array($skill->id,
-                                            $teachersSkillsGetValidation->toArray() )) disabled checked @endif>
+                                            <input type="checkbox" id="skill_{{ $skill->id}}" name="skill_id[]" value="{{ $skill->id }}" @if(in_array($skill->id, $teachersSkillsGetValidation->toArray())) disabled checked @endif>
                                             <label for="skill_{{ $skill->id }}">{{ $skill->name }}</label>
                                         </div>
                                         @endforeach
@@ -147,9 +145,10 @@
                                     </button>
 
                                     <!-- Dropdown Content -->
+
                                     <div x-show="open" @click.away="open = false"
                                         class="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                                        <form action="{{ route('teacher-skill.destroy') }}" method="POST" class="p-2">
+                                        <form action="{{ route('teacher-skill.destroy', $teachers->id ) }}" method="POST" class="p-2">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="id_teacher" value="{{ $teachers->id }}">
@@ -182,7 +181,6 @@
     </div>
     @push('scripts')
         <script>
-
             @if (Session::has('success'))
                 Swal.fire({
                     icon: 'success',

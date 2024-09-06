@@ -23,44 +23,42 @@ class TeacherSkillController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Ambil array id_skill dari checkbox
+    {   
+        // Retrieve skills and teacher ID
         $skills = $request->input('skill_id');
         $id_teacher = $request->input('teacher_id');
         
-        // Validasi input
-        $request->validate([
-            'teacher_id' => 'required|exists:teachers,id',
-            'skill_id' => 'required|array',
-            'skill_id.*' => 'exists:skills,id', // Validasi untuk setiap skill yang dipilih
-        ]);
-        
         try {
-            // Siapkan array untuk push data
-            $data = [];
-            
-            // Menggunakan array push untuk mengumpulkan data
-            foreach ($skills as $id_skill) {
-                array_push($data, [
+
+            $request->validate([
+                'teacher_id' => 'required|exists:teachers,id',
+                'skill_id' => 'required|array', // Change id_skill to skill_id
+                'skill_id.*' => 'exists:skills,id', // Validate each skill selected
+            ]);
+
+            // Remove all current skills for this teacher
+            TeacherSkill::where('teacher_id', $id_teacher)->delete();
+
+            // Add new skills to the teacher
+            foreach ($skills as $skill) {
+                TeacherSkill::create([
                     'teacher_id' => $id_teacher,
-                    'skill_id' => $id_skill,
+                    'skill_id' => $skill,
                 ]);
             }
-            
-            // Batch insert semua data sekaligus
-            DB::table('teacher_skills')->insert($data);
-            
-            // Redirect dengan pesan sukses
+
+            // Success message and redirect
             session()->flash('success', 'Skill added successfully');
             return redirect()->route('teacher.index', ['id' => $id_teacher]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation exceptions
+            session()->flash('error', $e->getMessage());
             return redirect()->back()->withErrors($e->validator->errors())->withInput();
-            
+
         } catch (\Exception $e) {
             // Handle general exceptions
-            session()->flash('error', 'Skill');
+            session()->flash('error', $e->getMessage());
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -86,30 +84,11 @@ class TeacherSkillController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy($teacher_skill)
     {
-        // Validasi input
-        $request->validate([
-            'teacher_id' => 'required|exists:teachers,id',
-            'skill_id' => 'required|exists:skills,id_skill',
-        ]);
-    
-        try {
-            // Menghapus skill dari teacher
-            DB::table('teacher_skills')
-                ->where('teacher_id', $request->teacher_id)
-                ->where('skill_id', $request->skill_id)
-                ->delete();
-    
-            // Redirect dengan pesan sukses
-            return redirect()->route('delete-teacher-skill', ['id' => $request->teacher_id])
-                ->with('success', 'Skill deleted successfully.');
-        } catch (\Exception $e) {
-            // Redirect dengan pesan gagal jika terjadi exception
-            return redirect()->route('delete-teacher-skill', ['id' => $request->teacher_id])
-                ->with('error', 'Failed to delete skill.');
-        }
+        
+           
     }
     
-    }
+}
 

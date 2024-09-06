@@ -52,6 +52,7 @@ class SkillController extends Controller
             // return redirect()->back()->withErrors($e->validator->errors())->withInput();
             session()->flash('error', $e->validator->errors()->first());
         } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
             // Handle general exceptions
             return redirect()->back()->with('error', $e->getMessage());
         }
