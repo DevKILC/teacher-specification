@@ -20,7 +20,7 @@ class TeacherController extends Controller
      
         // Validasi skill jika $teachers dan teacherSkills ada, jika tidak gunakan collection kosong
         $teachersSkillsGetValidation = $teachers && $teachers->teacherSkills
-            ? $teachers->teacherSkills->pluck('skills.skill_id')
+            ? $teachers->teacherSkills->pluck('skills.id')
             : collect([]);
  
         return view('teacher.index', [

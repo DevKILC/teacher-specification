@@ -86,8 +86,12 @@ class TeacherSkillController extends Controller
      */
     public function destroy($teacher_skill)
     {
-        
-           
+      
+        $teacherSkill = TeacherSkill::findOrFail($teacher_skill);
+        $teacherSkill->delete();
+         // Success message and redirect
+         session()->flash('success', 'Skill deleted successfully');
+         return redirect()->route('teacher.index', ['id' => $teacher_skill]);
     }
     
 }
