@@ -74,8 +74,7 @@ class TeacherController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Teacher $teacher)
+    public function destroy(Teacher $teacher, $teacher_skill)
     {
-        //
     }
 }

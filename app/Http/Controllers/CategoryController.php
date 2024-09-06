@@ -29,7 +29,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required|string|max:255|unique:categories',
         ]);
 
         try {
@@ -44,7 +44,7 @@ class CategoryController extends Controller
 
             // make flash message
             session()->flash('error', $th->getMessage());
-            return redirect()->back();
+            // return redirect()->back();
         }
     }
 
@@ -69,7 +69,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,'.$category->id,
+        ]);
+
+        try {
+            $category->update($validated);
+    
+            // make flash message
+            session()->flash('success', 'Category updated successfully');
+            return redirect()->route('skill.index');
+        } catch (\Throwable $th) {
+
+            // make flash message
+            session()->flash('error', $th->getMessage());
+            // return redirect()->back();
+        }
     }
 
     /**

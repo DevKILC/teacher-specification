@@ -23,8 +23,8 @@ class Skill extends Model
         return $this->hasMany(TeacherSkill::class, 'id_skill','skill_id');
     }
 
-    public function categories()
-    { 
-        return $this->hasOne(Category::class, 'category_id', 'id_category');
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

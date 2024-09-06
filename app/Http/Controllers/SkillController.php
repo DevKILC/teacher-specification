@@ -14,7 +14,7 @@ class SkillController extends Controller
     public function index()
     {
         return view('skill.index',[
-            'skills' => Skill::all(),
+            'skills' => Skill::with('category')->get(),
             'categories' => Category::all()
         ]);
     }
@@ -49,9 +49,10 @@ class SkillController extends Controller
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation exceptions
-            return redirect()->back()->withErrors($e->validator->errors())->withInput();
-            
+            // return redirect()->back()->withErrors($e->validator->errors())->withInput();
+            session()->flash('error', $e->validator->errors()->first());
         } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
             // Handle general exceptions
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -78,7 +79,33 @@ class SkillController extends Controller
      */
     public function update(Request $request, Skill $skill)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'type' => 'required|in:ONLINE,OFFLINE',
+        ]);
+
+        try {
+
+            $skill->update($validated);
+
+            // make flash message
+            session()->flash('success', 'Skill updated successfully');
+            return redirect()->route('skill.index');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation exceptions
+            // return redirect()->back()->withErrors($e->validator->errors())->withInput();
+            session()->flash('error', $e->validator->errors()->first());
+        } catch (\Exception $e) {
+            // Handle general exceptions
+            return redirect()->back()->with('error', $e->getMessage());
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
     /**
