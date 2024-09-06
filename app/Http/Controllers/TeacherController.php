@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Skill;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 
@@ -10,12 +10,24 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $teachers =  Teacher::with('certifications')->get(); 
+        $allTeachers = Teacher::all();
+        $allSkills =Skill::get();
         
-        return view('teacher.index',[
-            'teachers' => $teachers
+        $teachers = $request->id ? Teacher::with('teacherSkills.skills')->find($request->id) : Teacher::dummyData();
+    
+     
+        // Validasi skill jika $teachers dan teacherSkills ada, jika tidak gunakan collection kosong
+        $teachersSkillsGetValidation = $teachers && $teachers->teacherSkills
+            ? $teachers->teacherSkills->pluck('skills.skill_id')
+            : collect([]);
+ 
+        return view('teacher.index', [
+            'teachers' => $teachers,
+            'allTeachers' => $allTeachers,
+            'allSkills' => $allSkills,
+            'teachersSkillsGetValidation' => $teachersSkillsGetValidation,
         ]);
     }
 

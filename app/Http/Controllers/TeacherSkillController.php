@@ -16,26 +16,6 @@ class TeacherSkillController extends Controller
      */
     public function index(Request $request)
     {
-       
-        $allTeachers = Teacher::all();
-        $allSkills =DB::table('skills')->get();
-        
-        // Langsung ambil teacher berdasarkan id, atau null jika tidak ada
-        $teachers = Teacher::with('teacherSkills.skills')
-            ->find($request->id);
-    
-        // Validasi skill jika $teachers dan teacherSkills ada, jika tidak gunakan collection kosong
-        $teachersSkillsGetValidation = $teachers && $teachers->teacherSkills
-            ? $teachers->teacherSkills->pluck('skills.skill_id')
-            : collect([]);
-    
-return $allSkills;
-        return view('teacher.index', [
-            'teachers' => $teachers,
-            'allTeachers' => $allTeachers,
-            'allSkills' => $allSkills,
-            'teachersSkillsGetValidation' => $teachersSkillsGetValidation,
-        ]);
     }
     
 
@@ -52,7 +32,7 @@ return $allSkills;
         $request->validate([
             'teacher_id' => 'required|exists:teachers,id',
             'skill_id' => 'required|array',
-            'skill_id.*' => 'exists:skills,id_skill', // Validasi untuk setiap skill yang dipilih
+            'skill_id.*' => 'exists:skills,id', // Validasi untuk setiap skill yang dipilih
         ]);
         
         try {
@@ -71,14 +51,20 @@ return $allSkills;
             DB::table('teacher_skills')->insert($data);
             
             // Redirect dengan pesan sukses
-            return redirect()->route('teacher.index', ['id' => $id_teacher])
-                ->with('success', 'Skills added successfully');
+            session()->flash('success', 'Skill added successfully');
+            return redirect()->route('teacher.index', ['id' => $id_teacher]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation exceptions
+            return redirect()->back()->withErrors($e->validator->errors())->withInput();
+            
         } catch (\Exception $e) {
-            // Redirect dengan pesan gagal jika terjadi exception
-            return redirect()->route('teacher.index', ['id' => $id_teacher])
-                ->with('error', 'Failed to add skills. Please try again.');
+            // Handle general exceptions
+            session()->flash('error', 'Skill');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
+    
     
 
     /**

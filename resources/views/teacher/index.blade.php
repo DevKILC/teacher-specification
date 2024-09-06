@@ -8,10 +8,10 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Top section (optional placeholder) -->
-            <div class="w-full h-10 bg-white rounded-md shadow-md">
+            <div class="w-full h-auto bg-white rounded-md shadow-md">
 
                 <form action="{{ route('teacher.index') }}" method="GET">
-                    <select name="id" onchange="this.form.submit()" class="w-full h-full">
+                    <select id="select-teacher" name="id" onchange="this.form.submit()" class="w-full">
                         <option value="">Choose Teacher</option>
                         @foreach($allTeachers as $teacher)
                         <option value="{{ $teacher->id }}" {{ request('id') == $teacher->id ? 'selected' : '' }}>
@@ -29,14 +29,9 @@
                 <!-- Teacher profile -->
                 <div class="flex flex-col bg-white w-full lg:w-[40%] h-auto rounded-md shadow-md p-6">
                     <!-- Picture -->
-                    <!-- Picture -->
-                    @if($teachers && $teachers->img_url)
-                    <img src="{{ str_contains($teachers->img_url, 'http') ? $teachers->img_url : 'https://s3.ap-southeast-1.wasabisys.com/file-members.kampunginggris.id/' . $teachers->img_url }}"
+                    <img src="{{ $teachers->img_url }}"
                         alt="Teacher Picture" class="w-full h-[350px] bg-yellow-400 mx-auto rounded-md object-cover">
 
-                    @else
-                    <p class="text-center text-white items-center w-full h-[350px] bg-yellow-400 mx-auto rounded-md">This Teacher Doesn't Have Any Picture</p>
-                    @endif
 
                     <!-- Data -->
                     <!-- Data Table -->
@@ -45,7 +40,7 @@
                             <tr class="border-b-2 border-yellow-400 pb-2 font-thin">
                                 <td class="w-28 text-lg sm:text-xl md:text-2xl lg:text-3xl">Name</td>
                                 <td class="text-base sm:text-lg md:text-xl lg:text-2xl">: <span
-                                        class="ml-4">{{ $teachers->name  ?? 'Select Teacher first' }}</span></td>
+                                        class="ml-4">{{ $teachers->name  ?? 'N/A' }}</span></td>
                             </tr>
                             <tr class="pl-5">
                                 <td class="w-28 text-lg sm:text-xl font-light">ID</td>
@@ -75,8 +70,6 @@
                         </tbody>
                     </table>
                     <!-- End Data Table -->
-
-
                 </div>
                 <!-- End profile -->
 
@@ -96,20 +89,20 @@
 
                         {{-- Add Skill Modal  --}}
                         <x-general.modal :open="'openAddSkillModal'" :title="__('Add Skill')">
-                            <x-general.form-section :submit="route('addskill.store', ['id' => $teachers->id ?? 'null' ])">
+                            <x-general.form-section :submit="route('teacher-skill.store', ['id' => $teachers->id ?? 'null' ])">
                             <x-slot name="form">
                                 <div class="col-span-6 sm:col-span-4">
                                     @csrf
-                                    <input type="hidden" name="teacher_id" value="{{ $request->id ?? 'null' }}">
+                                    <input type="hidden" name="teacher_id" value="{{ $teachers->id ?? 'null' }}">
                                     <!-- Form Add SKill -->
                                     <label for="skillSelect" class="block mb-2 text-sm">Choose Skill Name</label>
                                     <div class="space-y-3">
                                         @foreach($allSkills as $skill)
                                         <div class="flex items-center space-x-2">
-                                            <input type="checkbox" id="skill_{{ $skill->id_skill }}" name="id_skill[]"
-                                                value="{{ $skill->id_skill }}" @if(in_array($skill->id_skill,
-                                            $teachersSkillsGetValidation)) disabled checked @endif>
-                                            <label for="skill_{{ $skill->id_skill }}">{{ $skill->name }}</label>
+                                            <input type="checkbox" id="skill_{{ $skill->id}}" name="id_skill[]"
+                                                value="{{ $skill->id }}" @if(in_array($skill->id,
+                                            $teachersSkillsGetValidation->toArray() )) disabled checked @endif>
+                                            <label for="skill_{{ $skill->id }}">{{ $skill->name }}</label>
                                         </div>
                                         @endforeach
                                     </div>
@@ -156,7 +149,7 @@
                                     <!-- Dropdown Content -->
                                     <div x-show="open" @click.away="open = false"
                                         class="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                                        <form action="{{ route('delete-teacher-skill') }}" method="POST" class="p-2">
+                                        <form action="{{ route('teacher-skill.destroy') }}" method="POST" class="p-2">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="id_teacher" value="{{ $teachers->id }}">
@@ -187,4 +180,32 @@
             <!-- End container profile -->
         </div>
     </div>
+    @push('scripts')
+        <script>
+
+            @if (Session::has('success'))
+                Swal.fire({
+                    icon: 'success',
+                    text: '{{ Session::get('success') }}',
+                    toast: true,
+                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
+                    showConfirmButton: false,
+                    timer: 2000,  // Toast will automatically disappear after 2 seconds
+                    timerProgressBar: true
+                });
+            @endif
+
+            @if (Session::has('error'))
+                Swal.fire({
+                    icon: 'error',
+                    text: '{{ Session::get('error') }}',
+                    toast: true,
+                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
+                    showConfirmButton: false,
+                    timer: 2000,  // Toast will automatically disappear after 2 seconds
+                    timerProgressBar: true
+                });
+            @endif
+        </script>
+    @endpush
 </x-app-layout>
