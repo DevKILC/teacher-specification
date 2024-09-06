@@ -22,8 +22,13 @@
     <!-- SweetAlert2 -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+    <!-- Select2 -->
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Vite -->
+
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
 
     <!-- Styles -->
     @livewireStyles
@@ -72,7 +77,18 @@
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <!-- SweetAlert2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Select2 -->
+     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <!-- Scripts -->
+    <script>
+    window.flashMessage = {
+        success: "{{ Session::get('success') }}",
+        error: "{{ Session::get('error') }}"
+    };
+</script>
+
+     @vite(['resources/js/app.js'])
     @livewireScripts
 
     @stack('scripts')

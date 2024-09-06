@@ -26,11 +26,6 @@ Route::middleware([
 
     Route::resource('teacher', TeacherController::class);
 
-    Route::get('/teacher', [TeacherSkillController::class,'index'])->name('teacher.index');
-    Route::get('/teacher/{id}', [TeacherSkillController::class,'index']);
-    Route::post('/teacher/store/{id}', [TeacherSKillController::class, 'store'])->name('addskill.store');
-    Route::delete('/teacher', [TeacherSkillController::class, 'destroy'])->name('delete-teacher-skill');
-
     Route::resource('skill', SkillController::class);
 
     Route::resource('teacher-skill', TeacherSkillController::class);
