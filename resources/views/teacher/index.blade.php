@@ -99,8 +99,11 @@
                                     <div class="space-y-3">
                                         @foreach($allSkills as $skill)
                                         <div class="flex items-center space-x-2">
-                                            <input type="checkbox" id="skill_{{ $skill->id}}" name="skill_id[]" value="{{ $skill->id }}" @if(in_array($skill->id, $teachersSkillsGetValidation->toArray())) disabled checked @endif>
-                                            <label for="skill_{{ $skill->id }}">{{ $skill->name }}</label>
+                                        <input type="checkbox" id="skill_{{ $skill->id }}" name="skill_id[]"
+                                            value="{{ $skill->id }}" @if(isset($teachersSkillsGetValidation) &&
+                                            in_array($skill->id, $teachersSkillsGetValidation->toArray() ))
+                                        disabled checked style="background-color: gray;" @endif>
+                                        <label for="skill_{{ $skill->id }}">{{ $skill->name }}</label>
                                         </div>
                                         @endforeach
                                     </div>
