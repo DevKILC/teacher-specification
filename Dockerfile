@@ -63,7 +63,9 @@ SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
   && echo ${TZ} > /etc/timezone
 
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+# Download and set permissions for PHP extension installer
+RUN curl -sSL https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o /usr/local/bin/install-php-extensions \
+    && chmod +x /usr/local/bin/install-php-extensions
 
 RUN apt-get update; \
     apt-get upgrade -yqq; \
@@ -72,7 +74,7 @@ RUN apt-get update; \
     curl \
     wget \
     nano \
-	git \
+    git \
     ncdu \
     procps \
     ca-certificates \
