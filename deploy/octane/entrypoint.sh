@@ -13,26 +13,8 @@ initialStuff() {
     php artisan optimize:clear; \
     php artisan package:discover --ansi; \
     php artisan event:cache; \
-    echo "Generating Scribe documentation..."
-    php artisan scribe:generate --force --ansi;
     # php artisan config:cache; \
     # php artisan route:cache;
-}
-
-applyPermissions() {
-    echo "Applying permissions..."
-    # Permissions for the Scribe directory
-    mkdir -p /var/www/html/.scribe && \
-    chown -R octane:octane /var/www/html/.scribe && \
-    chmod -R 775 /var/www/html/.scribe && \
-    
-    # Permissions for the public directory
-    chown -R octane:octane /var/www/html/public && \
-    chmod -R 775 /var/www/html/public && \
-    
-    # Permissions for the resources directory
-    chown -R octane:octane /var/www/html/resources && \
-    chmod -R 775 /var/www/html/resources
 }
 
 if [ "$1" != "" ]; then
@@ -40,7 +22,6 @@ if [ "$1" != "" ]; then
 elif [ ${container_mode} = "app" ]; then
     echo "Octane server: $octane_server"
     initialStuff
-    applyPermissions
     if [ ${octane_server}  = "swoole" ]; then
         exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.app.conf
     elif [ ${octane_server}  = "roadrunner" ]; then
