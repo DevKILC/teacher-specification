@@ -35,11 +35,12 @@ RUN composer install --optimize-autoloader --no-dev --ignore-platform-req=ext-zi
 # Install NPM packages for Vite
 RUN npm install && npm run build
 
-# Change ownership of application
+# Change ownership of application files
 RUN chown -R www-data:www-data /var/www/html
 
-# Set the user to www-data (the default user for PHP-FPM)
-USER www-data
+# Make sure the PHP-FPM configuration doesn't include user/group directives
+RUN sed -i 's/^user = .*/;user = www-data/' /usr/local/etc/php-fpm.d/www.conf && \
+    sed -i 's/^group = .*/;group = www-data/' /usr/local/etc/php-fpm.d/www.conf
 
 # Expose the port for PHP
 EXPOSE 9000
