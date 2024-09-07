@@ -40,7 +40,7 @@
     
     <div class="min-h-screen bg-gray-100">
         @if (isset($header))
-        <header class="bg-white shadow">
+        <header class="bg-white shadow sticky w-full">
             <div class="max-w-7xl mx-auto py-6 px-4 flex flex-row space-x-2 sm:px-6 lg:px-8 items-center">
                 <!-- Toggle Button -->
                 <button @click="open = !open" aria-label="Toggle Sidebar" class="text-gray-500 focus:outline-none pr-7 border-r-2">

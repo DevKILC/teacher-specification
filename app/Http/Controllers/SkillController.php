@@ -111,8 +111,34 @@ class SkillController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Skill $skill)
+    public function destroy($skill)
     {
-        //
+        try {
+            // Cari data teacher_skill berdasarkan ID yang diberikan
+            $Skill = Skill::find($skill);
+    
+            // Jika tidak ditemukan, lempar error dan kembalikan pesan error
+            if (!$skill) {
+                session()->flash('error', 'Skill not found.');
+                return redirect()->back();
+            }
+    
+            // Jika ditemukan, hapus skill tersebut
+            $Skill->delete();
+    
+            // Berikan pesan sukses dan redirect ke halaman sebelumnya
+            session()->flash('success', 'Skill deleted successfully');
+            return redirect()->back();
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangani error validasi
+            session()->flash('error', $e->getMessage());
+            return redirect()->back()->withErrors($e->validator->errors())->withInput();
+    
+        } catch (\Exception $e) {
+            // Tangani error lain
+            session()->flash('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }

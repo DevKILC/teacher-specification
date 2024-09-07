@@ -10,8 +10,8 @@
             <!-- Top section (optional placeholder) -->
             <div class="w-full h-auto bg-white rounded-md shadow-md">
 
-                <form action="{{ route('teacher.index') }}" method="GET">
-                    <select id="select-teacher" name="id" onchange="this.form.submit()" class="w-full">
+                <form id="seacrhTeacher" action="{{ route('teacher.index') }}" method="GET">
+                    <select id="select-teacher" name="id" class="w-full" onchange="this.form.submit()">
                         <option value="">Choose Teacher</option>
                         @foreach($allTeachers as $teacher)
                         <option value="{{ $teacher->id }}" {{ request('id') == $teacher->id ? 'selected' : '' }}>
@@ -89,7 +89,7 @@
 
                         {{-- Add Skill Modal  --}}
                         <x-general.modal :open="'openAddSkillModal'" :title="__('Add Skill')">
-                            <x-general.form-section :submit="route('teacher-skill.store', ['id' => $teachers->id ?? 'null' ])">
+                            <x-general.form-section id="addSkillTeacher" :submit="route('teacher-skill.store', ['id' => $teachers->id ?? 'null' ])">
                             <x-slot name="form">
                                 <div class="col-span-6 sm:col-span-4">
                                     @csrf
@@ -151,15 +151,11 @@
 
                                     <div x-show="open" @click.away="open = false"
                                         class="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                                        <form action="{{ route('teacher-skill.destroy', $teachers->id ) }}" method="POST" class="p-2">
+                                        <form id="deleteSkillFormTeacher" action="{{ route('teacher-skill.destroy', $teacherSkill->id) }}" method="POST" class="p-2">
                                             @csrf
                                             @method('DELETE')
-                                            <input type="hidden" name="id_teacher" value="{{ $teachers->id }}">
-                                            <input type="hidden" name="id_skill"
-                                                value="{{ $teacherSkill->skills->id_skill }}">
-                                            <button type="submit"
-                                                class="w-full text-left text-red-600 hover:bg-red-100 py-1 px-3 rounded-md"
-                                                onclick="return confirm('Are you sure you want to remove this skill from {{ $teachers->name }}?')">
+                                            <button type="submit" id="removeSkillButton"
+                                                class="w-full text-left text-red-600 hover:bg-red-100 py-1 px-3 rounded-md">
                                                 Remove
                                             </button>
                                         </form>
@@ -182,31 +178,47 @@
             <!-- End container profile -->
         </div>
     </div>
-    @push('scripts')
-        <script>
-            @if (Session::has('success'))
-                Swal.fire({
-                    icon: 'success',
-                    text: '{{ Session::get('success') }}',
-                    toast: true,
-                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
-                    showConfirmButton: false,
-                    timer: 2000,  // Toast will automatically disappear after 2 seconds
-                    timerProgressBar: true
-                });
-            @endif
-
-            @if (Session::has('error'))
-                Swal.fire({
-                    icon: 'error',
-                    text: '{{ Session::get('error') }}',
-                    toast: true,
-                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
-                    showConfirmButton: false,
-                    timer: 2000,  // Toast will automatically disappear after 2 seconds
-                    timerProgressBar: true
-                });
-            @endif
-        </script>
-    @endpush
+    <script>
+           // Loading saat menambahkan skill ke teacher
+    const addSkillForm = document.getElementById('addSkillTeacher');
+    if (addSkillForm) {
+        addSkillForm.addEventListener('submit', function() {
+            Swal.fire({
+                title: 'Processing...',
+                text: 'Please wait while we adding the skill',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        });
+    }
+          // Konfirmasi dan loading saat menghapus skill dari teacher
+          document.getElementById('removeSkillButton').addEventListener('click', function(event) {
+            event.preventDefault();  // Mencegah form di-submit secara otomatis
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to remove this skill from this teacher?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, remove it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we delete the skill',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById('deleteSkillFormTeacher').submit(); // Submit form setelah konfirmasi SweetAlert
+                }
+            });
+        });
+      
+    </script>
 </x-app-layout>

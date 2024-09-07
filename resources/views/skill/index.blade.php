@@ -72,6 +72,11 @@
                                             ">
                                             {{ __('EDIT') }}
                                         </x-button>
+                                        <x-button>
+                                            <form action="{{ route('skill.destroy', $skill->id) }}">
+                                                {{__('DELETE')}}
+                                            </form>
+                                        </x-button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -130,7 +135,7 @@
         <!-- Skill Modal -->
         <!-- ADD -->
         <x-general.modal :open="'openSkillModal'" :title="__('Create Skill')">
-            <x-general.form-section :submit="route('skill.store')">
+            <x-general.form-section id="addSkill" :submit="route('skill.store')">
                 <x-slot name="form">
                     <!-- Skill Name -->
                     <div class="col-span-6 sm:col-span-4">
@@ -184,7 +189,7 @@
         </x-general.modal>
 
         <!-- EDIT -->
-        <x-general.modal :open="'openAddSkillModal'" :title="__('Update Skill')">
+        <x-general.modal id="editSkill" :open="'openAddSkillModal'" :title="__('Update Skill')">
             <form :action="'{{ route('skill.update', '') }}/' + skill.id" method="POST">
                 @csrf
                 @method('PUT')
@@ -245,7 +250,7 @@
         <!-- Category Modal -->
             <!-- ADD -->
             <x-general.modal :open="'openCategoryModal'" :title="__('Create Category')">
-                <x-general.form-section :submit="route('category.store')">
+                <x-general.form-section id="addCategory" :submit="route('category.store')">
                     <x-slot name="form">
                         <!-- Category Name -->
                         <div class="col-span-6 sm:col-span-4">
@@ -268,7 +273,7 @@
 
             <!-- EDIT -->
             <x-general.modal :open="'openAddCategoryModal'" :title="__('Update Category')">
-                <form :action="'{{ route('category.update', '') }}/' + category.id" method="POST">
+                <form id="editcategory" :action="'{{ route('category.update', '') }}/' + category.id" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -296,38 +301,62 @@
                 </form>
             </x-general.modal>
     </div>
-    @push('scripts')
-        <script>
-            document.addEventListener('alpine:init', () => {
-                $('#skills-table').DataTable();
-                $('#categories-table').DataTable();
+    <script>
+        
+// edit and add category loading 
+    const editCategoryForm = document.getElementById('editCategory');
+    if (editCategoryForm) {
+        editCategoryForm.addEventListener('submit', function() {
+            Swal.fire({
+                title: 'Processing...',
+                text: 'Please wait while we updating the category',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
             });
-
-            @if (Session::has('success'))
+        });
+    }
+    const addCategoryForm = document.getElementById('addCategory');
+    if (addCategoryForm) {
+        addCategoryForm.addEventListener('submit', function() {
+            Swal.fire({
+                title: 'Processing...',
+                text: 'Please wait while we adding the category',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        });
+    
+        // edit and add new skill
+        const editSkillForm = document.getElementById('editSkill');
+        if (editSkillForm) {
+            editSkillForm.addEventListener('submit', function() {
                 Swal.fire({
-                    icon: 'success',
-                    text: '{{ Session::get('success') }}',
-                    toast: true,
-                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
-                    showConfirmButton: false,
-                    timer: 2000,  // Toast will automatically disappear after 2 seconds
-                    timerProgressBar: true
+                    title: 'Processing...',
+                    text: 'Please wait while we updating the skill',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
                 });
-            @endif
-
-            @if (Session::has('error'))
+            });
+        }
+        const addSkillForm = document.getElementById('addSkill');
+        if (addSkillForm) {
+            addSkillForm.addEventListener('submit', function() {
                 Swal.fire({
-                    icon: 'error',
-                    text: '{{ Session::get('error') }}',
-                    toast: true,
-                    position: 'top-end',  // Position of the toast (e.g., top-end, bottom-end)
-                    showConfirmButton: false,
-                    timer: 2000,  // Toast will automatically disappear after 2 seconds
-                    timerProgressBar: true
+                    title: 'Processing...',
+                    text: 'Please wait while we adding the skill',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
                 });
-            @endif
-        </script>
-
-    @endpush
-
+            });
+        }
+    }
+    </script>
 </x-app-layout>

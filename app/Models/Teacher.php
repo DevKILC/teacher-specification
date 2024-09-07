@@ -22,7 +22,9 @@ class Teacher extends Model
             if ($value) {
                 return 'https://s3.ap-southeast-1.wasabisys.com/file-members.kampunginggris.id/' . $value;
             }
+            if(!$value){
             return 'https://dummyimage.com/600x400/000/fff';
+            }
         });
     }
 

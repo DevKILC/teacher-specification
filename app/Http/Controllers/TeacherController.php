@@ -14,6 +14,7 @@ class TeacherController extends Controller
     {
         $allTeachers = Teacher::all();
         $allSkills =Skill::get();
+
         
         $teachers = $request->id ? Teacher::with('teacherSkills.skills')->find($request->id) : Teacher::dummyData();
     
@@ -22,7 +23,9 @@ class TeacherController extends Controller
         $teachersSkillsGetValidation = $teachers && $teachers->teacherSkills
             ? $teachers->teacherSkills->pluck('skills.id')
             : collect([]);
- 
+
+            
+
         return view('teacher.index', [
             'teachers' => $teachers,
             'allTeachers' => $allTeachers,

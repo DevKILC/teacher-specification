@@ -1,16 +1,11 @@
-import './bootstrap';
-
 document.addEventListener('DOMContentLoaded', function() {
-    // select2select
+    // Setup Select2
     $('#select-teacher').select2({
         allowClear: true
     });
 
-});
-document.addEventListener("DOMContentLoaded", function() {
-    // Check if the window.flashMessage object exists
+    // Handle Flash Messages
     if (window.flashMessage) {
-        // Handle success message
         if (window.flashMessage.success) {
             Swal.fire({
                 icon: 'success',
@@ -23,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
         
-        // Handle error message
         if (window.flashMessage.error) {
             Swal.fire({
                 icon: 'error',
@@ -36,4 +30,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
     }
+
+  
 });

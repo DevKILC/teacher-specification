@@ -15,6 +15,9 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                zIndex: {
+                    '100000': '100000',
+                  }
             },
         },
     },
