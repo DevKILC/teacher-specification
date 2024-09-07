@@ -1,7 +1,7 @@
 # Use PHP 8.3 as the base image
 FROM php:8.3-fpm
 
-# Install system dependencies and PostgreSQL extension
+# Install system dependencies, zip, gd, and PostgreSQL extension
 RUN apt-get update -y && apt-get install -y \
     openssl \
     zip \
@@ -11,7 +11,9 @@ RUN apt-get update -y && apt-get install -y \
     nodejs \
     npm \
     libpq-dev \
-    && docker-php-ext-install pdo_pgsql
+    libpng-dev \
+    libzip-dev \
+    && docker-php-ext-install pdo_pgsql gd zip
 
 # Install Composer globally
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
