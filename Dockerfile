@@ -13,14 +13,15 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
-    zip \
+    libzip-dev \
     unzip \
+    zip \
     nodejs \
     npm \
     libpq-dev
 
-# Install PHP extensions, including PostgreSQL
-RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd
+# Install PHP extensions, including PostgreSQL and Zip
+RUN docker-php-ext-install pdo_pgsql zip mbstring exif pcntl bcmath gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -28,8 +29,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy the existing application directory contents
 COPY . /var/www/html
 
-# Install project dependencies
-RUN composer install --optimize-autoloader --no-dev
+# Install project dependencies using Composer
+RUN composer install --optimize-autoloader --no-dev --ignore-platform-req=ext-zip
 
 # Install NPM packages for Vite
 RUN npm install && npm run build
