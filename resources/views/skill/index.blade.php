@@ -72,10 +72,10 @@
                                             ">
                                             {{ __('EDIT') }}
                                         </x-button>
-                                        <form action="{{ route('skill.destroy', $skill->id) }}" method="POST">
+                                        <form  action="{{ route('skill.destroy', $skill->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <x-button type="submit">
+                                            <x-button type="submit" id="deleteSkill">
                                                 {{__('DELETE')}}
                                             </x-button>
                                         </form>
@@ -125,10 +125,10 @@
                                             ">
                                             {{ __('EDIT') }}
                                         </x-button>
-                                        <form action="{{ route('category.destroy', $category->id) }}" method="POST">
+                                        <form  action="{{ route('category.destroy', $category->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <x-button type="submit">
+                                            <x-button type="submit" id="deleteCategory">
                                                 {{__('DELETE')}}
                                             </x-button>
                                         </form>
@@ -156,7 +156,7 @@
                     <!-- Skill Description -->
                     <div class="col-span-6 sm:col-span-4">
                         <x-label for="description" value="{{ __('Skill Description') }}" />
-                        <x-textarea id="skillDescription" name="description" rows="3" x-model="skill.description" required>{{ old('description') }}</x-textarea>
+                        <x-text-area id="skillDescription" name="description" rows="3" x-model="skill.description" required>{{ old('description') }}</x-textarea>
                         <x-input-error for="description" class="mt-2" />
                     </div>
 
@@ -214,7 +214,7 @@
                         
                         <div class="col-span-6 sm:col-span-4">
                             <x-label for="description" value="{{ __('Skill Description') }}" />
-                            <x-textarea id="skillDescription" name="description" rows="3" x-model="skill.description" required></x-textarea>
+                            <x-text-area id="skillDescription" name="description" rows="3" x-model="skill.description" required></x-textarea>
                             <x-input-error for="description" class="mt-2" />
                         </div>
 
@@ -385,5 +385,19 @@
             });
         }
     }
+    const deleteSkillForm = document.getElementById('deleteCategory');
+        if (deleteSkillForm) {
+            deleteSkillForm.addEventListener('submit', function() {
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we deleting the skill',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            });
+        }
+    
     </script>
 </x-app-layout>
