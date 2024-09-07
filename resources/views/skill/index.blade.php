@@ -57,7 +57,7 @@
                                     <td class="border px-4 py-2">{{ $skill->description }}</td>
                                     <td class="border px-4 py-2">{{ $skill->category->name }}</td>
                                     <td class="border px-4 py-2">{{ $skill->type }}</td>
-                                    <td class="border px-4 py-2">
+                                    <td class="border px-4 py-2 flex space-x-2">
                                         <x-button 
                                             class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" 
                                             @click="
@@ -72,11 +72,13 @@
                                             ">
                                             {{ __('EDIT') }}
                                         </x-button>
-                                        <x-button>
-                                            <form action="{{ route('skill.destroy', $skill->id) }}">
+                                        <form action="{{ route('skill.destroy', $skill->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-button type="submit">
                                                 {{__('DELETE')}}
-                                            </form>
-                                        </x-button>
+                                            </x-button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -111,7 +113,7 @@
                                 <tr>
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                     <td class="border px-4 py-2">{{ $category->name }}</td>
-                                    <td class="border px-4 py-2">
+                                    <td class="border px-4 py-2 flex space-x-2">
                                         <x-button 
                                             class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                                             @click="
@@ -123,6 +125,13 @@
                                             ">
                                             {{ __('EDIT') }}
                                         </x-button>
+                                        <form action="{{ route('category.destroy', $category->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-button type="submit">
+                                                {{__('DELETE')}}
+                                            </x-button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -302,8 +311,12 @@
             </x-general.modal>
     </div>
     <script>
-        
-// edit and add category loading 
+    
+    document.addEventListener('alpine:init', () => {
+        $('#skills-table').DataTable();
+        $('#categories-table').DataTable();
+    });   
+    // edit and add category loading 
     const editCategoryForm = document.getElementById('editCategory');
     if (editCategoryForm) {
         editCategoryForm.addEventListener('submit', function() {
@@ -350,6 +363,20 @@
                 Swal.fire({
                     title: 'Processing...',
                     text: 'Please wait while we adding the skill',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            });
+        }
+
+        const deleteSkillForm = document.getElementById('deleteSkill');
+        if (deleteSkillForm) {
+            deleteSkillForm.addEventListener('submit', function() {
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we deleting the skill',
                     allowOutsideClick: false,
                     didOpen: () => {
                         Swal.showLoading();

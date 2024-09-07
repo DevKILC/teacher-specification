@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Skill;
+use App\Models\Teacher;
+use App\Models\TeacherSkill;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SkillController extends Controller
 {
@@ -111,21 +114,18 @@ class SkillController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($skill)
+    public function destroy(Skill $skill)
     {
         try {
-            // Cari data teacher_skill berdasarkan ID yang diberikan
-            $Skill = Skill::find($skill);
-    
-            // Jika tidak ditemukan, lempar error dan kembalikan pesan error
-            if (!$skill) {
-                session()->flash('error', 'Skill not found.');
-                return redirect()->back();
-            }
-    
-            // Jika ditemukan, hapus skill tersebut
-            $Skill->delete();
-    
+
+            DB::transaction(function () use ($skill) {
+                // hapus skill
+                $skill->delete();
+                // hapus teacher_skill
+                TeacherSkill::where('skill_id', $skill->id)->delete();
+
+            });
+
             // Berikan pesan sukses dan redirect ke halaman sebelumnya
             session()->flash('success', 'Skill deleted successfully');
             return redirect()->back();

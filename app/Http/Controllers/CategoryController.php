@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Skill;
+use App\Models\TeacherSkill;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -92,6 +95,24 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            DB::transaction(function () use ($category) {
+                $skills = Skill::where('category_id', $category->id)->get();
+                foreach ($skills as $skill) {
+                    TeacherSkill::where('skill_id', $skill->id)->delete();
+                }
+                $category->skills()->delete();
+                $category->delete();
+            });
+
+            // make flash message
+            session()->flash('success', 'Category deleted successfully');
+            return redirect()->back()->with('success', 'Category deleted successfully');
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            // make flash message
+            session()->flash('error', $th->getMessage());
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }
