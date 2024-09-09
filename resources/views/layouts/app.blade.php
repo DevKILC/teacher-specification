@@ -18,12 +18,12 @@
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/di st/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> --}}
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <!-- Select2 -->
-     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
     <!-- Vite -->
 
@@ -32,12 +32,12 @@
 
     <!-- Styles -->
     @livewireStyles
-   
+
 </head>
 
 <body class="font-poppins antialiased" x-data="{ open: false }">
     <x-banner />
-    
+
     <div class="min-h-screen bg-gray-100">
         @if (isset($header))
         <header class="bg-white shadow sticky w-full">
@@ -73,22 +73,24 @@
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
     </script>
     <!-- Datatable -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <!-- SweetAlert2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Select2 -->
-     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Scripts -->
     <script>
-    window.flashMessage = {
-        success: "{{ Session::get('success') }}",
-        error: "{{ Session::get('error') }}"
-    };
-</script>
+        window.flashMessage = {
+            success: "{{ Session::get('success') }}",
+            error: "{{ Session::get('error') }}"
+        };
+    </script>
 
-     @vite(['resources/js/app.js'])
+    @vite(['resources/js/app.js'])
     @livewireScripts
 
     @stack('scripts')

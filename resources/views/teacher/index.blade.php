@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Teacher') }}
+            {{ __('Teacher Profile') }}
         </h2>
     </x-slot>
 
@@ -74,10 +74,9 @@
                 <!-- End profile -->
 
                 <!-- Skills container -->
-                <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6"  x-data="{ openAddSkillModal: false }">
+                <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6" x-data="{ openAddSkillModal: false }">
                     <!-- Header skill -->
-                    <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2"
-                       >
+                    <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2">
                         <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list</h1>
 
                         <!-- Trigger Button for Modal -->
@@ -90,26 +89,26 @@
                         {{-- Add Skill Modal  --}}
                         <x-general.modal :open="'openAddSkillModal'" :title="__('Add Skill')">
                             <x-general.form-section id="addSkillTeacher" :submit="route('teacher-skill.store', ['id' => $teachers->id ?? 'null' ])">
-                            <x-slot name="form">
-                                <div class="col-span-6 sm:col-span-4">
-                                    @csrf
-                                    <input type="hidden" name="teacher_id" value="{{ $teachers->id ?? 'null' }}">
-                                    <!-- Form Add SKill -->
-                                    <label for="skillSelect" class="block mb-2 text-sm">Choose Skill Name</label>
-                                    <div class="space-y-3">
-                                        @foreach($allSkills as $skill)
-                                        <div class="flex items-center space-x-2">
-                                        <input type="checkbox" id="skill_{{ $skill->id }}" name="skill_id[]"
-                                            value="{{ $skill->id }}" @if(isset($teachersSkillsGetValidation) &&
-                                            in_array($skill->id, $teachersSkillsGetValidation->toArray() ))
-                                        disabled checked style="background-color: gray;" @endif>
-                                        <label for="skill_{{ $skill->id }}">{{ $skill->name }}</label>
+                                <x-slot name="form">
+                                    <div class="col-span-6 sm:col-span-4">
+                                        @csrf
+                                        <input type="hidden" name="teacher_id" value="{{ $teachers->id ?? 'null' }}">
+                                        <!-- Form Add SKill -->
+                                        <label for="skillSelect" class="block mb-2 text-sm">Choose Skill Name</label>
+                                        <div class="space-y-3">
+                                            @foreach($allSkills as $skill)
+                                            <div class="flex items-center space-x-2">
+                                                <input type="checkbox" id="skill_{{ $skill->id }}" name="skill_id[]"
+                                                    value="{{ $skill->id }}" @if(isset($teachersSkillsGetValidation) &&
+                                                    in_array($skill->id, $teachersSkillsGetValidation->toArray() ))
+                                                disabled checked style="background-color: gray;" @endif>
+                                                <label for="skill_{{ $skill->id }}">{{ $skill->name }}</label>
+                                            </div>
+                                            @endforeach
                                         </div>
-                                        @endforeach
+                                        <x-input-error for="name" class="mt-2" />
                                     </div>
-                                    <x-input-error for="name" class="mt-2" />
-                                </div>
-                            </x-slot>
+                                </x-slot>
                                 <!-- Actions slot (optional) -->
                                 <x-slot name="actions">
                                     <x-button class="bg-blue-500 text-white hover:bg-blue-600">
@@ -179,23 +178,23 @@
         </div>
     </div>
     <script>
-           // Loading saat menambahkan skill ke teacher
-    const addSkillForm = document.getElementById('addSkillTeacher');
-    if (addSkillForm) {
-        addSkillForm.addEventListener('submit', function() {
-            Swal.fire({
-                title: 'Processing...',
-                text: 'Please wait while we adding the skill',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
+        // Loading saat menambahkan skill ke teacher
+        const addSkillForm = document.getElementById('addSkillTeacher');
+        if (addSkillForm) {
+            addSkillForm.addEventListener('submit', function() {
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we adding the skill',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
             });
-        });
-    }
-          // Konfirmasi dan loading saat menghapus skill dari teacher
-          document.getElementById('removeSkillButton').addEventListener('click', function(event) {
-            event.preventDefault();  // Mencegah form di-submit secara otomatis
+        }
+        // Konfirmasi dan loading saat menghapus skill dari teacher
+        document.getElementById('removeSkillButton').addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form di-submit secara otomatis
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'Are you sure you want to remove this skill from this teacher?',
@@ -219,6 +218,5 @@
                 }
             });
         });
-      
     </script>
 </x-app-layout>
