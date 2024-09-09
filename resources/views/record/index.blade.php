@@ -110,8 +110,8 @@
                     <h1 class="text-xl font-light">Records Activity</h1>
 
                     <!-- Date range filter -->
-                    <div class="w-[40%]">
-                        <form class="flex flex-row w-full items-center gap-x-2" action="{{route('record.index')}}" method="GET">
+                    <div class="w-[50%]">
+                        <form id="dateFilter" class="flex flex-row w-full items-center gap-x-2" action="{{ route('record.index') }}" method="GET">
                             <!-- Date From -->
                             <input type="date" name="start" value="{{ request('start') }}" class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" />
                             <!-- Date To -->
@@ -120,9 +120,13 @@
                             <button type="submit" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md">
                                 Filter
                             </button>
+                            <a href="{{ route('record.index') }}" class="bg-red-600 text-white hover:bg-red-700 py-2 px-4 rounded-md text-center">
+                                Reset
+                            </a>
                         </form>
-
                     </div>
+
+
                 </div>
                 <div class="bg-white w-full h-auto pb-10 mt-9 mx-auto flex flex-col shadow-md rounded-md">
                     @if($allActivities->isEmpty())
@@ -164,5 +168,48 @@
         document.addEventListener('alpine:init', () => {
             $('#activity-table').DataTable();
         });
+
+        const addActivityForm = document.getElementById('addActivity');
+        if (addActivityForm) {
+            addActivityForm.addEventListener('submit', function() {
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait....',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            });
+        }
+        const addCategoryForm = document.getElementById('addCategory');
+        if (addCategoryForm) {
+            addCategoryForm.addEventListener('submit', function() {
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we adding the category',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            });
+        }
+
+
+
+        const dateFilterForm = document.getElementById('dateFilter');
+        if (dateFilterForm) {
+            dateFilterForm.addEventListener('submit', function() {
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Looking for databases...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            });
+        }
     </script>
 </x-app-layout>
