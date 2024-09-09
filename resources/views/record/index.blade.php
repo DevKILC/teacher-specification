@@ -113,9 +113,9 @@
                     <div class="w-[50%]">
                         <form id="dateFilter" class="flex flex-row w-full items-center gap-x-2" action="{{ route('record.index') }}" method="GET">
                             <!-- Date From -->
-                            <input type="date" name="start" value="{{ request('start') }}" class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" />
+                            <input type="date" name="start" value="{{ request('start') }}" class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" require/>
                             <!-- Date To -->
-                            <input type="date" name="end" value="{{ request('end') }}" class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" />
+                            <input type="date" name="end" value="{{ request('end') }}" class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" require/>
 
                             <button type="submit" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md">
                                 Filter
