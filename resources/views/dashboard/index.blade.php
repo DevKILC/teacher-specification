@@ -12,7 +12,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden sm:rounded-lg">
                 <!-- Content -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full h-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full h-90">
                     <!-- Wrapper card -->
                     <div class="flex flex-col gap-4 justify-center items-center">
                         <!-- Card count data -->
@@ -41,7 +41,7 @@
                     @else
                     <div class="w-[90%] h-full mx-auto">
                         <table class="table-auto w-full" id="teachers-table">
-                            <thead>
+                            <thead class="bg-yellow-400 text-white">
                                 <tr>
                                     <th>No</th>
                                     <th>Name</th>

@@ -38,8 +38,8 @@
                 @if($skills->isEmpty())
                 <p>No skills available.</p>
                 @else
-                <table class="table-auto" id="skills-table">
-                    <thead>
+                <table class="table-auto py-10" id="skills-table">
+                    <thead  class="bg-yellow-400 text-white">
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
@@ -100,8 +100,8 @@
                 @if($categories->isEmpty())
                 <p>No Categories available.</p>
                 @else
-                <table class="table-auto" id="categories-table">
-                    <thead>
+                <table class="table-auto py-10" id="categories-table">
+                    <thead  class="bg-yellow-400 text-white">
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
@@ -147,23 +147,23 @@
             <x-general.form-section id="addSkill" :submit="route('skill.store')">
                 <x-slot name="form">
                     <!-- Skill Name -->
-                    <div class="col-span-6 sm:col-span-4">
+                    <div class="col-span-6 sm:col-span-4 w-full">
                         <x-label for="name" value="{{ __('Skill Name') }}" />
-                        <x-input id="skillName" type="text" name="name" x-model="skill.name" value="{{ old('name') }}" required />
+                        <x-input id="skillName"class="w-full"type="text" name="name" x-model="skill.name" value="{{ old('name') }}" required />
                         <x-input-error for="name" class="mt-2" />
                     </div>
 
                     <!-- Skill Description -->
-                    <div class="col-span-6 sm:col-span-4">
+                    <div class="col-span-6 sm:col-span-4 w-full">
                         <x-label for="description" value="{{ __('Skill Description') }}" />
-                        <x-text-area id="skillDescription" name="description" rows="3" x-model="skill.description" required>{{ old('description') }}</x-textarea>
+                        <x-text-area id="skillDescription" class="w-full" name="description" rows="3" x-model="skill.description" required>{{ old('description') }}</x-textarea>
                             <x-input-error for="description" class="mt-2" />
                     </div>
 
                     <!-- Skill Category -->
-                    <div class="col-span-6 sm:col-span-4">
+                    <div class="col-span-6 sm:col-span-4 w-full">
                         <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                        <select id="skillCategory" name="category_id" x-model="skill.category_id" required>
+                        <select id="skillCategory" class="w-full" name="category_id" x-model="skill.category_id" required>
                             <option value="">{{ __('Select a category') }}</option>
                             @foreach($categories as $category)
                             <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -175,8 +175,8 @@
                     </div>
 
                     <!-- Skill Type -->
-                    <div class="col-span-6 sm:col-span-4">
-                        <x-label for="type" value="{{ __('Type') }}" />
+                    <div class="col-span-6 sm:col-span-4 w-full">
+                        <x-label for="type" class="w-full" value="{{ __('Type') }}" />
                         <select id="type" name="type" x-model="skill.type" required>
                             <option value="">{{ __('Select Type') }}</option>
                             <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
@@ -206,21 +206,21 @@
                 <div class="px-4 py-5 bg-white sm:p-6 shadow  sm:rounded-tl-md sm:rounded-tr-md">
                     <div class="grid grid-cols-6 gap-6">
                         <!-- Form Fields -->
-                        <div class="col-span-6 sm:col-span-4">
+                        <div class="col-span-6 sm:col-span-4 w-full">
                             <x-label for="name" value="{{ __('Skill Name') }}" />
-                            <x-input id="skillName" type="text" name="name" x-model="skill.name" required />
+                            <x-input id="skillName" class="w-full" type="text" name="name" x-model="skill.name" required />
                             <x-input-error for="name" class="mt-2" />
                         </div>
 
-                        <div class="col-span-6 sm:col-span-4">
+                        <div class="col-span-6 sm:col-span-4 w-full">
                             <x-label for="description" value="{{ __('Skill Description') }}" />
-                            <x-text-area id="skillDescription" name="description" rows="3" x-model="skill.description" required></x-textarea>
+                            <x-text-area class="w-full" id="skillDescription" name="description" rows="3" x-model="skill.description" required></x-textarea>
                                 <x-input-error for="description" class="mt-2" />
                         </div>
 
-                        <div class="col-span-6 sm:col-span-4">
+                        <div class="col-span-6 sm:col-span-4 w-full">
                             <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                            <select id="skillCategory" name="category_id" x-model="skill.category_id" required>
+                            <select class="w-full" id="skillCategory" name="category_id" x-model="skill.category_id" required>
                                 <option value="">{{ __('Select a category') }}</option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -231,9 +231,9 @@
                             <x-input-error for="category_id" class="mt-2" />
                         </div>
 
-                        <div class="col-span-6 sm:col-span-4">
+                        <div class="col-span-6 sm:col-span-4 w-full">
                             <x-label for="type" value="{{ __('Type') }}" />
-                            <select id="type" name="type" x-model="skill.type" required>
+                            <select class="w-full" id="type" name="type" x-model="skill.type" required>
                                 <option value="">{{ __('Select Type') }}</option>
                                 <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
                                 <option value="OFFLINE" {{ old('type') == 'OFFLINE' ? 'selected' : '' }}>{{ __('Offline') }}</option>
@@ -262,9 +262,9 @@
             <x-general.form-section id="addCategory" :submit="route('category.store')">
                 <x-slot name="form">
                     <!-- Category Name -->
-                    <div class="col-span-6 sm:col-span-4">
+                    <div class="col-span-6 sm:col-span-4 w-full">
                         <x-label for="name" value="{{ __('Category Name') }}" />
-                        <x-input id="categoryName" type="text" name="name" value="{{ old('name') }}" required />
+                        <x-input class="w-full" id="categoryName" type="text" name="name" value="{{ old('name') }}" required />
                         <x-input-error for="name" class="mt-2" />
                     </div>
                 </x-slot>
@@ -289,9 +289,9 @@
                 <div class="px-4 py-5 bg-white sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md">
                     <div class="grid grid-cols-6 gap-6">
                         <!-- Form Fields -->
-                        <div class="col-span-6 sm:col-span-4">
+                        <div class="col-span-6 sm:col-span-4 w-full">
                             <x-label for="name" value="{{ __('Category Name') }}" />
-                            <x-input id="categoryName" type="text" name="name" x-model="category.name" required />
+                            <x-input class="w-full" id="categoryName" type="text" name="name" x-model="category.name" required />
                             <x-input-error for="name" class="mt-2" />
                         </div>
                     </div>

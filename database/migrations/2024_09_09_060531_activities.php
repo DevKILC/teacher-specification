@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->interger('teacher_id');
-            $table->interger('category_id');
+            $table->integer('teacher_id');
+            $table->integer('category_id');
             $table->text('activity');
-            $table->date('date_start');
+            $table->date('date');
             $table->string('updated_by')->nullable();
             $table->string('created_by')->nullable();
             $table->string('deleted_by')->nullable();

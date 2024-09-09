@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryActivityController;
 use App\Http\Controllers\DahsboardController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TeacherSkillController;
@@ -33,5 +34,7 @@ Route::middleware([
     Route::resource('record', RecordController::class);
     
     Route::resource('category', CategoryController::class);
+
+    Route::resource('categoryactivity', CategoryActivityController::class);
 
 });
