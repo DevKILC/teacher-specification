@@ -50,4 +50,8 @@ class Teacher extends Model
     {
         return $this->hasMany(TeacherSkill::class, 'teacher_id', 'id');
     }
+    public function activity()
+    {
+        return $this->hasMany(Record::class, 'teacher_id', 'id');
+    }
 }
