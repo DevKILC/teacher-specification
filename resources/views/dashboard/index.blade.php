@@ -40,7 +40,7 @@
                     <p class="text-center">No teachers available.</p>
                     @else
                     <div class="w-[90%] h-full mx-auto">
-                        <table class="table-auto w-full" id="teachers-table">
+                        <table class="table-auto w-full py-10" id="teachers-table">
                             <thead class="bg-yellow-400 text-white">
                                 <tr>
                                     <th>No</th>
