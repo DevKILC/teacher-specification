@@ -72,5 +72,35 @@ class RecordController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
-  
+
+    public function destroy($record)
+    {
+        try {
+            // Cari data teacher_skill berdasarkan ID yang diberikan
+            $records = Record::find($record);
+    
+            // Jika tidak ditemukan, lempar error dan kembalikan pesan error
+            if (!$records) {
+                session()->flash('error', 'Activity not found.');
+                return redirect()->back();
+            }
+    
+            // Jika ditemukan, hapus skill tersebut
+            $records->delete();
+    
+            // Berikan pesan sukses dan redirect ke halaman sebelumnya
+            session()->flash('success', 'Activity deleted successfully');
+            return redirect()->back();
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangani error validasi
+            session()->flash('error', $e->getMessage());
+            return redirect()->back()->withErrors($e->validator->errors())->withInput();
+    
+        } catch (\Exception $e) {
+            // Tangani error lain
+            session()->flash('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
 }

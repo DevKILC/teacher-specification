@@ -23,7 +23,7 @@
 
                             <!-- Teacher Name -->
                             <div class="col-span-6 sm:col-span-4 w-full">
-                                <x-label for="name" class="w-full value=" {{ __('Teacher Name') }}" />
+                                <x-label for="id" class="w-full value=" {{ __('Teacher Name') }}" />
                                 <select id="select-teacher" name="id" class="w-full">
                                     <option value="">Choose Teacher</option>
                                     @foreach($allTeachers as $teacher)
@@ -37,8 +37,8 @@
 
                             <!-- Activity Description -->
                             <div class="col-span-6 sm:col-span-4 w-full">
-                                <x-label for="description" class="w-full value=" {{ __('Activity') }}" />
-                                <x-text-area name="activity" rows="3" required>{{ old('description') }}</x-text-area>
+                                <x-label for="activity" class="w-full value=" {{ __('Activity') }}" />
+                                <x-text-area name="activity" rows="3" required></x-text-area>
                                 <x-input-error for="description" class="mt-2" />
                             </div>
 
@@ -80,7 +80,54 @@
                 <button @click="openAddActivityCategory = true" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
                     Add Activity Category
                 </button>
-                <x-general.modal :open="'openAddActivityCategory'" :title="__('Create Category')">
+                <x-general.modal :open="'openAddActivityCategory'" :title="__('Create Category')" >
+                    <!-- modalshow category -->
+                    <div class="" x-data="{openActivityCategory : false}">
+                    <!-- button show category -->
+                    <button @click="openActivityCategory = true" class="bg-yellow-400 mb-5 mt-5 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
+                        {{ __('Show Category') }}
+                    </button>
+                    <!-- Modal Component -->
+                    <x-general.modal  :open="'openActivityCategory'" :title="__('Categories List')">
+                        <!-- Category Table -->
+                        <div class="col-span-6 sm:col-span-4 w-full">
+                            <table class="table-auto w-full py-10" id="activity-table">
+                                <thead class="bg-yellow-400 text-white">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Name</th>
+                                        <th>Option</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($categories as $category)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $category->name ?? 'N/A' }}</td>
+                                        <td>
+                                            <!-- Form to Delete Category -->
+                                            <form id="deleteActivityCategory" action="{{ route('categoryactivity.destroy', $category->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-button type="submit" id="deteleActivityCategoryButton">
+                                                    {{ __('DELETE') }}
+                                                </x-button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Modal Actions -->
+                        <x-slot name="actions">
+                            <x-button type="button" class="ml-4" @click="openActivityCategory = false">
+                                {{ __('Back') }}
+                            </x-button>
+                        </x-slot>
+                    </x-general.modal>
+                    </div>
                     <x-general.form-section id="addCategory" :submit="route('categoryactivity.store')">
                         <x-slot name="form">
                             <!-- Category Name -->
@@ -89,6 +136,7 @@
                                 <x-input id="name" type="text" class="w-full" name="name" value="{{ old('name') }}" required />
                                 <x-input-error for="name" class="mt-2" />
                             </div>
+
                         </x-slot>
 
                         <x-slot name="actions">
@@ -113,9 +161,9 @@
                     <div class="w-[50%]">
                         <form id="dateFilter" class="flex flex-row w-full items-center gap-x-2" action="{{ route('record.index') }}" method="GET">
                             <!-- Date From -->
-                            <input type="date" name="start" value="{{ request('start') }}" class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" require/>
+                            <input type="date" name="start" value="{{ request('start') }}" class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" require />
                             <!-- Date To -->
-                            <input type="date" name="end" value="{{ request('end') }}" class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" require/>
+                            <input type="date" name="end" value="{{ request('end') }}" class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" require />
 
                             <button type="submit" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md">
                                 Filter
@@ -141,6 +189,8 @@
                                     <th>Activity</th>
                                     <th>Category</th>
                                     <th>Date</th>
+                                    <th>Option</th>
+
 
                                 </tr>
                             </thead>
@@ -152,7 +202,15 @@
                                     <td>{{ $activity->activity ?? 'N/A' }}</td>
                                     <td>{{ $activity->category->name ?? 'N/A' }}</td>
                                     <td>{{ $activity->date ?? 'N/A' }}</td>
-
+                                    <td>
+                                        <form id="deleteActivity" action="{{ route('record.destroy', $activity->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-button type="submit" id="deteleActivityButton">
+                                                {{__('DELETE')}}
+                                            </x-button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -167,6 +225,32 @@
     <script>
         document.addEventListener('alpine:init', () => {
             $('#activity-table').DataTable();
+        });
+
+        document.getElementById('deleteActivityButton').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent automatic form submission
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to delete this activity?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, remove it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we are deleting the activity',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById('deleteActivity').submit(); // Submit form after confirmation
+                }
+            });
         });
 
         const addActivityForm = document.getElementById('addActivity');

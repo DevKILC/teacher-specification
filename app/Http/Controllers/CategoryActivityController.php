@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CategoryActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Record;
 
 class CategoryActivityController extends Controller
 {
@@ -53,4 +54,28 @@ class CategoryActivityController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+public function destroy(CategoryActivity $category)
+{
+    try {
+        DB::transaction(function () use ($category) {
+            $activities = Record::where('category_id', $category->id)->get();
+            foreach (  $activities as $activity) {
+              CategoryActivity::where('id', $activity->id)->delete();
+            }
+            $category->activities()->delete();
+            $category->delete();
+        });
+
+        // make flash message
+        session()->flash('success', 'Category deleted successfully');
+        return redirect()->back()->with('success', 'Category deleted successfully');
+    } catch (\Throwable $th) {
+        return $th->getMessage();
+        // make flash message
+        session()->flash('error', $th->getMessage());
+        return redirect()->back()->with('error', $th->getMessage());
+    }
+}
+
 }
