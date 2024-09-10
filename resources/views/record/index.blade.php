@@ -91,7 +91,7 @@
                     <x-general.modal  :open="'openActivityCategory'" :title="__('Categories List')">
                         <!-- Category Table -->
                         <div class="col-span-6 sm:col-span-4 w-full">
-                            <table class="table-auto w-full py-10" id="activity-table">
+                            <table class="table-auto w-full py-10" id="activitycategory-table">
                                 <thead class="bg-yellow-400 text-white">
                                     <tr>
                                         <th>No</th>
@@ -226,7 +226,10 @@
         document.addEventListener('alpine:init', () => {
             $('#activity-table').DataTable();
         });
-
+        document.addEventListener('alpine:init', () => {
+            $('#activitycategory-table').DataTable();
+        });
+     
         document.getElementById('deleteActivityButton').addEventListener('click', function(event) {
             event.preventDefault(); // Prevent automatic form submission
             Swal.fire({
