@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryActivityController;
-use App\Http\Controllers\DahsboardController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\SkillController;
@@ -23,7 +23,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/dashboard',[DahsboardController::class,'index'])->name('dashboard');
+    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
 
     Route::resource('teacher', TeacherController::class);
 

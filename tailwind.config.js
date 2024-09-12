@@ -15,11 +15,20 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                zIndex: {
-                    '100000': '100000',
-                  }
+            }, 
+            keyframes: {
+                progress: {
+                  '0%': { width: '0%' },
+                  '30%': { width: '50%' },  // Garis mencapai 50% lebih cepat
+                  '70%': { width: '75%' },  // Garis melambat
+                  '90%': { width: '85%' },  // Perlahan naik hingga 85%
+                  '100%': { width: '100%' }, // Garis penuh di akhir
+                },
+              },
+              animation: {
+                progress: 'progress 10s ease-in-out',
+              },
             },
-        },
     },
 
     plugins: [forms, typography],

@@ -1,6 +1,7 @@
-<aside 
+<aside
+      x-ref="sidebar"
     :class="{ '-translate-x-full': !open }"
-    class="bg-white border-r border-gray-100 h-full w-64 fixed transform transition-transform duration-300 ease-in-out top-0 left-0 z-[1000000] -translate-x-full" >
+    class="sidebar bg-white border-r border-gray-100 h-full w-64 fixed transform transition-transform duration-300 ease-in-out top-0 left-0 z-[1000000] -translate-x-full">
 
     <!-- Primary Navigation Menu -->
     <div class="flex flex-col justify-between h-full">
@@ -41,9 +42,9 @@
         <div class="px-4 py-4 bg-yellow-500 border-t border-gray-200">
             <div class="flex items-center">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                    <div class="shrink-0 me-3">
-                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                    </div>
+                <div class="shrink-0 me-3">
+                    <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                </div>
                 @endif
 
                 <div>
@@ -59,9 +60,9 @@
                 </x-dropdown-link>
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                    <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                        {{ __('API Tokens') }}
-                    </x-dropdown-link>
+                <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                    {{ __('API Tokens') }}
+                </x-dropdown-link>
                 @endif
 
                 <!-- Authentication -->

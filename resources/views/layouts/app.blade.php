@@ -13,6 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMt23cez/3paNdF+ZVwZODw5ZQ4f+64g7r7IlE" crossorigin="anonymous">
 
     <!-- Datatable -->
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/di st/css/bootstrap.min.css" rel="stylesheet"
@@ -35,7 +37,22 @@
 
 </head>
 
-<body class="font-poppins antialiased" x-data="{ open: false }">
+<body class="font-poppins antialiased" x-data="{ open: false , loading : false }"
+    x-init="window.addEventListener('beforeunload', () => { loading = true });
+            window.addEventListener('pageshow', () => { loading = false })">
+
+    <!-- loading line -->
+    <div x-show="loading" class="fixed top-0 left-0 w-full z-[1000001]">
+        <div class="h-1 bg-blue-500 animate-progress"></div>
+    </div>
+    <!-- Loading Spinner -->
+    <div x-show="loading" x-cloak class="fixed top-4 right-4 z-[1000001]">
+        <svg class="animate-spin h-4 w-4  text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+    </div>
+
     <x-banner />
 
     <div class="min-h-screen bg-gray-100">
@@ -59,7 +76,7 @@
         <x-sidebar />
 
         <!-- Page Content -->
-        <main>
+        <main @click="open = false">
             {{ $slot }}
         </main>
     </div>
