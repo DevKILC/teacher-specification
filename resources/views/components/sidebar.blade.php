@@ -36,6 +36,15 @@
             <x-nav-link href="{{ route('record.index') }}" :active="request()->routeIs('record.index')">
                 {{ __('Records') }}
             </x-nav-link>
+
+            <x-nav-link href="{{ route('permission.index') }}" :active="request()->routeIs('permission.index')">
+                {{ __('Permission') }}
+            </x-nav-link>
+            {{-- @can('add-skill') --}}
+            <x-nav-link href="{{ route('user-management.index') }}" :active="request()->routeIs('user-management.index')">
+                {{ __('User Management') }}
+            </x-nav-link>
+            {{-- @endcan --}}
         </div>
 
         <!-- Settings Dropdown -->
