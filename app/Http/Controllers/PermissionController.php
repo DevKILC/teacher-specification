@@ -53,9 +53,19 @@ class PermissionController extends Controller
 
     public function detailEditRolePermission($id)
     {
+        $permissions = Permission::all();
+        $rolePermissions = Role::find($id)->permissions->pluck('id')->toArray();
+        $permissions = $permissions->map(function ($permission) use ($rolePermissions) {
+            return [
+                'id' => $permission->id,
+                'name' => $permission->name,
+                'checked' => in_array($permission->id, $rolePermissions)
+            ];
+        });
+
         return view('permission.edit-permission-role', [
-            'role' => Role::find($id),  
-            'permissions' => Permission::all(),
+            'role' => Role::find($id),
+            'permissions' => $permissions,
         ]);
     }
 

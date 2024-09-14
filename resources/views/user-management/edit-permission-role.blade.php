@@ -3,7 +3,7 @@
         <div x-data="{ open: false }">
             <!-- Header Title -->
             <h2 class="font-medium text-2xl text-gray-800 leading-tight">
-                {{ __('Permission of Role') }} {{ $role->name }}
+                {{ __('Role of ') }} {{ $user->name }}
             </h2>
         </div>
     </x-slot>
@@ -12,10 +12,10 @@
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <!-- Skill List -->
-                @if($permissions->isEmpty())
+                @if($roles->isEmpty())
                     <p>No Permission available.</p>
                 @else
-                <form action="{{ route('permission.update-role-permission' , $role->id ) }}" method="POST">
+                <form action="{{ route('user-management.update-role' , $user->id ) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <table class="table-auto py-10" id="permissions-table">
@@ -27,14 +27,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($permissions as $permission)
+                            @foreach($roles as $role)
                             <tr>
                                 <td class="border px-4 py-2 text-center">
-                                    <input type="checkbox" name="permissions[]" value="{{ $permission['name'] }}" class="permission-checkbox"
-                                    {{ $permission['checked'] ? 'checked' : '' }}>
+                                    <input type="checkbox" name="roles[]" value="{{ $role->name }}" class="roles-checkbox"
+                                    {{ $role->selected ? 'checked' : '' }}>
                                 </td>
                                 <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                <td class="border px-4 py-2">{{ $permission['name'] }}</td>
+                                <td class="border px-4 py-2">{{ $role->name }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -58,7 +58,7 @@
 
             // Select all checkboxes functionality
             document.getElementById('select-all').addEventListener('click', function() {
-                let checkboxes = document.querySelectorAll('.permission-checkbox');
+                let checkboxes = document.querySelectorAll('.roles-checkbox');
                 checkboxes.forEach(checkbox => checkbox.checked = this.checked);
             });
         });

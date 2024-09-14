@@ -39,7 +39,7 @@ Route::middleware([
 
     Route::resource('categoryactivity', CategoryActivityController::class);
 
-    Route::prefix('permission')->group(function () {
+    Route::prefix('permission')->middleware(['permission:permission'])->group(function () {
         Route::get('/', [PermissionController::class, 'index'])->name('permission.index');
         Route::post('/', [PermissionController::class, 'store'])->name('permission.store');
         Route::delete('/{id}', [PermissionController::class, 'destroy'])->name('permission.destroy');
@@ -50,10 +50,16 @@ Route::middleware([
         Route::put('/{id}/update-role-permission', [PermissionController::class, 'updateRolePermission'])->name('permission.update-role-permission');
     });
 
-    Route::prefix('user-management')->group(function () {
+    Route::prefix('user-management')->middleware(['permission:user-management'])->group(function () {
         Route::get('/', [UserManagementController::class, 'index'])->name('user-management.index');
+        // permission
         Route::get('/{id}/edit-permission', [UserManagementController::class, 'detailEditPermission'])->name('user-management.edit-permission');
         Route::put('/{id}/update-permission', [UserManagementController::class, 'updatePermission'])->name('user-management.update-permission');
+        // role
+        Route::get('/{id}/edit-role', [UserManagementController::class, 'detailEditRole'])->name('user-management.edit-role');
+        Route::put('/{id}/update-role', [UserManagementController::class, 'updateRole'])->name('user-management.update-role');
     });
+    
+   
 
 });

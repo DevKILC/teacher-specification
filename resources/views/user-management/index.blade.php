@@ -29,6 +29,11 @@
                             <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                             <td class="border px-4 py-2">{{ $user->name }}</td>
                             <td class="border px-4 py-2 flex space-x-2">
+                                <a href="{{ route('user-management.edit-role', $user->id ) }}">
+                                    <x-button class="text-white px-4 py-2 rounded-md">
+                                        {{ __('EDIT ROLE') }}
+                                    </x-button>
+                                </a>
                                 <a href="{{ route('user-management.edit-permission', $user->id ) }}">
                                     <x-button class="text-white px-4 py-2 rounded-md">
                                         {{ __('EDIT PERMISSION') }}
