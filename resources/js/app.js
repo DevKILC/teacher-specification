@@ -1,8 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Setup Select2
-    $('#select-teacher').select2({
-        allowClear: true
-    });
 
     // Handle Flash Messages
     if (window.flashMessage) {

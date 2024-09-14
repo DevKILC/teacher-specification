@@ -149,7 +149,7 @@
                     <!-- Skill Name -->
                     <div class="col-span-6 sm:col-span-4 w-full">
                         <x-label for="name" value="{{ __('Skill Name') }}" />
-                        <x-input id="skillName"class="w-full"type="text" name="name" x-model="skill.name" value="{{ old('name') }}" required />
+                        <x-input id="skillName" class="w-full" type="text" name="name" x-model="skill.name" value="{{ old('name') }}" required />
                         <x-input-error for="name" class="mt-2" />
                     </div>
 

@@ -123,7 +123,7 @@
 
                 </div>
                 <!-- bar chart -->
-                 <div class="flex h-auto items-center text-center my-12">
+                 <div class="flex h-auto items-center text-center mt-12 mb-6">
                     <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z"/></svg>
                     </span>
@@ -140,7 +140,12 @@
                         <canvas id="offlineChart" class="w-full h-full p-4"></canvas>
                     </div>
                 </div>
-                <h1 class="text-2xl my-12 text-left">Teachers Table Data</h1>
+                <div class="flex h-auto items-center text-center my-12">
+                    <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7"  height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M360-120q-33 0-56.5-23.5T280-200v-400q0-33 23.5-56.5T360-680h400q33 0 56.5 23.5T840-600v400q0 33-23.5 56.5T760-120H360Zm0-400h400v-80H360v80Zm160 160h80v-80h-80v80Zm0 160h80v-80h-80v80ZM360-360h80v-80h-80v80Zm320 0h80v-80h-80v80ZM360-200h80v-80h-80v80Zm320 0h80v-80h-80v80Zm-480-80q-33 0-56.5-23.5T120-360v-400q0-33 23.5-56.5T200-840h400q33 0 56.5 23.5T680-760v40h-80v-40H200v400h40v80h-40Z"/></svg>
+                     </span>
+                    <h1 class="text-2xl text-left">Teachers Data Tables</h1>
+                 </div>
                 <!-- Table content -->
                 <div class="bg-white w-full h-auto py-10 mx-auto flex flex-col shadow-lg rounded-lg">
                     @if($teachers->isEmpty())
