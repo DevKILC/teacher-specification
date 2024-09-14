@@ -71,6 +71,7 @@ class FortifyServiceProvider extends ServiceProvider
         //                 'password' => bcrypt(Str::random(16)), // Generate a random password
         //             ]);
 
+
         //             return $newUser;
         //         }
         //     }

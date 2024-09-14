@@ -36,6 +36,15 @@
             <x-nav-link href="{{ route('record.index') }}" :active="request()->routeIs('record.index')">
                 {{ __('Records') }}
             </x-nav-link>
+            @role('Administrator')
+                <x-nav-link href="{{ route('permission.index') }}" :active="request()->segment(1) === 'permission'">
+                    {{ __('Permission') }}
+                </x-nav-link>
+                <x-nav-link href="{{ route('user-management.index') }}" :active="request()->segment(1) === 'user-management'">
+                    {{ __('User Management') }}
+                </x-nav-link>
+            @endrole
+            {{-- @endcan --}}
         </div>
 
         <!-- Settings Dropdown -->
