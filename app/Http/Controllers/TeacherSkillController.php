@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
-use App\models\Skill;
+use App\Models\Skill;
 use App\Models\TeacherSkill;
 use Illuminate\Http\Request;
 
@@ -17,10 +17,13 @@ class TeacherSkillController extends Controller
     public function index(Request $request)
     {
 
-        $allSkills = Skill::when($request->skill_name, function ($query, $skill_name) {
+        $skill_name = $request->input('skill_name');
+        $typeOfSkill = $request->input('typeOfSkill');
+
+        $allSkills = Skill::when($skill_name, function ($query, $skill_name) {
             return $query->where('name', 'LIKE', '%' . $skill_name . '%');
         })
-        ->when($request->typeOfSkill, function ($query, $typeOfSkill) {
+        ->when($typeOfSkill, function ($query, $typeOfSkill) {
             return $query->where('type', $typeOfSkill);
         })
         ->get();
@@ -33,8 +36,6 @@ class TeacherSkillController extends Controller
         $teachersSkillsGetValidation = $teachers && $teachers->teacherSkills
             ? $teachers->teacherSkills->pluck('skills.id')
             : collect([]);
-
-            return $teachers;
             
 
         return view('teacher.addSkillTeacher', [
@@ -103,11 +104,14 @@ class TeacherSkillController extends Controller
      * Display the specified resource.
      */
     public function show($teacher_id, Request $request)
-    {
-        $allSkills = Skill::when($request->skill_name, function ($query, $skill_name) {
+    { 
+        $skill_name = $request->input('skill_name');
+        $typeOfSkill = $request->input('typeOfSkill');
+
+        $allSkills = Skill::when($skill_name, function ($query, $skill_name) {
             return $query->where('name', 'LIKE', '%' . $skill_name . '%');
         })
-        ->when($request->typeOfSkill, function ($query, $typeOfSkill) {
+        ->when($typeOfSkill, function ($query, $typeOfSkill) {
             return $query->where('type', $typeOfSkill);
         })
         ->get();
