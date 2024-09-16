@@ -42,6 +42,7 @@
             window.addEventListener('pageshow', () => { loading = false })">
 
     <!-- loading line -->
+    <!-- line loadpage -->
     <div x-show="loading" class="fixed top-0 left-0 w-full z-[1000001]">
         <div class="h-1 bg-blue-500 animate-progress"></div>
     </div>
