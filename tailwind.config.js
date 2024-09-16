@@ -26,7 +26,7 @@ export default {
                 },
               },
               animation: {
-                progress: 'progress 4s ease-in-out',
+                progress: 'progress 5s ease-in-out',
               },
             },
     },
