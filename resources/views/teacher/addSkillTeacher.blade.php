@@ -15,7 +15,7 @@
                     </svg>
                 </span>
                 <h1 class="text-2xl">
-                    Add Skill to Mr/Mrs {{ $teachers->name }}
+                    Add Skill to Mr/Mrs {{ $teachers->name ?? '' }}
                 </h1>
             </div>
 
