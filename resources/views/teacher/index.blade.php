@@ -83,7 +83,7 @@
                 </div>
 
                 <!-- Skills container -->
-                <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6" x-data="{ openAddSkillModal: false }">
+                <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6">
                     <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2">
                         <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list</h1>
                         @role('Administrator')
