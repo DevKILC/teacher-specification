@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -14,6 +16,20 @@ class PermissionController extends Controller
     */
     public function index()
     {
+        if (Auth::check()) {
+            $user = Auth::user(); // Get the authenticated user
+            $userId = $user->id; // Access the user's ID
+        
+            // Retrieve the user with roles and permissions
+            $userWithRolesAndPermissions = User::where('id', $userId)
+                ->with('roles.permissions') // Eager load roles and permissions
+                ->first();
+        
+        } else {
+            // Handle the case where the user is not authenticated
+            return response()->json(['error' => 'User not authenticated'], 403);
+        }
+        
         return view('permission.index', [
             'permissions' => Permission::all(),
             'roles' => Role::all()

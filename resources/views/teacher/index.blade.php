@@ -38,37 +38,55 @@
             <!-- Profile section -->
             <div class="overflow-hidden w-full sm:rounded-lg p-6 flex flex-col lg:flex-row gap-5">
                 <!-- Teacher profile -->
-                <div class="w-full lg:w-[40%] h-auto bg-white rounded-md shadow-md p-6">
-                    <img src="{{ $teachers->img_url }}" alt="Teacher Picture" class="w-full h-[350px] bg-yellow-400 mx-auto rounded-md object-cover">
-                </div>
+                <div class="w-full lg:w-[60%] h-auto">
+                    <!-- Photo -->
+                    <div class="w-full flex items-center bg-white h-auto rounded-md shadow-md p-6">
+                        <img src="{{ $teachers->img_url }}" alt="Teacher Picture" class="w-[150px] h-[150px] bg-yellow-400 border-yellow-400 border-2 rounded-full object-cover">
+                        <div class="ml-6">
+                            <!-- name & addres -->
+                            <h1 class="text-2xl text-left">{{ $teachers->name ?? 'N/A' }}</h1>
+                            <p class="mt-2 text-sm"> {{ $teachers->email ?? 'Not Found'  }}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-start bg-white h-auto rounded-md shadow-md mt-2 p-6 gap-4">
+                        <div class="flex w-full items-center border-yellow-400 border-b-2 pb-2">
+                            <h1 class="text-left text-xl ">Biodata</h1>
+                        </div>
+                        @role('Administrator')
+                        <div class="flex flex-col">
+                            <label for="username" class="font-semibold">Username</label>
+                            <p id="username" class="text-gray-700"> {{ $teachers->username ?? 'Not Found' }} </p>
+                        </div>
 
-                <div class="w-full lg:w-[60%] bg-white h-auto rounded-md shadow-md p-6">
-                    <h1 class="text-2xl text-left">{{ $teachers->name ?? 'N/A' }}</h1>
-                    <table class="w-full h-60 mx-auto mt-2 border-collapse">
-                        <tbody>
-                            <tr>
-                                <td class="text-base font-bold sm:text-lg md:text-lg pr-5 lg:text-lg">{{ $teachers->address ?? 'Not Found' }}</td>
-                            </tr>
-                            <div class="mt-10">
-                            <tr class="">
-                                <td class="text-base sm:text-lg border-b-2 border-gray-400 pt-10 font-semibold">{{ $teachers->username ?? 'Not Found' }}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-base sm:text-lg border-b-2 border-gray-400  font-semibold">{{ $teachers->phone ?? 'Not Found' }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="text-base sm:text-lg font-semibold">{{ $teachers->email ?? 'Not Found' }}</td>
-                            </tr>
-                            </div>
-                           
-                        </tbody>
-                    </table>
+                        <div class="flex flex-col">
+                            <label for="phone" class="font-semibold">Phone</label>
+                            <p id="phone" class="text-gray-700"> {{ $teachers->phone ?? 'Not Found' }} </p>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="address" class="font-semibold">Address</label>
+                            <p id="address" class="text-gray-700"> {{ $teachers->address ?? 'Not Found' }} </p>
+                        </div>
+                        @endrole
+                        @role('Teacher')
+                        <div class="flex w-full justify-center items-center h-full">
+                            <p id="phone" class="text-gray-700"> You Do not have any permission for this information </p>
+                        </div>
+                        @endrole
+                        @unlessrole('Administrator|Teacher')
+                        <div class="flex w-full justify-center items-center h-full">
+                            <p class="text-gray-700"> You do not have any permission for this information </p>
+                        </div>
+                        @endunlessrole
+                    </div>
+
                 </div>
 
                 <!-- Skills container -->
                 <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6" x-data="{ openAddSkillModal: false }">
                     <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2">
                         <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list</h1>
+                        @role('Administrator')
                         <button @click="openAddSkillModal = true" class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">+ Add New Skill</button>
 
                         {{-- Add Skill Modal --}}
@@ -97,6 +115,7 @@
                                 </x-slot>
                             </x-general.form-section>
                         </x-general.modal>
+                        @endrole
                     </div>
 
                     <!-- Skills table -->
@@ -110,35 +129,33 @@
                         <tr class="border-b border-gray-300">
                             <td class="py-2 text-gray-800 font-medium">{{ $index + 1 }}</td>
                             <td class="py-2 text-gray-700">{{ $teacherSkill->skills->name ?? 'No skills available' }}</td>
+                            @role('Administrator')
                             <td class="py-2 text-right">
-                                <div x-data="{ open: false }" class="relative">
-                                    <button @click="open = !open" class="p-2 rounded hover:bg-gray-100 focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
-                                            <path d="M0 0h24v24H0V0z" fill="none" />
-                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                                        </svg>
-                                    </button>
-                                    <div x-show="open" @click.outside="open = false" class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-20">
-                                        <a href="{{ route('skill.edit', $teacherSkill->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
-                                        <form action="{{ route('skill.destroy', $teacherSkill->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">Delete</button>
-                                        </form>
-                                    </div>
+                                <div class="relative">
+                                    <form action="{{ route('skill.destroy', $teacherSkill->id) }}" id="deleteSkillFormTeacher" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button id="removeSkillButton" class="p-2 rounded hover:bg-gray-100 focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#EA3323">
+                                                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+                                            </svg>
+                                        </button>
+                                    </form>
                                 </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="3" class="text-center text-gray-500">No skills available.</td>
-                        </tr>
-                        @endforelse
-                        @endif
-                    </table>
                 </div>
+                </td>
+                @endrole
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3" class="text-center text-gray-500">No skills available.</td>
+                </tr>
+                @endforelse
+                @endif
+                </table>
             </div>
         </div>
+    </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

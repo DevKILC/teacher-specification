@@ -8,11 +8,36 @@
         </div>
     </x-slot>
 
-    <div x-data="{ 
-            openSkillModal: false, 
-            openCategoryModal: false,
+    <div class="">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="overflow-hidden sm:rounded-lg">
+                <!-- Content -->
+                <!-- Wrapper card -->
+                <div class="flex items-center text-left w-full h-16 mt-12 bg-white py-5 rounded-md shadow-md">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-16" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+                            <path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+                        </svg>
+                    </span>
+                    <h1 class="text-2xl">
+                        Data Skills & Categories Preview
+                    </h1>
+                </div>
+
+                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                    <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                            <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
+                        </svg>
+                    </span>
+                    <h1 class="text-2xl text-left">Skills Data</h1>
+                </div>
+
+                <!-- table data -->
+
+                    <!-- Skill -->
+                    <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex justify-center" x-data="{ openSkillModal: false, 
             openAddSkillModal: false,
-            openAddCategoryModal: false,
             skill: {
                 id: 0,
                 name: '',
@@ -20,47 +45,158 @@
                 category_id: null,
                 type: ''
             },
-            category: {
-                id: 0,
-                name: ''
-            },
         }">
+        @role('Administrator')
+                        <div class="bg-white w-44 h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-8 ">
+                            <x-button @click="openSkillModal = true">
+                                {{ __('Add Skill') }}
+                            </x-button>
+                        </div>
+                        <!-- Skill Modal -->
+                        <!-- ADD -->
+                        <x-general.modal :open="'openSkillModal'" :title="__('Create Skill')">
+                            <x-general.form-section id="addSkill" :submit="route('skill.store')">
+                                <x-slot name="form">
+                                    <!-- Skill Name -->
+                                    <div class="col-span-6 sm:col-span-4 w-full">
+                                        <x-label for="name" value="{{ __('Skill Name') }}" />
+                                        <x-input id="skillName" class="w-full" type="text" name="name" x-model="skill.name" value="{{ old('name') }}" required />
+                                        <x-input-error for="name" class="mt-2" />
+                                    </div>
 
-        {{-- SKILLS --}}
-        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <div class="flex flex-row justify-end py-10">
-                <x-button @click="openSkillModal = true">
-                    {{ __('Add Skill') }}
-                </x-button>
-            </div>
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <!-- Skill List -->
-                @if($skills->isEmpty())
-                <p>No skills available.</p>
-                @else
-                <table class="table-auto py-10" id="skills-table">
-                    <thead  class="bg-yellow-400 text-white">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Type</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($skills as $skill)
-                        <tr>
-                            <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                            <td class="border px-4 py-2">{{ $skill->name }}</td>
-                            <td class="border px-4 py-2">{{ $skill->description }}</td>
-                            <td class="border px-4 py-2">{{ $skill->category->name }}</td>
-                            <td class="border px-4 py-2">{{ $skill->type }}</td>
-                            <td class="border px-4 py-2 flex space-x-2">
-                                <x-button
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                                    @click="
+                                    <!-- Skill Description -->
+                                    <div class="col-span-6 sm:col-span-4 w-full">
+                                        <x-label for="description" value="{{ __('Skill Description') }}" />
+                                        <x-text-area id="skillDescription" class="w-full" name="description" rows="3" x-model="skill.description" required>{{ old('description') }}</x-textarea>
+                                            <x-input-error for="description" class="mt-2" />
+                                    </div>
+
+                                    <!-- Skill Category -->
+                                    <div class="col-span-6 sm:col-span-4 w-full">
+                                        <x-label for="category_id" value="{{ __('Skill Category') }}" />
+                                        <select id="skillCategory" class="w-full" name="category_id" x-model="skill.category_id" required>
+                                            <option value="">{{ __('Select a category') }}</option>
+                                            @foreach($categories as $category)
+                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        <x-input-error for="category_id" class="mt-2" />
+                                    </div>
+
+                                    <!-- Skill Type -->
+                                    <div class="col-span-6 sm:col-span-4 w-full">
+                                        <x-label for="type" class="w-full" value="{{ __('Type') }}" />
+                                        <select id="type" name="type" x-model="skill.type" required>
+                                            <option value="">{{ __('Select Type') }}</option>
+                                            <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
+                                            <option value="OFFLINE" {{ old('type') == 'OFFLINE' ? 'selected' : '' }}>{{ __('Offline') }}</option>
+                                        </select>
+                                        <x-input-error for="type" class="mt-2" />
+                                    </div>
+                                </x-slot>
+
+                                <x-slot name="actions">
+                                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                                        {{ __('Save') }}
+                                    </x-button>
+                                    <x-button type="button" class="ml-4" @click="openSkillModal = false">
+                                        {{ __('Cancel') }}
+                                    </x-button>
+                                </x-slot>
+                            </x-general.form-section>
+                        </x-general.modal>
+                        <!-- EDIT -->
+                        <x-general.modal :open="'openAddSkillModal'" :title="__('Update Skill')">
+                            <form id="editSkill" :action="'{{ route('skill.update', '') }}/' + skill.id" method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="px-4 py-5 bg-white sm:p-6 shadow  sm:rounded-tl-md sm:rounded-tr-md">
+                                    <div class="grid grid-cols-6 gap-6">
+                                        <!-- Form Fields -->
+                                        <div class="col-span-6 sm:col-span-4 w-full">
+                                            <x-label for="name" value="{{ __('Skill Name') }}" />
+                                            <x-input id="skillName" class="w-full" type="text" name="name" x-model="skill.name" required />
+                                            <x-input-error for="name" class="mt-2" />
+                                        </div>
+
+                                        <div class="col-span-6 sm:col-span-4 w-full">
+                                            <x-label for="description" value="{{ __('Skill Description') }}" />
+                                            <x-text-area class="w-full" id="skillDescription" name="description" rows="3" x-model="skill.description" required></x-textarea>
+                                                <x-input-error for="description" class="mt-2" />
+                                        </div>
+
+                                        <div class="col-span-6 sm:col-span-4 w-full">
+                                            <x-label for="category_id" value="{{ __('Skill Category') }}" />
+                                            <select class="w-full" id="skillCategory" name="category_id" x-model="skill.category_id" required>
+                                                <option value="">{{ __('Select a category') }}</option>
+                                                @foreach($categories as $category)
+                                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                            <x-input-error for="category_id" class="mt-2" />
+                                        </div>
+
+                                        <div class="col-span-6 sm:col-span-4 w-full">
+                                            <x-label for="type" value="{{ __('Type') }}" />
+                                            <select class="w-full" id="type" name="type" x-model="skill.type" required>
+                                                <option value="">{{ __('Select Type') }}</option>
+                                                <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
+                                                <option value="OFFLINE" {{ old('type') == 'OFFLINE' ? 'selected' : '' }}>{{ __('Offline') }}</option>
+                                            </select>
+                                            <x-input-error for="type" class="mt-2" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Save Button -->
+                                <div class="flex flex-row gap-5 items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
+                                    <x-button type="button" class="bg-red-500 text-white hover:bg-red-600" @click="openAddSkillModal = false">
+                                        {{ __('Cancel') }}
+                                    </x-button>
+                                    <x-button type="submit" class="bg-blue-500 text-white hover:bg-blue-600">
+                                        {{ __('Update') }}
+                                    </x-button>
+                                </div>
+
+                            </form>
+                        </x-general.modal>
+                @endrole
+                        <div class="w-[90%]">
+                            <!-- Skill List -->
+                            @if($skills->isEmpty())
+                            <p>No skills available.</p>
+                            @else
+                            <table class="table-auto border-collapse py-10" id="skills-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        @role('Administrator')
+                                        <th>Actions</th>
+                                        @endrole
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($skills as $skill)
+                                    <tr>
+                                        <td class="border px-4 py-2">{{ $loop->iteration }}</td>
+                                        <td class="border px-4 py-2">{{ $skill->name }}</td>
+                                        <td class="border px-4 py-2">{{ $skill->description }}</td>
+                                        <td class="border px-4 py-2">{{ $skill->category->name }}</td>
+                                        <td class="border px-4 py-2">{{ $skill->type }}</td>
+                                        @role('Administrator')
+                                        <td class="border px-4 py-2 flex justify-center space-x-2">
+                                            <x-button
+                                                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                                                @click="
                                                 skill = {
                                                     id: {{ $skill->id }},
                                                     name: '{{ $skill->name }}',
@@ -70,253 +206,168 @@
                                                 };
                                                 openAddSkillModal = true;
                                             ">
-                                    {{ __('EDIT') }}
-                                </x-button>
-                                <form id="deleteSkill" action="{{ route('skill.destroy', $skill->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <x-button type="submit" id="deleteSkillButton">
-                                        {{__('DELETE')}}
-                                    </x-button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @endif
-            </div>
-        </div>
+                                                {{ __('EDIT') }}
+                                            </x-button>
+                                            <form id="deleteSkill" action="{{ route('skill.destroy', $skill->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-button type="submit" id="deleteSkillButton">
+                                                    {{__('DELETE')}}
+                                                </x-button>
+                                            </form>
+                                        </td>
+                                        @endrole
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            @endif
+                        </div>
+                    </div>
+                </div>
 
-        {{-- CATEGORIES --}}
-        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <div class="flex flex-row justify-end py-10">
-                <x-button @click="openCategoryModal = true">
-                    {{ __('Add Category') }}
-                </x-button>
-            </div>
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <!-- Category List -->
-                @if($categories->isEmpty())
-                <p>No Categories available.</p>
-                @else
-                <table class="table-auto py-10" id="categories-table">
-                    <thead  class="bg-yellow-400 text-white">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($categories as $category)
-                        <tr>
-                            <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                            <td class="border px-4 py-2">{{ $category->name }}</td>
-                            <td class="border px-4 py-2 flex space-x-2">
-                                <x-button
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                                    @click="
+                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                    <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                            <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
+                        </svg>
+                    </span>
+                    <h1 class="text-2xl text-left">Catgories Data</h1>
+                </div>
+
+                <!-- Categories -->
+                <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex justify-center" x-data="{
+            openCategoryModal: false,
+            openAddCategoryModal: false,
+            category: {
+                id: 0,
+                name: ''
+            },
+        }">     
+
+        @role('Administrator')
+                    <div class="bg-white w-44 h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-8 ">
+                        <x-button @click="openCategoryModal = true">
+                            {{ __('Add Category') }}
+                        </x-button>
+                        <!-- Category Modal -->
+                        <!-- ADD -->
+                        <x-general.modal :open="'openCategoryModal'" :title="__('Create Category')">
+                            <x-general.form-section id="addCategory" :submit="route('category.store')">
+                                <x-slot name="form">
+                                    <!-- Category Name -->
+                                    <div class="col-span-6 sm:col-span-4 w-full">
+                                        <x-label for="name" value="{{ __('Category Name') }}" />
+                                        <x-input class="w-full" id="categoryName" type="text" name="name" value="{{ old('name') }}" required />
+                                        <x-input-error for="name" class="mt-2" />
+                                    </div>
+                                </x-slot>
+
+                                <x-slot name="actions">
+                                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                                        {{ __('Save') }}
+                                    </x-button>
+                                    <x-button type="button" class="ml-4" @click="openCategoryModal = false">
+                                        {{ __('Cancel') }}
+                                    </x-button>
+                                </x-slot>
+                            </x-general.form-section>
+                        </x-general.modal>
+
+                        <!-- EDIT -->
+                        <x-general.modal :open="'openAddCategoryModal'" :title="__('Update Category')">
+                            <form id="editcategory" :action="'{{ route('category.update', '') }}/' + category.id" method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="px-4 py-5 bg-white sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md">
+                                    <div class="grid grid-cols-6 gap-6">
+                                        <!-- Form Fields -->
+                                        <div class="col-span-6 sm:col-span-4 w-full">
+                                            <x-label for="name" value="{{ __('Category Name') }}" />
+                                            <x-input class="w-full" id="categoryName" type="text" name="name" x-model="category.name" required />
+                                            <x-input-error for="name" class="mt-2" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Save Button -->
+                                <div class="flex flex-row gap-5 items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
+                                    <x-button type="button" class="bg-red-500 text-white hover:bg-red-600" @click="openAddCategoryModal = false">
+                                        {{ __('Cancel') }}
+                                    </x-button>
+                                    <x-button type="submit" class="bg-blue-500 text-white hover:bg-blue-600">
+                                        {{ __('Update') }}
+                                    </x-button>
+                                </div>
+
+                            </form>
+                        </x-general.modal>
+                    </div>
+        @endrole
+                    <div class="w-[90%]">
+                        <!-- Category List -->
+                        @if($categories->isEmpty())
+                        <p>No Categories available.</p>
+                        @else
+                        <table class="table-auto py-10" id="categories-table">
+                            <thead class="">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    @role('Administrator')
+                                    <th>Actions</th>
+                                    @endrole
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($categories as $category)
+                                <tr>
+                                    <td class="border px-4 py-2">{{ $loop->iteration }}</td>
+                                    <td class="border px-4 py-2">{{ $category->name }}</td>
+                                    @role('Administrator')
+                                    <td class="border px-4 py-2 flex justify-center space-x-2">
+                                        <x-button
+                                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                                            @click="
                                             category = {
                                                     id: {{ $category->id }},
                                                     name: '{{ $category->name }}',
                                                 };
                                                 openAddCategoryModal = true;
                                             ">
-                                    {{ __('EDIT') }}
-                                </x-button>
-                                <form id="deleteCategory" action="{{ route('category.destroy', $category->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <x-button type="submit" id="deleteCategoryButton">
-                                        {{__('DELETE')}}
-                                    </x-button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @endif
-            </div>
-        </div>
-
-        <!-- Skill Modal -->
-        <!-- ADD -->
-        <x-general.modal :open="'openSkillModal'" :title="__('Create Skill')">
-            <x-general.form-section id="addSkill" :submit="route('skill.store')">
-                <x-slot name="form">
-                    <!-- Skill Name -->
-                    <div class="col-span-6 sm:col-span-4 w-full">
-                        <x-label for="name" value="{{ __('Skill Name') }}" />
-                        <x-input id="skillName" class="w-full" type="text" name="name" x-model="skill.name" value="{{ old('name') }}" required />
-                        <x-input-error for="name" class="mt-2" />
-                    </div>
-
-                    <!-- Skill Description -->
-                    <div class="col-span-6 sm:col-span-4 w-full">
-                        <x-label for="description" value="{{ __('Skill Description') }}" />
-                        <x-text-area id="skillDescription" class="w-full" name="description" rows="3" x-model="skill.description" required>{{ old('description') }}</x-textarea>
-                            <x-input-error for="description" class="mt-2" />
-                    </div>
-
-                    <!-- Skill Category -->
-                    <div class="col-span-6 sm:col-span-4 w-full">
-                        <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                        <select id="skillCategory" class="w-full" name="category_id" x-model="skill.category_id" required>
-                            <option value="">{{ __('Select a category') }}</option>
-                            @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        <x-input-error for="category_id" class="mt-2" />
-                    </div>
-
-                    <!-- Skill Type -->
-                    <div class="col-span-6 sm:col-span-4 w-full">
-                        <x-label for="type" class="w-full" value="{{ __('Type') }}" />
-                        <select id="type" name="type" x-model="skill.type" required>
-                            <option value="">{{ __('Select Type') }}</option>
-                            <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
-                            <option value="OFFLINE" {{ old('type') == 'OFFLINE' ? 'selected' : '' }}>{{ __('Offline') }}</option>
-                        </select>
-                        <x-input-error for="type" class="mt-2" />
-                    </div>
-                </x-slot>
-
-                <x-slot name="actions">
-                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
-                        {{ __('Save') }}
-                    </x-button>
-                    <x-button type="button" class="ml-4" @click="openSkillModal = false">
-                        {{ __('Cancel') }}
-                    </x-button>
-                </x-slot>
-            </x-general.form-section>
-        </x-general.modal>
-
-        <!-- EDIT -->
-        <x-general.modal :open="'openAddSkillModal'" :title="__('Update Skill')">
-            <form id="editSkill" :action="'{{ route('skill.update', '') }}/' + skill.id" method="POST">
-                @csrf
-                @method('PUT')
-
-                <div class="px-4 py-5 bg-white sm:p-6 shadow  sm:rounded-tl-md sm:rounded-tr-md">
-                    <div class="grid grid-cols-6 gap-6">
-                        <!-- Form Fields -->
-                        <div class="col-span-6 sm:col-span-4 w-full">
-                            <x-label for="name" value="{{ __('Skill Name') }}" />
-                            <x-input id="skillName" class="w-full" type="text" name="name" x-model="skill.name" required />
-                            <x-input-error for="name" class="mt-2" />
-                        </div>
-
-                        <div class="col-span-6 sm:col-span-4 w-full">
-                            <x-label for="description" value="{{ __('Skill Description') }}" />
-                            <x-text-area class="w-full" id="skillDescription" name="description" rows="3" x-model="skill.description" required></x-textarea>
-                                <x-input-error for="description" class="mt-2" />
-                        </div>
-
-                        <div class="col-span-6 sm:col-span-4 w-full">
-                            <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                            <select class="w-full" id="skillCategory" name="category_id" x-model="skill.category_id" required>
-                                <option value="">{{ __('Select a category') }}</option>
-                                @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
+                                            {{ __('EDIT') }}
+                                        </x-button>
+                                        <form id="deleteCategory" action="{{ route('category.destroy', $category->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-button type="submit" id="deleteCategoryButton">
+                                                {{__('DELETE')}}
+                                            </x-button>
+                                        </form>
+                                    </td>
+                                    @endrole
+                                </tr>
                                 @endforeach
-                            </select>
-                            <x-input-error for="category_id" class="mt-2" />
-                        </div>
-
-                        <div class="col-span-6 sm:col-span-4 w-full">
-                            <x-label for="type" value="{{ __('Type') }}" />
-                            <select class="w-full" id="type" name="type" x-model="skill.type" required>
-                                <option value="">{{ __('Select Type') }}</option>
-                                <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
-                                <option value="OFFLINE" {{ old('type') == 'OFFLINE' ? 'selected' : '' }}>{{ __('Offline') }}</option>
-                            </select>
-                            <x-input-error for="type" class="mt-2" />
-                        </div>
+                            </tbody>
+                        </table>
+                        @endif
                     </div>
                 </div>
+            </div>
 
-                <!-- Save Button -->
-                <div class="flex flex-row gap-5 items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
-                    <x-button type="button" class="bg-red-500 text-white hover:bg-red-600" @click="openAddSkillModal = false">
-                        {{ __('Cancel') }}
-                    </x-button>
-                    <x-button type="submit" class="bg-blue-500 text-white hover:bg-blue-600">
-                        {{ __('Update') }}
-                    </x-button>
-                </div>
 
-            </form>
-        </x-general.modal>
 
-        <!-- Category Modal -->
-        <!-- ADD -->
-        <x-general.modal :open="'openCategoryModal'" :title="__('Create Category')">
-            <x-general.form-section id="addCategory" :submit="route('category.store')">
-                <x-slot name="form">
-                    <!-- Category Name -->
-                    <div class="col-span-6 sm:col-span-4 w-full">
-                        <x-label for="name" value="{{ __('Category Name') }}" />
-                        <x-input class="w-full" id="categoryName" type="text" name="name" value="{{ old('name') }}" required />
-                        <x-input-error for="name" class="mt-2" />
-                    </div>
-                </x-slot>
 
-                <x-slot name="actions">
-                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
-                        {{ __('Save') }}
-                    </x-button>
-                    <x-button type="button" class="ml-4" @click="openCategoryModal = false">
-                        {{ __('Cancel') }}
-                    </x-button>
-                </x-slot>
-            </x-general.form-section>
-        </x-general.modal>
-
-        <!-- EDIT -->
-        <x-general.modal :open="'openAddCategoryModal'" :title="__('Update Category')">
-            <form id="editcategory" :action="'{{ route('category.update', '') }}/' + category.id" method="POST">
-                @csrf
-                @method('PUT')
-
-                <div class="px-4 py-5 bg-white sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md">
-                    <div class="grid grid-cols-6 gap-6">
-                        <!-- Form Fields -->
-                        <div class="col-span-6 sm:col-span-4 w-full">
-                            <x-label for="name" value="{{ __('Category Name') }}" />
-                            <x-input class="w-full" id="categoryName" type="text" name="name" x-model="category.name" required />
-                            <x-input-error for="name" class="mt-2" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Save Button -->
-                <div class="flex flex-row gap-5 items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
-                    <x-button type="button" class="bg-red-500 text-white hover:bg-red-600" @click="openAddCategoryModal = false">
-                        {{ __('Cancel') }}
-                    </x-button>
-                    <x-button type="submit" class="bg-blue-500 text-white hover:bg-blue-600">
-                        {{ __('Update') }}
-                    </x-button>
-                </div>
-
-            </form>
-        </x-general.modal>
+        </div>
     </div>
     <script>
         document.addEventListener('alpine:init', () => {
             $('#skills-table').DataTable();
             $('#categories-table').DataTable();
         });
-         // Delete Skill
-         document.getElementById('deleteSkillButton').addEventListener('click', function(event) {
+        // Delete Skill
+        document.getElementById('deleteSkillButton').addEventListener('click', function(event) {
             event.preventDefault(); // Prevent automatic form submission
             Swal.fire({
                 title: 'Are you sure?',
@@ -423,7 +474,5 @@
                 });
             });
         }
-
-
     </script>
 </x-app-layout>

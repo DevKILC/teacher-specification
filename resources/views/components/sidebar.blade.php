@@ -20,7 +20,7 @@
         </div>
 
         <!-- Navigation Links -->
-        <div class="flex flex-col space-y-7 font-light px-4">
+        <div class="flex flex-col space-y-4 font-light px-4">
             <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-nav-link>
