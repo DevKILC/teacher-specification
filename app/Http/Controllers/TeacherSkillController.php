@@ -16,6 +16,31 @@ class TeacherSkillController extends Controller
      */
     public function index(Request $request)
     {
+
+        $allSkills = Skill::when($request->skill_name, function ($query, $skill_name) {
+            return $query->where('name', 'LIKE', '%' . $skill_name . '%');
+        })
+        ->when($request->typeOfSkill, function ($query, $typeOfSkill) {
+            return $query->where('type', $typeOfSkill);
+        })
+        ->get();
+
+
+        $teachers = $request->id ? Teacher::with('teacherSkills.skills')->find($request->id) : Teacher::dummyData();
+    
+        
+        // Validasi skill jika $teachers dan teacherSkills ada, jika tidak gunakan collection kosong
+        $teachersSkillsGetValidation = $teachers && $teachers->teacherSkills
+            ? $teachers->teacherSkills->pluck('skills.id')
+            : collect([]);
+
+            
+
+            return view('teacher.addSkillTeacher', [
+            'teachers' => $teachers,
+            'allSkills' => $allSkills,
+            'teachersSkillsGetValidation' => $teachersSkillsGetValidation,
+        ]);
     }
     
 
@@ -47,7 +72,7 @@ class TeacherSkillController extends Controller
 
             // Success message and redirect
             session()->flash('success', 'Skill added successfully');
-            return redirect()->back();
+            return redirect()->route('teacher.index', [ $request->id ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation exceptions

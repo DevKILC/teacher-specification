@@ -59,6 +59,8 @@ Route::middleware([
         Route::get('/{id}/edit-role', [UserManagementController::class, 'detailEditRole'])->name('user-management.edit-role');
         Route::put('/{id}/update-role', [UserManagementController::class, 'updateRole'])->name('user-management.update-role');
     });
+
+    // Route::get('teacher/addSkillTeacher/{id}',[TeacherSkillController::class,'index'])->name('teacher.addSkillTeacher');
     
    
 

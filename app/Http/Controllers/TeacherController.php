@@ -18,13 +18,14 @@ class TeacherController extends Controller
         
         $teachers = $request->id ? Teacher::with('teacherSkills.skills')->find($request->id) : Teacher::dummyData();
     
-     
+        
         // Validasi skill jika $teachers dan teacherSkills ada, jika tidak gunakan collection kosong
         $teachersSkillsGetValidation = $teachers && $teachers->teacherSkills
             ? $teachers->teacherSkills->pluck('skills.id')
             : collect([]);
 
-            
+            return $teachers;
+        
 
         return view('teacher.index', [
             'teachers' => $teachers,
