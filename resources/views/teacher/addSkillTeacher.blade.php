@@ -15,7 +15,7 @@
                     </svg>
                 </span>
                 <h1 class="text-2xl">
-                    Add Teacher Skill
+                    Add Skill to Mr/Mrs {{ $teachers->name }}
                 </h1>
             </div>
 
@@ -48,35 +48,36 @@
 
             <!-- skill List -->
             <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex-col justify-center">
-                <form action="{{route('teacher-skill.store', ['id' => $request->id ?? 'null'])}}">
-                <input type="hidden" name="teacher_id" value="{{ $request->id ?? 'null' }}">
-                <div class="w-full mx-3 flex justify-center">
-                    <div class="grid grid-cols-6 gap-4 w-[95%]">
-                        @foreach($allSkills as $skill)
-                        <div class="flex items-center space-x-2 p-2">
-                            <input
-                                type="checkbox"
-                                id="skill_{{ $skill->id }}"
-                                name="skill_id[]"
-                                value="{{ $skill->id }}"
-                                @if(isset($teachersSkillsGetValidation) && in_array($skill->id, $teachersSkillsGetValidation->toArray()))
-                            disabled checked
-                            class="bg-gray-400 cursor-not-allowed"
-                            @endif
-                            >
-                            <label for="skill_{{ $skill->id }}" class="text-gray-700">{{ $skill->name }}</label>
+                <form action="{{route('teacher-skill.store')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="teacher_id" value="{{ $teachers->id }}">
+                    <div class="w-full mx-3 flex justify-center">
+                        <div class="grid grid-cols-6 gap-4 w-[95%]">
+                            @foreach($allSkills as $skill)
+                            <div class="flex items-center space-x-2 p-2">
+                                <input
+                                    type="checkbox"
+                                    id="skill_{{ $skill->id }}"
+                                    name="skill_id[]"
+                                    value="{{ $skill->id }}"
+                                    @if(isset($teachersSkillsGetValidation) && in_array($skill->id, $teachersSkillsGetValidation->toArray()))
+                                        disabled checked
+                                        class="bg-gray-400 cursor-not-allowed"
+                                    @endif
+                                >
+                                <label for="skill_{{ $skill->id }}" class="text-gray-700">{{ $skill->name }}</label>
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
-                </div>
-                <div class="w-[95%] h-16 mt-10 flex items-center justify-end ">
-                    <div class="flex space-x-5">
-                    <a href="">
-                    <x-button type="button" class="ml-4">{{ __('Cancel') }}</x-button>
-                    </a>
-                    <x-button type="submit" >{{ __('Save') }}</x-button>
+                    <div class="w-[95%] h-16 mt-10 flex items-center justify-end ">
+                        <div class="flex space-x-5">
+                        <a href="">
+                        <x-button type="button" class="ml-4">{{ __('Cancel') }}</x-button>
+                        </a>
+                        <x-button type="submit" >{{ __('Save') }}</x-button>
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>

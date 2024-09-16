@@ -24,7 +24,6 @@ class TeacherController extends Controller
             ? $teachers->teacherSkills->pluck('skills.id')
             : collect([]);
 
-            return $teachers;
         
 
         return view('teacher.index', [

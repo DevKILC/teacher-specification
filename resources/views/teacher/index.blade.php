@@ -85,9 +85,9 @@
                 <!-- Skills container -->
                 <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6" x-data="{ openAddSkillModal: false }">
                     <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2">
-                        <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list {{ $teacher->id }}</h1>
+                        <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list</h1>
                         @role('Administrator')
-                        <a href="{{ route('teacher-skill.index', $teacher->id ) }}">
+                        <a href="{{ route('teacher-skill.show', $teachers->id ) }}">
 
                             <button class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">+ Add New Skill</button>
 

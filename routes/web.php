@@ -31,7 +31,7 @@ Route::middleware([
 
     Route::resource('skill', SkillController::class);
 
-    Route::resource('teacher-skill', TeacherSkillController::class);
+    Route::resource('teacher-skill', TeacherSkillController::class)->parameter('teacher-skill', 'teacher_id');
 
     Route::resource('record', RecordController::class);
     
@@ -60,8 +60,5 @@ Route::middleware([
         Route::put('/{id}/update-role', [UserManagementController::class, 'updateRole'])->name('user-management.update-role');
     });
 
-    // Route::get('teacher/addSkillTeacher/{id}',[TeacherSkillController::class,'index'])->name('teacher.addSkillTeacher');
-    
-   
 
 });
