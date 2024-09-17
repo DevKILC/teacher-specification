@@ -107,20 +107,21 @@
                                     <td class="border px-4 py-2 flex flex-row justify-center">
                                         @switch($history->stats)
                                         @case('Pending')
-                                        <button class="bg-yellow-400 rounded-md px-3 py-3 text-white">Pending</button>
+                                        <button class="bg-yellow-400 rounded-md px-2 py-3 text-white">Pending</button>
                                         @break
                                         @case('Accept')
-                                        <button class="bg-green-500 rounded-md px-3 py-3 text-white">Accept</button>
+                                        <button class="bg-green-500 rounded-md px-2 py-3 text-white">Accept</button>
                                         @break
                                         @case('Decline')
-                                        <button class="bg-red-500 rounded-md px-3 py-3 text-white"> Decline</button>
+                                        <button class="bg-red-500 rounded-md px-2 py-3 text-white"> Decline</button>
                                         @break
                                         @default
-                                        <button class="bg-gray-500 rounded-md px-3 py-3 text-white">Unknown Status</button>
+                                        <button class="bg-gray-500 rounded-md px-2 py-3 text-white">Unknown Status</button>
                                         @endswitch
                                     </td>
                                     @role('Administrator')
-                                    <td class="border space-x-3">
+                                    <td class="border">
+                                        <div class="flex space-x-3 justify-center">
                                         @if($history->stats == 'Pending')
                                         <!-- Show Accept and Decline buttons if status is Pending -->
                                         <form action="{{ route('permissions.accept', $permission->id) }}" method="POST" class="inline-block">
@@ -137,8 +138,9 @@
                                         <span class="bg-green-500 text-white">Accepted</span>
                                         @elseif($history->stats == 'Decline')
                                         <!-- Show Declined status -->
-                                        <span class="bg-red-500"> text-whiteDeclined</span>
+                                        <span class="bg-red-500 text-white"> Declined</span>
                                         @endif
+                                        </div>
                                     </td>
                                     @endrole
                                 </tr>
