@@ -124,21 +124,23 @@
                                         <div class="flex space-x-3 justify-center">
                                         @if($history->stats == 'Pending')
                                         <!-- Show Accept and Decline buttons if status is Pending -->
-                                        <form action="{{ route('permissions.accept', $permission->id) }}" method="POST" class="inline-block">
+                                        <form action="{{ route('permissions.accept', $history->id ) }}" method="POST" class="inline-block">
                                             @csrf
+                                            @method('PUT')
                                             <button type="submit" class="bg-green-500 rounded-md px-4 py-2 text-white hover:underline">Accept</button>
                                         </form>
 
-                                        <form action="{{ route('permissions.decline', $permission->id) }}" method="POST" class="inline-block">
+                                        <form action="{{ route('permissions.decline', $history->id) }}" method="POST" class="inline-block">
                                             @csrf
+                                            @method('PUT')
                                             <button type="submit" class="bg-red-500 rounded-md px-4 py-2  text-white hover:underline">Decline</button>
                                         </form>
                                         @elseif($history->stats == 'Accept')
                                         <!-- Show Accepted status -->
-                                        <span class="bg-green-500 text-white">Accepted</span>
+                                        <span class="bg-green-500 rounded-md px-4 py-2 text-white">Accepted</span>
                                         @elseif($history->stats == 'Decline')
                                         <!-- Show Declined status -->
-                                        <span class="bg-red-500 text-white"> Declined</span>
+                                        <span class="bg-red-500 rounded-md px-4 py-2 text-white"> Declined</span>
                                         @endif
                                         </div>
                                     </td>

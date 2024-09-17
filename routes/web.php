@@ -52,8 +52,8 @@ Route::middleware([
         Route::delete('role/{id}', [PermissionController::class, 'destroyRole'])->name('permission.destroyRole');
         Route::get('/{id}/edit-role-permission', [PermissionController::class, 'detailEditRolePermission'])->name('permission.edit-role-permission');
         Route::put('/{id}/update-role-permission', [PermissionController::class, 'updateRolePermission'])->name('permission.update-role-permission');
-        Route::post('/accept/{id}', [PermissionController::class, 'accept'])->name('permissions.accept');
-        Route::post('/decline/{id}', [PermissionController::class, 'decline'])->name('permissions.decline');
+        Route::put('/accept/{id}', [PermissionController::class, 'accept'])->name('permissions.accept');
+        Route::put('/decline/{id}', [PermissionController::class, 'decline'])->name('permissions.decline');
     });
    
 

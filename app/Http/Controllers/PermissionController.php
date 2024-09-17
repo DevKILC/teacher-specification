@@ -48,16 +48,20 @@ class PermissionController extends Controller
     {
         try {
             // Cari permintaan permission berdasarkan ID
-            $permissionRequest = RequestPermission::findOrFail($id);
+            $permissionRequest = RequestPermission::find($id);
 
             // Ubah status menjadi "Accept"
             $permissionRequest->stats = 'Accept';
-            $permissionRequest->updated_by = Auth::id(); // Menyimpan user ID yang menerima permintaan
+            $permissionRequest->updated_by = Auth::user()->name; // Menyimpan user ID yang menerima permintaan
             $permissionRequest->save();
+
+            // Menambahkan permisi ke user yang menerima permintaan
+            $permissionRequest->user->givePermissionTo($permissionRequest->permission);
+
 
             return redirect()->back()->with('success', 'Permission request accepted successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to accept permission request: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to decline permission request: ' . $e->getMessage());
         }
     }
 
@@ -68,11 +72,11 @@ class PermissionController extends Controller
     {
         try {
             // Cari permintaan permission berdasarkan ID
-            $permissionRequest = RequestPermission::findOrFail($id);
+            $permissionRequest = RequestPermission::find($id);
 
             // Ubah status menjadi "Decline"
             $permissionRequest->stats = 'Decline';
-            $permissionRequest->updated_by = Auth::id(); // Menyimpan user ID yang menolak permintaan
+            $permissionRequest->updated_by = Auth::user()->name; // Menyimpan user ID yang menolak permintaan
             $permissionRequest->save();
 
             return redirect()->back()->with('success', 'Permission request declined successfully.');
