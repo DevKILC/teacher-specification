@@ -15,5 +15,11 @@ class Permission extends Model
     return $this->belongsTo(RequestPermission::class, 'id', 'permission_id');
     }
 
+    // foreign ke model_has_permission
+    public function modelHasPermissions()
+    {
+        return $this->hasMany(ModelHasPermission::class, 'permission_id', 'id');
+    }
+    
 
 }

@@ -15,4 +15,10 @@ class UserManagement extends Model
     {
         return $this->belongsTo(RequestPermission::class, 'id', 'user_id');
     }
+    // relasi user_id ke model_has_permission
+    public function userPermissions()
+    {
+        return $this->hasMany(ModelHasPermission::class, 'user_id', 'id');
+    }
+   
 }

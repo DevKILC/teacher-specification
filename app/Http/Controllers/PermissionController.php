@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ModelHasPermission;
 use App\Models\RequestPermission;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -31,12 +32,18 @@ class PermissionController extends Controller
             return response()->json(['error' => 'User not authenticated'], 403);
         }
            // ambil data untuk history
-           $histories = RequestPermission::with(['user','permissions'])
+           $histories = RequestPermission::with('user','permissions')
            ->where('user_id', Auth::id())
            ->orderBy('created_at', 'desc')
            ->get();
  
+        //    Mengmemperlihatkan data permisi yang dimiliki oleh user
+       
+        $showPermission = ModelHasPermission::with('userManagement','permission')->where('model_id', Auth::id())->get();
+
+
         return view('permission.index', [
+            'showPermission' => $showPermission,
             'histories' => $histories,
             'userId' => Auth::id(),
             'permissions' => Permission::all(),

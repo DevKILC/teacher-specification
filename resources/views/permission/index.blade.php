@@ -36,7 +36,7 @@
                     </div>
                     <!-- Request Permission Button -->
                     <div class="flex items-center mr-3">
-                        <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" @click="openRequestPermission = true">
+                        <button class="bg-yellow-400 text-white px-4 py-2 rounded-md hover:bg-yellow-500" @click="openRequestPermission = true">
                             {{ __('Request Permission') }}
                         </button>
                     </div>
@@ -86,12 +86,15 @@
                 <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex justify-center">
                     <!-- data Table -->
                     <div class="w-[90%]">
+                        @if($histories->isEmpty())
+                        <p>No Request available,Try to request a permission</p>
+                        @else
                         <table class="table-auto py-10" id="requestpermissions">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Skill Name</th>
+                                    <th>Permission Name</th>
                                     <th>Status</th>
                                     @role('Administrator')
                                     <th>Action</th>
@@ -102,8 +105,8 @@
                                 @foreach($histories as $history)
                                 <tr>
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                    <td class="border px-4 py-2">{{ $history->user[0]->name ?? 'Not Found' }}</td>
-                                    <td class="border px-4 py-2">{{ $history->permissions[0]->name ?? 'Not Found' }}</td>
+                                    <td class="border px-4 py-2">{{ $history->user->name ?? 'Not Found' }}</td>
+                                    <td class="border px-4 py-2">{{ $history->permissions->name ?? 'Not Found' }}</td>
                                     <td class="border px-4 py-2 flex flex-row justify-center">
                                         @switch($history->stats)
                                         @case('Pending')
@@ -122,26 +125,26 @@
                                     @role('Administrator')
                                     <td class="border">
                                         <div class="flex space-x-3 justify-center">
-                                        @if($history->stats == 'Pending')
-                                        <!-- Show Accept and Decline buttons if status is Pending -->
-                                        <form action="{{ route('permissions.accept', $history->id ) }}" method="POST" class="inline-block">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="bg-green-500 rounded-md px-4 py-2 text-white hover:underline">Accept</button>
-                                        </form>
+                                            @if($history->stats == 'Pending')
+                                            <!-- Show Accept and Decline buttons if status is Pending -->
+                                            <form action="{{ route('permissions.accept', $history->id ) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="bg-green-500 rounded-md px-4 py-2 text-white hover:underline">Accept</button>
+                                            </form>
 
-                                        <form action="{{ route('permissions.decline', $history->id) }}" method="POST" class="inline-block">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="bg-red-500 rounded-md px-4 py-2  text-white hover:underline">Decline</button>
-                                        </form>
-                                        @elseif($history->stats == 'Accept')
-                                        <!-- Show Accepted status -->
-                                        <span class="bg-green-500 rounded-md px-4 py-2 text-white">Accepted</span>
-                                        @elseif($history->stats == 'Decline')
-                                        <!-- Show Declined status -->
-                                        <span class="bg-red-500 rounded-md px-4 py-2 text-white"> Declined</span>
-                                        @endif
+                                            <form action="{{ route('permissions.decline', $history->id) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="bg-red-500 rounded-md px-4 py-2  text-white hover:underline">Decline</button>
+                                            </form>
+                                            @elseif($history->stats == 'Accept')
+                                            <!-- Show Accepted status -->
+                                            <span class="bg-green-500 rounded-md px-4 py-2 text-white">Accepted</span>
+                                            @elseif($history->stats == 'Decline')
+                                            <!-- Show Declined status -->
+                                            <span class="bg-red-500 rounded-md px-4 py-2 text-white"> Declined</span>
+                                            @endif
                                         </div>
                                     </td>
                                     @endrole
@@ -149,24 +152,67 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        @endif
                     </div>
+                </div>
+                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                    <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                            <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
+                        </svg>
+                    </span>
+                    <h1 class="text-2xl text-left"> User Permission Data</h1>
+                </div>
+
+                <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex justify-center">
+                    <!-- permiison yang di punyai -->
+                    <div class="w-[90%]">
+                        @if($showPermission->isEmpty())
+                        <p>No permission available.</p>
+                        @else
+                        <table class="table-auto py-10" id="datapermissions">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($showPermission as $show)
+                                <tr>
+                                    <td class="border px-4 py-2">{{ $loop->iteration }}</td>
+                                    <td class="border px-4 py-2">{{ $show->permission->name ?? 'Not Found' }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endif
+                    </div>
+                </div>
+                @role('Administrator')
+                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                    <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                            <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
+                        </svg>
+                    </span>
+                    <h1 class="text-2xl text-left">Permission Data</h1>
                 </div>
 
 
-                {{-- PERMISSIONS --}}
-                <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                    <div class="flex flex-row justify-end py-10">
+                <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex justify-center">
+                    <div class="bg-white w-auto h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-3 ">
                         <x-button @click="openAddPermission = true">
                             {{ __('Add Permission') }}
                         </x-button>
                     </div>
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                        <!-- Skill List -->
+                    <!-- permiison yang di punyai -->
+                    <div class="w-[90%]">
                         @if($permissions->isEmpty())
                         <p>No Permission available.</p>
                         @else
                         <table class="table-auto py-10" id="permissions-table">
-                            <thead class="bg-yellow-400 text-white">
+                            <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
@@ -178,7 +224,7 @@
                                 <tr>
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                     <td class="border px-4 py-2">{{ $permission->name }}</td>
-                                    <td class="border px-4 py-2 flex space-x-2">
+                                    <td class="border px-4 py-2 flex justify-center space-x-2">
                                         {{-- <x-button
                                     class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                                     @click="
@@ -210,221 +256,229 @@
                 </div>
                 <!--  -->
 
-            </div>
-
-
-            {{-- Role --}}
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div class="flex flex-row justify-end py-10">
-                    <x-button @click="openRole = true">
-                        {{ __('Add Role') }}
-                    </x-button>
+                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                    <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                            <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
+                        </svg>
+                    </span>
+                    <h1 class="text-2xl text-left">Role Data</h1>
                 </div>
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                    <!-- Category List -->
-                    @if($roles->isEmpty())
-                    <p>No Roles available.</p>
-                    @else
-                    <table class="table-auto py-10" id="roles-table">
-                        <thead class="bg-yellow-400 text-white">
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($roles as $role)
-                            <tr>
-                                <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                <td class="border px-4 py-2">{{ $role->name }}</td>
-                                <td class="border px-4 py-2 flex space-x-2">
-                                    <a href="{{ route('permission.edit-role-permission', $role->id ) }}">
-                                        <x-button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                                            {{ __('EDIT PERMISSION') }}
-                                        </x-button>
-                                    </a>
-                                    <form action="{{ route('permission.destroyRole', $role->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <x-button type="submit" class="bg-red-500">
-                                            {{__('DELETE')}}
-                                        </x-button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    @endif
+                {{-- Role --}}
+                <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex justify-center">
+                    <div class="bg-white w-auto h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-3 ">
+                        <x-button @click="openRole = true">
+                            {{ __('Add Role') }}
+                        </x-button>
+                    </div>
+                    <div class="w-[90%]">
+                        @if($roles->isEmpty())
+                        <p>No Roles available.</p>
+                        @else
+                        <table class="table-auto py-10" id="roles-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($roles as $role)
+                                <tr>
+                                    <td class="border px-4 py-2">{{ $loop->iteration }}</td>
+                                    <td class="border px-4 py-2">{{ $role->name }}</td>
+                                    <td class="border px-4 py-2 flex justify-center space-x-2">
+                                        <a href="{{ route('permission.edit-role-permission', $role->id ) }}">
+                                            <x-button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                                                {{ __('EDIT PERMISSION') }}
+                                            </x-button>
+                                        </a>
+                                        <form action="{{ route('permission.destroyRole', $role->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-button type="submit" class="bg-red-500">
+                                                {{__('DELETE')}}
+                                            </x-button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endif
+                    </div>
                 </div>
+
             </div>
-
-            <!-- PERMISSION Modal -->
-            <!-- ADD -->
-            <x-general.modal :open="'openAddPermission'" :title="__('Permission')">
-                <x-general.form-section id="addPermission" :submit="route('permission.store')">
-                    <x-slot name="form">
-                        <!-- Permission Name -->
-                        <div class="col-span-6 sm:col-span-4 w-full">
-                            <x-label for="name" value="{{ __('Permission Name') }}" />
-                            <x-input id="permissionName" class="mt-1 w-full" type="text" name="name" :value="old('email')" required />
-                            <x-input-error for="name" class="mt-2" />
-                        </div>
-
-                    </x-slot>
-
-                    <x-slot name="actions">
-                        <x-button class="bg-blue-500 text-white hover:bg-blue-600">
-                            {{ __('Save') }}
-                        </x-button>
-                        <x-button type="button" class="ml-4" @click="openAddPermission = false">
-                            {{ __('Cancel') }}
-                        </x-button>
-                    </x-slot>
-                </x-general.form-section>
-            </x-general.modal>
-
-
-            <!-- Role Modal -->
-            <!-- ADD -->
-            <x-general.modal :open="'openRole'" :title="__('Role')">
-                <x-general.form-section id="openRole" :submit="route('permission.storeRole')">
-                    <x-slot name="form">
-                        <!-- Permission Name -->
-                        <div class="col-span-6 sm:col-span-4 w-full">
-                            <x-label for="name" value="{{ __('Role Name') }}" />
-                            <x-input id="roleName" class="mt-1 w-full" type="text" name="name" :value="old('name')" required />
-                            <x-input-error for="name" class="mt-2" />
-                        </div>
-
-                    </x-slot>
-
-                    <x-slot name="actions">
-                        <x-button class="bg-blue-500 text-white hover:bg-blue-600">
-                            {{ __('Save') }}
-                        </x-button>
-                        <x-button type="button" class="ml-4" @click="openRole = false">
-                            {{ __('Cancel') }}
-                        </x-button>
-                    </x-slot>
-                </x-general.form-section>
-            </x-general.modal>
-
         </div>
-        <script>
-            document.addEventListener('alpine:init', () => {
-                $('#permissions-table').DataTable();
-                $('#roles-table').DataTable();
-                $('#requestpermissions').DataTable();
+
+        <!-- PERMISSION Modal -->
+        <!-- ADD -->
+        <x-general.modal :open="'openAddPermission'" :title="__('Permission')">
+            <x-general.form-section id="addPermission" :submit="route('permission.store')">
+                <x-slot name="form">
+                    <!-- Permission Name -->
+                    <div class="col-span-6 sm:col-span-4 w-full">
+                        <x-label for="name" value="{{ __('Permission Name') }}" />
+                        <x-input id="permissionName" class="mt-1 w-full" type="text" name="name" :value="old('email')" required />
+                        <x-input-error for="name" class="mt-2" />
+                    </div>
+
+                </x-slot>
+
+                <x-slot name="actions">
+                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                        {{ __('Save') }}
+                    </x-button>
+                    <x-button type="button" class="ml-4" @click="openAddPermission = false">
+                        {{ __('Cancel') }}
+                    </x-button>
+                </x-slot>
+            </x-general.form-section>
+        </x-general.modal>
+
+
+        <!-- Role Modal -->
+        <!-- ADD -->
+        <x-general.modal :open="'openRole'" :title="__('Role')">
+            <x-general.form-section id="openRole" :submit="route('permission.storeRole')">
+                <x-slot name="form">
+                    <!-- Permission Name -->
+                    <div class="col-span-6 sm:col-span-4 w-full">
+                        <x-label for="name" value="{{ __('Role Name') }}" />
+                        <x-input id="roleName" class="mt-1 w-full" type="text" name="name" :value="old('name')" required />
+                        <x-input-error for="name" class="mt-2" />
+                    </div>
+
+                </x-slot>
+
+                <x-slot name="actions">
+                    <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                        {{ __('Save') }}
+                    </x-button>
+                    <x-button type="button" class="ml-4" @click="openRole = false">
+                        {{ __('Cancel') }}
+                    </x-button>
+                </x-slot>
+            </x-general.form-section>
+        </x-general.modal>
+        @endrole
+    </div>
+    <script>
+        document.addEventListener('alpine:init', () => {
+            $('#permissions-table').DataTable();
+            $('#roles-table').DataTable();
+            $('#requestpermissions').DataTable();
+            $('#datapermissions').DataTable();
+        });
+        // Delete Skill
+        document.getElementById('deleteSkillButton').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent automatic form submission
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to delete this skill?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, remove it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we are deleting the skill',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById('deleteSkill').submit(); // Submit form after confirmation
+                }
             });
-            // Delete Skill
-            document.getElementById('deleteSkillButton').addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent automatic form submission
+        });
+
+        // Delete Category
+        document.getElementById('deleteCategoryButton').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent automatic form submission
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will also delete all skills associated with this category. Do you want to continue?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, remove it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we are deleting the category',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    document.getElementById('deleteCategory').submit(); // Submit form after confirmation
+                }
+            });
+        });
+        // edit and add category loading 
+        const editCategoryForm = document.getElementById('editCategory');
+        if (editCategoryForm) {
+            editCategoryForm.addEventListener('submit', function() {
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Are you sure you want to delete this skill?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, remove it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Processing...',
-                            text: 'Please wait while we are deleting the skill',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                        document.getElementById('deleteSkill').submit(); // Submit form after confirmation
+                    title: 'Processing...',
+                    text: 'Please wait while we updating the category',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
                     }
                 });
             });
-
-            // Delete Category
-            document.getElementById('deleteCategoryButton').addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent automatic form submission
+        }
+        const addCategoryForm = document.getElementById('addCategory');
+        if (addCategoryForm) {
+            addCategoryForm.addEventListener('submit', function() {
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'This will also delete all skills associated with this category. Do you want to continue?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, remove it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Processing...',
-                            text: 'Please wait while we are deleting the category',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                        document.getElementById('deleteCategory').submit(); // Submit form after confirmation
+                    title: 'Processing...',
+                    text: 'Please wait while we adding the category',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+
+                });
+            });
+        }
+        // edit and add new skill
+        const editSkillForm = document.getElementById('editSkill');
+        if (editSkillForm) {
+            editSkillForm.addEventListener('submit', function() {
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we updating the skill',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
                     }
                 });
             });
-            // edit and add category loading 
-            const editCategoryForm = document.getElementById('editCategory');
-            if (editCategoryForm) {
-                editCategoryForm.addEventListener('submit', function() {
-                    Swal.fire({
-                        title: 'Processing...',
-                        text: 'Please wait while we updating the category',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
+        }
+        const addSkillForm = document.getElementById('addPermission');
+        if (addSkillForm) {
+            addSkillForm.addEventListener('submit', function() {
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we adding the skill',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
                 });
-            }
-            const addCategoryForm = document.getElementById('addCategory');
-            if (addCategoryForm) {
-                addCategoryForm.addEventListener('submit', function() {
-                    Swal.fire({
-                        title: 'Processing...',
-                        text: 'Please wait while we adding the category',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-
-                    });
-                });
-            }
-            // edit and add new skill
-            const editSkillForm = document.getElementById('editSkill');
-            if (editSkillForm) {
-                editSkillForm.addEventListener('submit', function() {
-                    Swal.fire({
-                        title: 'Processing...',
-                        text: 'Please wait while we updating the skill',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                });
-            }
-            const addSkillForm = document.getElementById('addPermission');
-            if (addSkillForm) {
-                addSkillForm.addEventListener('submit', function() {
-                    Swal.fire({
-                        title: 'Processing...',
-                        text: 'Please wait while we adding the skill',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                });
-            }
-        </script>
+            });
+        }
+    </script>
 </x-app-layout>

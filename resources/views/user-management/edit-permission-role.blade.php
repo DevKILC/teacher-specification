@@ -19,9 +19,9 @@
                     @csrf
                     @method('PUT')
                     <table class="table-auto py-10" id="permissions-table">
-                        <thead class="bg-yellow-400 text-white">
+                        <thead>
                             <tr>
-                                <th><input type="checkbox" id="select-all"></th>
+                            <th class="flex space-x-2 items-center ">Select All <input class="ml-3" type="checkbox" id="select-all"></th>
                                 <th>ID</th>
                                 <th>Name</th>
                             </tr>
@@ -41,7 +41,7 @@
                     </table>
 
                     <!-- Update Button -->
-                    <div class="mt-4">
+                    <div class="mt-4 w-full flex justify-end">
                         <x-button type="submit">
                             {{__('Update Selected')}}
                         </x-button>
