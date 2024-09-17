@@ -91,21 +91,21 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Skill Name</th>
+                                    <th>Permission</th>
                                     <th>Status</th>
                                     @role('Administrator')
-                                    <th>Action</th>
+                                        <th>Action</th>
                                     @endrole
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($histories as $history)
+                                @foreach($requestPermissions as $requestPermission)
                                 <tr>
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                    <td class="border px-4 py-2">{{ $history->user[0]->name ?? 'Not Found' }}</td>
-                                    <td class="border px-4 py-2">{{ $history->permissions[0]->name ?? 'Not Found' }}</td>
+                                    <td class="border px-4 py-2">{{ $requestPermission->user->name ?? 'Not Found' }}</td>
+                                    <td class="border px-4 py-2">{{ $requestPermission->permissions->name ?? 'Not Found' }}</td>
                                     <td class="border px-4 py-2 flex flex-row justify-center">
-                                        @switch($history->stats)
+                                        @switch($requestPermission->stats)
                                         @case('Pending')
                                         <button class="bg-yellow-400 rounded-md px-2 py-3 text-white">Pending</button>
                                         @break
@@ -124,19 +124,23 @@
                                         <div class="flex space-x-3 justify-center">
                                         @if($history->stats == 'Pending')
                                         <!-- Show Accept and Decline buttons if status is Pending -->
-                                        <form action="{{ route('permissions.accept', $permission->id) }}" method="POST" class="inline-block">
+                                        <form action="{{ route('permissions.accept', $requestPermission->requestPermission->id) }}" method="POST" class="inline-block">
+                                            {{-- <input type="hidden" name="permission_id" value="{{$requestPermission->permission->}}"> --}}
                                             @csrf
-                                            <button type="submit" class="bg-green-500 rounded-md px-4 py-2 text-white hover:underline">Accept</button>
+                                            <button type="submit" class="bg-green-500 rounded-md px-4 py-2 text-white hover:underline">
+                                                Accept
+                                                {{ $requestPermission }}
+                                            </button>
                                         </form>
 
-                                        <form action="{{ route('permissions.decline', $permission->id) }}" method="POST" class="inline-block">
+                                        <form action="{{ route('permissions.decline', $requestPermission->requestPermission->id) }}" method="POST" class="inline-block">
                                             @csrf
                                             <button type="submit" class="bg-red-500 rounded-md px-4 py-2  text-white hover:underline">Decline</button>
                                         </form>
-                                        @elseif($history->stats == 'Accept')
+                                        @elseif($requestPermission->stats == 'Accept')
                                         <!-- Show Accepted status -->
                                         <span class="bg-green-500 text-white">Accepted</span>
-                                        @elseif($history->stats == 'Decline')
+                                        @elseif($requestPermission->stats == 'Decline')
                                         <!-- Show Declined status -->
                                         <span class="bg-red-500 text-white"> Declined</span>
                                         @endif
@@ -151,67 +155,70 @@
                 </div>
 
 
-                {{-- PERMISSIONS --}}
-                <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                    <div class="flex flex-row justify-end py-10">
-                        <x-button @click="openAddPermission = true">
-                            {{ __('Add Permission') }}
-                        </x-button>
-                    </div>
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                        <!-- Skill List -->
-                        @if($permissions->isEmpty())
-                        <p>No Permission available.</p>
-                        @else
-                        <table class="table-auto py-10" id="permissions-table">
-                            <thead class="bg-yellow-400 text-white">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($permissions as $permission)
-                                <tr>
-                                    <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                    <td class="border px-4 py-2">{{ $permission->name }}</td>
-                                    <td class="border px-4 py-2 flex space-x-2">
-                                        {{-- <x-button
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                                    @click="
-                                                skill = {
-                                                    id: {{ $skill->id }},
-                                        name: '{{ $skill->name }}',
-                                        description: '{{ $skill->description }}',
-                                        category_id: {{ $skill->category_id }},
-                                        type: '{{ $skill->type }}'
-                                        };
-                                        openAddSkillModal = true;
-                                        ">
-                                        {{ __('EDIT') }}
-                                        </x-button> --}}
-                                        <form action="{{ route('permission.destroy', $permission->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <x-button type="submit">
-                                                {{__('DELETE')}}
-                                            </x-button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        @endif
-                    </div>
-                </div>
-                <!--  -->
-
             </div>
 
 
+            {{-- PERMISSIONS --}}
+            @role('Administrator')
+            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+                <div class="flex flex-row justify-end py-10">
+                    <x-button @click="openAddPermission = true">
+                        {{ __('Add Permission') }}
+                    </x-button>
+                </div>
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                    <!-- Skill List -->
+                    @if($permissions->isEmpty())
+                    <p>No Permission available.</p>
+                    @else
+                    <table class="table-auto py-10" id="permissions-table">
+                        <thead class="bg-yellow-400 text-white">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($permissions as $permission)
+                            <tr>
+                                <td class="border px-4 py-2">{{ $loop->iteration }}</td>
+                                <td class="border px-4 py-2">{{ $permission->name }}</td>
+                                <td class="border px-4 py-2 flex space-x-2">
+                                    {{-- <x-button
+                                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                                @click="
+                                            skill = {
+                                                id: {{ $skill->id }},
+                                    name: '{{ $skill->name }}',
+                                    description: '{{ $skill->description }}',
+                                    category_id: {{ $skill->category_id }},
+                                    type: '{{ $skill->type }}'
+                                    };
+                                    openAddSkillModal = true;
+                                    ">
+                                    {{ __('EDIT') }}
+                                    </x-button> --}}
+                                    <form action="{{ route('permission.destroy', $permission->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <x-button type="submit">
+                                            {{__('DELETE')}}
+                                        </x-button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @endif
+                </div>
+            </div>
+            @endrole
+
+            <!--  -->
             {{-- Role --}}
+            @role('Administrator')
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <div class="flex flex-row justify-end py-10">
                     <x-button @click="openRole = true">
@@ -257,6 +264,7 @@
                     @endif
                 </div>
             </div>
+            @endrole
 
             <!-- PERMISSION Modal -->
             <!-- ADD -->

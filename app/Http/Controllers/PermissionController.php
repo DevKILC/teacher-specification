@@ -31,13 +31,16 @@ class PermissionController extends Controller
             return response()->json(['error' => 'User not authenticated'], 403);
         }
            // ambil data untuk history
-           $histories = RequestPermission::with(['user','permissions'])
-           ->where('user_id', Auth::id())
+        $requestPermissions = RequestPermission::with(['user','permissions'])
+           ->when(Auth::id() != 1, function ($query) {
+               return $query->where('user_id', Auth::id());
+           })
            ->orderBy('created_at', 'desc')
            ->get();
+
  
         return view('permission.index', [
-            'histories' => $histories,
+            'requestPermissions' => $requestPermissions,
             'userId' => Auth::id(),
             'permissions' => Permission::all(),
             'roles' => Role::all()

@@ -16,10 +16,10 @@ class RequestPermission extends Model
 
     public function permissions()
     {   
-    return $this->hasMany(Permission::class, 'id', 'permission_id');
+        return $this->hasOne(Permission::class, 'id', 'permission_id');
     }
     public function user()
     {
-        return $this->hasMany(UserManagement::class, 'id', 'user_id');
+        return $this->hasOne(UserManagement::class, 'id', 'user_id');
     }
 }

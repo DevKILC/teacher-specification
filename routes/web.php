@@ -43,7 +43,9 @@ Route::middleware([
     Route::resource('request-permission', RequestPermissionController::class);
 
 
-    Route::prefix('permission')->middleware(['permission:permission'])->group(function () {
+    Route::prefix('permission')
+    // ->middleware(['permission:permission'])
+    ->group(function () {
         Route::get('/', [PermissionController::class, 'index'])->name('permission.index');
         Route::post('/', [PermissionController::class, 'store'])->name('permission.store');
         Route::delete('/{id}', [PermissionController::class, 'destroy'])->name('permission.destroy');
