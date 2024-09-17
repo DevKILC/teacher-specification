@@ -31,7 +31,7 @@ class Teacher extends Model
     public static function dummyData()
     {
         $dummyTeacher = new self(); // Membuat instance model Teacher
-        $dummyTeacher->id ='Not Owned'; // ID dummy
+        $dummyTeacher->id ='0'; // ID dummy
         $dummyTeacher->name = 'Dummy Teacher'; // Nama dummy
         $dummyTeacher->address = '123 Dummy Address'; // Alamat dummy
         $dummyTeacher->number = '0000000000'; // Nomor dummy

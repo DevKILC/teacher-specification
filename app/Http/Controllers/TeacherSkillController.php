@@ -17,13 +17,10 @@ class TeacherSkillController extends Controller
     public function index(Request $request)
     {
 
-        $skill_name = $request->input('skill_name');
-        $typeOfSkill = $request->input('typeOfSkill');
-
-        $allSkills = Skill::when($skill_name, function ($query, $skill_name) {
+        $allSkills = Skill::when($request->skill_name, function ($query, $skill_name) {
             return $query->where('name', 'LIKE', '%' . $skill_name . '%');
         })
-        ->when($typeOfSkill, function ($query, $typeOfSkill) {
+        ->when($request->typeOfSkill, function ($query, $typeOfSkill) {
             return $query->where('type', $typeOfSkill);
         })
         ->get();
@@ -105,16 +102,14 @@ class TeacherSkillController extends Controller
      */
     public function show($teacher_id, Request $request)
     { 
-        $skill_name = $request->input('skill_name');
-        $typeOfSkill = $request->input('typeOfSkill');
-
-        $allSkills = Skill::when($skill_name, function ($query, $skill_name) {
+        $allSkills = Skill::when($request->skill_name, function ($query, $skill_name) {
             return $query->where('name', 'LIKE', '%' . $skill_name . '%');
         })
-        ->when($typeOfSkill, function ($query, $typeOfSkill) {
+        ->when($request->typeOfSkill, function ($query, $typeOfSkill) {
             return $query->where('type', $typeOfSkill);
         })
         ->get();
+
 
         $teachers = Teacher::with('teacherSkills.skills')->find($teacher_id);
         

@@ -31,11 +31,11 @@
                 <form action="{{ route('teacher-skill.index') }}">
                 <div class="w-auto px-3 py-3 h-auto flex gap-3 bg-white shadow-md rounded-md">
                     <input type="text" name="skill_name" value="" class="rounded-md">
-                    <select name="typeOfSkills" id="typeSkill" class="rounded-md">
-                        <option value="" selected disabled>Choose Type</option>
-                        <option value="ONLINE">Online</option>
-                        <option value="OFFLINE">Offline</option>
-                    </select>
+                    <select name="typeOfSkill" id="typeSkill" class="rounded-md">
+            <option value="" selected disabled>Choose Type</option>
+            <option value="ONLINE" {{ request('typeOfSkill') == 'ONLINE' ? 'selected' : '' }}>Online</option>
+            <option value="OFFLINE" {{ request('typeOfSkill') == 'OFFLINE' ? 'selected' : '' }}>Offline</option>
+        </select>
                     <button type="submit" class="ml-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-md flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF">
                                 <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
@@ -50,7 +50,7 @@
             <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex-col justify-center">
                 <form action="{{route('teacher-skill.store')}}" method="POST">
                     @csrf
-                    <input type="hidden" name="teacher_id" value="{{ $teachers->id }}">
+                    <input type="hidden" name="teacher_id" value="{{ $teachers->id ?? '' }}">
                     <div class="w-full mx-3 flex justify-center">
                         <div class="grid grid-cols-6 gap-4 w-[95%]">
                             @foreach($allSkills as $skill)
@@ -62,7 +62,7 @@
                                     value="{{ $skill->id }}"
                                     @if(isset($teachersSkillsGetValidation) && in_array($skill->id, $teachersSkillsGetValidation->toArray()))
                                         disabled checked
-                                        class="bg-gray-400 cursor-not-allowed"
+                                        class="accent-gray-400 cursor-not-allowed"
                                     @endif
                                 >
                                 <label for="skill_{{ $skill->id }}" class="text-gray-700">{{ $skill->name }}</label>
@@ -73,7 +73,7 @@
                     <div class="w-[95%] h-16 mt-10 flex items-center justify-end ">
                         <div class="flex space-x-5">
                         <a href="">
-                        <x-button type="button" class="ml-4">{{ __('Cancel') }}</x-button>
+                        <x-button type="reset" class="ml-4">{{ __('Unselect Skill') }}</x-button>
                         </a>
                         <x-button type="submit" >{{ __('Save') }}</x-button>
                         </div>

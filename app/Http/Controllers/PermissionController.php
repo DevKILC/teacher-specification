@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RequestPermission;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -29,13 +30,56 @@ class PermissionController extends Controller
             // Handle the case where the user is not authenticated
             return response()->json(['error' => 'User not authenticated'], 403);
         }
-        
+           // ambil data untuk history
+           $histories = RequestPermission::with(['user','permissions'])
+           ->where('user_id', Auth::id())
+           ->orderBy('created_at', 'desc')
+           ->get();
+ 
         return view('permission.index', [
+            'histories' => $histories,
+            'userId' => Auth::id(),
             'permissions' => Permission::all(),
             'roles' => Role::all()
         ]);
     }
 
+    public function accept($id)
+    {
+        try {
+            // Cari permintaan permission berdasarkan ID
+            $permissionRequest = RequestPermission::findOrFail($id);
+
+            // Ubah status menjadi "Accept"
+            $permissionRequest->stats = 'Accept';
+            $permissionRequest->updated_by = Auth::id(); // Menyimpan user ID yang menerima permintaan
+            $permissionRequest->save();
+
+            return redirect()->back()->with('success', 'Permission request accepted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to accept permission request: ' . $e->getMessage());
+        }
+    }
+
+    /*
+     * Method to decline a permission request
+     */
+    public function decline($id)
+    {
+        try {
+            // Cari permintaan permission berdasarkan ID
+            $permissionRequest = RequestPermission::findOrFail($id);
+
+            // Ubah status menjadi "Decline"
+            $permissionRequest->stats = 'Decline';
+            $permissionRequest->updated_by = Auth::id(); // Menyimpan user ID yang menolak permintaan
+            $permissionRequest->save();
+
+            return redirect()->back()->with('success', 'Permission request declined successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to decline permission request: ' . $e->getMessage());
+        }
+    }
     /*
         * Store a newly created resource in storage.
     */
