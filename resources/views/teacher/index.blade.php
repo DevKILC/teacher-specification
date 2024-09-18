@@ -87,13 +87,18 @@
                     <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2">
                         <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list</h1>
                         @can('Add teacher skills')
-                        @role('Administrator')
                         <a href="{{ route('teacher-skill.show', $teachers->id ) }}">
-
-                            <button class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">+ Add New Skill</button>
-
+                            <button class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">
+                                + Add New Skill
+                            </button>
                         </a>
-                        @endrole
+                        @elsecan('Administrator')
+                        <!-- Jika user adalah Administrator tetapi tidak punya permission -->
+                        <a href="{{ route('teacher-skill.show', $teachers->id ) }}">
+                            <button class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">
+                                + Add New Skill
+                            </button>
+                        </a>
                         @endcan
                     </div>
 
