@@ -20,10 +20,21 @@ class UserManagementController extends Controller
     public function detailEditPermission($id)
     {
         $user = User::find($id);
+
+        // Ambil semua permissions yang sudah dimiliki oleh user
+        $userPermissions = $user->permissions()->pluck('id')->toArray();
+        
+        // Map semua permission, tambahkan properti `selected` jika user sudah memiliki permission tersebut
+        $permissions = Permission::all()->map(function ($permission) use ($userPermissions) {
+            $permission->selected = in_array($permission->id, $userPermissions);
+            return $permission;
+        });
+        
         return view('user-management.edit-permission', [
             'user' => $user,
-            'permissions' => Permission::all(),
+            'permissions' => $permissions, // Pass mapped permissions ke view
         ]);
+        
     }
 
     public function updatePermission(Request $request, $id)
@@ -31,9 +42,9 @@ class UserManagementController extends Controller
         try {
             $user = User::find($id);
             $user->givePermissionTo($request->input('permissions'));
-    
-            return redirect()->route('user-management.index')->with('success', 'Permission updated successfully');
 
+
+            return redirect()->route('user-management.index')->with('success', 'Permission updated successfully');
         } catch (\Throwable $th) {
             return $th->getMessage();
             return redirect()->back()->with('error', 'Failed to update permission: ' . $th->getMessage());
@@ -44,7 +55,7 @@ class UserManagementController extends Controller
     {
         $user = User::find($id);
         $roles = Role::all();
-        
+
         $roles = $roles->map(function ($role) use ($user) {
             $role->selected = $user->hasRole($role->name);
             return $role;
@@ -63,7 +74,6 @@ class UserManagementController extends Controller
             $user->syncRoles(request()->input('roles'));
 
             return redirect()->route('user-management.index')->with('success', 'Role updated successfully');
-
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed to update role: ' . $th->getMessage());
         }

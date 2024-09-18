@@ -30,7 +30,8 @@
                             @foreach($permissions as $permission)
                             <tr>
                                 <td class="border px-4 py-2 text-center">
-                                    <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="permission-checkbox">
+                                    <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="permission-checkbox"
+                                    {{ $permission->selected ? 'checked' : '' }}>
                                 </td>
                                 <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                 <td class="border px-4 py-2">{{ $permission->name }}</td>

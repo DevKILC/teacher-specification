@@ -162,6 +162,7 @@ class PermissionController extends Controller
             $role = Role::find($id);
             $role->syncPermissions($request->input('permissions'));
 
+
             return redirect()->route('permission.index')->with('success', 'Role permission updated successfully');
 
         } catch (\Throwable $th) {
