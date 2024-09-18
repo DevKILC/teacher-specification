@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\ModelHasPermission;
 use App\Models\RequestPermission;
 use App\Models\User;
+use App\Models\UserManagement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+
 
 class PermissionController extends Controller
 {
@@ -18,6 +20,7 @@ class PermissionController extends Controller
     */
     public function index()
     {
+    
         if (Auth::check()) {
             $user = Auth::user(); // Get the authenticated user
             $userId = $user->id; // Access the user's ID
@@ -31,12 +34,23 @@ class PermissionController extends Controller
             // Handle the case where the user is not authenticated
             return response()->json(['error' => 'User not authenticated'], 403);
         }
+
+        // Ambil data request permission yang belum diproses
+
            // ambil data untuk history
-           $histories = RequestPermission::with('user','permissions')
-           ->where('user_id', Auth::id())
-           ->orderBy('created_at', 'desc')
-           ->get();
- 
+        //    jika role Administrator maka show semua data 
+        if (Auth::check() && Auth::user()->hasRole('Administrator')) {
+            $histories = RequestPermission::with('user','permissions')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        } else {
+            // Jika bukan role administrator, hanya tampilkan history yang dimiliki user ini
+            $histories = RequestPermission::with('user','permissions')
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+        }
+
         //    Mengmemperlihatkan data permisi yang dimiliki oleh user
        
         $showPermission = ModelHasPermission::with('userManagement','permission')->where('model_id', Auth::id())->get();
@@ -57,18 +71,20 @@ class PermissionController extends Controller
             // Cari permintaan permission berdasarkan ID
             $permissionRequest = RequestPermission::find($id);
 
+            $user_id = User::find($permissionRequest->user_id);
+            $permission = Permission::find($permissionRequest->permission_id);
+
             // Ubah status menjadi "Accept"
             $permissionRequest->stats = 'Accept';
             $permissionRequest->updated_by = Auth::user()->name; // Menyimpan user ID yang menerima permintaan
             $permissionRequest->save();
 
             // Menambahkan permisi ke user yang menerima permintaan
-            $permissionRequest->user->givePermissionTo($permissionRequest->permission);
-
+            $user_id->givePermissionTo($permission);
 
             return redirect()->back()->with('success', 'Permission request accepted successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to decline permission request: ' . $e->getMessage());
+            return  $e->getMessage();
         }
     }
 
