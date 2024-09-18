@@ -52,7 +52,7 @@
                         <div class="flex w-full items-center border-yellow-400 border-b-2 pb-2">
                             <h1 class="text-left text-xl ">Biodata</h1>
                         </div>
-                        @role('Administrator')
+                        @can('Read teacher biodata')
                         <div class="flex flex-col">
                             <label for="username" class="font-semibold">Username</label>
                             <p id="username" class="text-gray-700"> {{ $teachers->username ?? 'Not Found' }} </p>
@@ -67,7 +67,22 @@
                             <label for="address" class="font-semibold">Address</label>
                             <p id="address" class="text-gray-700"> {{ $teachers->address ?? 'Not Found' }} </p>
                         </div>
-                        @endrole
+                        @elsecan('Administrator')
+                        <div class="flex flex-col">
+                            <label for="username" class="font-semibold">Username</label>
+                            <p id="username" class="text-gray-700"> {{ $teachers->username ?? 'Not Found' }} </p>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="phone" class="font-semibold">Phone</label>
+                            <p id="phone" class="text-gray-700"> {{ $teachers->phone ?? 'Not Found' }} </p>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="address" class="font-semibold">Address</label>
+                            <p id="address" class="text-gray-700"> {{ $teachers->address ?? 'Not Found' }} </p>
+                        </div>
+                        @endcan
                         @role('Teacher')
                         <div class="flex w-full justify-center items-center h-full">
                             <p id="phone" class="text-gray-700"> You Do not have any permission for this information </p>
