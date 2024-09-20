@@ -132,6 +132,35 @@ class PermissionController extends Controller
     {
         try {
             DB::table('permissions')->where('id', $id)->delete();
+
+            // hapus permission yang berkaitan dari user
+            ModelHasPermission::where('permission_id', $id)->delete();
+
+            
+            // hapus permission yang berkaitan dari usermanagement
+            UserManagement::where('permission_id', $id)->delete();
+
+            
+            // hapus permission yang berkaitan dari request permission
+            RequestPermission::where('permission_id', $id)->delete();
+
+            
+            // hapus permission yang berkaitan dengan role
+            DB::table('role_has_permissions')->where('permission_id', $id)->delete();
+
+            
+            // hapus permission yang berkaitan dengan user
+            DB::table('model_has_permissions')->where('permission_id', $id)->delete();
+
+            
+            // hapus permission yang berkaitan dengan user management
+            DB::table('user_management')->where('permission_id', $id)->delete();
+
+            
+            // hapus permission yang berkaitan dengan request permission
+            DB::table('request_permission')->where('permission_id', $id)->delete();
+
+            return redirect()->back()->with('success', 'Permission deleted successfully');
             return redirect()->back()->with('success', 'Permission deleted successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete permission: ' . $e->getMessage());
@@ -195,6 +224,14 @@ class PermissionController extends Controller
     {
         try {
             DB::table('roles')->where('id', $id)->delete();
+
+            // hapus role dari user
+            User::whereHas('roles', function ($query) use ($id) {
+                $query->where('role_id', $id);
+            })->update(['role_id' => null]);
+
+            return redirect()->route('permission.index')->with('success', 'Role deleted successfully');
+
             return redirect()->back()->with('success', 'Role deleted successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete role: ' . $e->getMessage());
