@@ -9,6 +9,7 @@ use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\RequestPermissionController;
+use App\Http\Controllers\RequestRecordActivityController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,7 @@ Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::middleware([
@@ -42,7 +43,16 @@ Route::middleware([
 
     Route::resource('request-permission', RequestPermissionController::class);
 
+    Route::resource('request-record-activity', RequestRecordActivityController::class);
 
+    Route::prefix('record')->group(function(){
+
+        Route::put('/accept/{id}',[RecordController::class,'accept'])->name('record.accept');
+        Route::put('/decline/{id}',[RecordController::class,'decline'])->name('record.decline');
+
+    });
+
+ 
     Route::prefix('permission')
     // ->middleware(['permission:permission'])
     ->group(function () {

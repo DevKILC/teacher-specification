@@ -24,7 +24,7 @@
                     </h1>
                 </div>
 
-                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                <div class="flex h-auto items-center text-center mt-12 mb-12">
                     <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
                             <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
@@ -226,7 +226,7 @@
                     </div>
                 </div>
 
-                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                <div class="flex h-auto items-center text-center mt-12 mb-12">
                     <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
                             <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />

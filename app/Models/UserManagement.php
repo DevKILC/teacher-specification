@@ -15,6 +15,11 @@ class UserManagement extends Model
     {
         return $this->belongsTo(RequestPermission::class, 'id', 'user_id');
     }
+    // relasi ke RequestRecordActivity
+    public function requestRecordActivities()
+    {
+        return $this->belongsTo(RequestRecordActivity::class, 'id', 'user_id');
+    }
     // relasi user_id ke model_has_permission
     public function userPermissions()
     {

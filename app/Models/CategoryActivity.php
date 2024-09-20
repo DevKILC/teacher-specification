@@ -17,4 +17,10 @@ class CategoryActivity extends Model
     {
         return $this->belongsTo(Record::class, 'category_id');
     }
+
+    // relasike requestrecordactrivity
+    public function requestRecordActivities()
+    {
+        return $this->belongsTo(RequestRecordActivity::class, 'category_id');
+    }
 }

@@ -52,7 +52,7 @@
                         <div class="flex w-full items-center border-yellow-400 border-b-2 pb-2">
                             <h1 class="text-left text-xl ">Biodata</h1>
                         </div>
-                        @can('Read teacher biodata')
+                        @if(auth()->user()->can('Read teacher biodata') || auth()->user()->hasRole('Administrator'))
                         <div class="flex flex-col">
                             <label for="username" class="font-semibold">Username</label>
                             <p id="username" class="text-gray-700"> {{ $teachers->username ?? 'Not Found' }} </p>
@@ -67,32 +67,11 @@
                             <label for="address" class="font-semibold">Address</label>
                             <p id="address" class="text-gray-700"> {{ $teachers->address ?? 'Not Found' }} </p>
                         </div>
-                        @elsecan('Administrator')
-                        <div class="flex flex-col">
-                            <label for="username" class="font-semibold">Username</label>
-                            <p id="username" class="text-gray-700"> {{ $teachers->username ?? 'Not Found' }} </p>
-                        </div>
-
-                        <div class="flex flex-col">
-                            <label for="phone" class="font-semibold">Phone</label>
-                            <p id="phone" class="text-gray-700"> {{ $teachers->phone ?? 'Not Found' }} </p>
-                        </div>
-
-                        <div class="flex flex-col">
-                            <label for="address" class="font-semibold">Address</label>
-                            <p id="address" class="text-gray-700"> {{ $teachers->address ?? 'Not Found' }} </p>
-                        </div>
-                        @endcan
-                        @role('Teacher')
-                        <div class="flex w-full justify-center items-center h-full">
-                            <p id="phone" class="text-gray-700"> You Do not have any permission for this information </p>
-                        </div>
-                        @endrole
-                        @unlessrole('Administrator|Teacher')
+                        @else
                         <div class="flex w-full justify-center items-center h-full">
                             <p class="text-gray-700"> You do not have any permission for this information </p>
                         </div>
-                        @endunlessrole
+                       @endif
                     </div>
 
                 </div>
@@ -101,20 +80,15 @@
                 <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6">
                     <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2">
                         <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list</h1>
-                        @can('Add teacher skills')
+                        @if(auth()->user()->can('Add teacher skills') || auth()->user()->hasRole('Administrator'))
+                        <!-- Jika user memiliki permission Add teacher skills ATAU user adalah Administrator -->
                         <a href="{{ route('teacher-skill.show', $teachers->id ) }}">
                             <button class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">
                                 + Add New Skill
                             </button>
                         </a>
-                        @elsecan('Administrator')
-                        <!-- Jika user adalah Administrator tetapi tidak punya permission -->
-                        <a href="{{ route('teacher-skill.show', $teachers->id ) }}">
-                            <button class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">
-                                + Add New Skill
-                            </button>
-                        </a>
-                        @endcan
+                        @endif
+
                     </div>
 
                     <!-- Skills table -->

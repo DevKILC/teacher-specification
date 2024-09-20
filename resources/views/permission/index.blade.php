@@ -71,7 +71,7 @@
                     </x-general.form-section>
                 </x-general.modal>
 
-                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                <div class="flex h-auto items-center text-center mt-12 mb-12">
                     <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
                             <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
@@ -92,12 +92,12 @@
                         <table class="table-auto py-10" id="requestpermissions">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Permission Name</th>
-                                    <th>Status</th>
+                                    <th class="border px-4 py-2">ID</th>
+                                    <th class="border px-4 py-2">Requested By</th>
+                                    <th class="border px-4 py-2">Permission Name</th>
+                                    <th class="border px-4 py-2">Status</th>
                                     @role('Administrator')
-                                    <th>Action</th>
+                                    <th class="border px-4 py-2">Action</th>
                                     @endrole
                                 </tr>
                             </thead>
@@ -107,21 +107,33 @@
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                     <td class="border px-4 py-2">{{ $history->user->name ?? 'Not Found' }}</td>
                                     <td class="border px-4 py-2">{{ $history->permissions->name ?? 'Not Found' }}</td>
-                                    <td class="border px-4 py-2 flex flex-row justify-center">
+                                    <td class="border px-4 py-2 flex flex-row justify-center space-x-3">
                                         @switch($history->stats)
                                         @case('Pending')
-                                        <button class="bg-yellow-400 rounded-md px-2 py-3 text-white">Pending</button>
+                                        <div class="flex items-center">
+                                            <span class="bg-yellow-400 rounded-md px-2 py-2 text-white">Pending</span>
+
+                                            <!-- Tombol Delete hanya terlihat untuk pengguna non-Administrator -->
+                                            @unlessrole('Administrator')
+                                            <form action="{{ route('request-permission.destroy', $history->id) }}" method="POST" class="inline-block ml-2">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="bg-red-500 rounded-md px-2 py-2 text-white">Delete</button>
+                                            </form>
+                                            @endunlessrole
+                                        </div>
                                         @break
                                         @case('Accept')
-                                        <button class="bg-green-500 rounded-md px-2 py-3 text-white">Accept</button>
+                                        <button class="bg-green-500 rounded-md px-4 py-2 text-white">Accepted</button>
                                         @break
                                         @case('Decline')
-                                        <button class="bg-red-500 rounded-md px-2 py-3 text-white"> Decline</button>
+                                        <button class="bg-red-500 rounded-md px-4 py-2 text-white">Declined</button>
                                         @break
                                         @default
-                                        <button class="bg-gray-500 rounded-md px-2 py-3 text-white">Unknown Status</button>
+                                        <button class="bg-gray-500 rounded-md px-4 py-2 text-white">Unknown Status</button>
                                         @endswitch
                                     </td>
+
                                     @role('Administrator')
                                     <td class="border">
                                         <div class="flex space-x-3 justify-center">
@@ -136,14 +148,14 @@
                                             <form action="{{ route('permissions.decline', $history->id) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('PUT')
-                                                <button type="submit" class="bg-red-500 rounded-md px-4 py-2  text-white hover:underline">Decline</button>
+                                                <button type="submit" class="bg-red-500 rounded-md px-4 py-2 text-white hover:underline">Decline</button>
                                             </form>
                                             @elseif($history->stats == 'Accept')
                                             <!-- Show Accepted status -->
                                             <span class="bg-green-500 rounded-md px-4 py-2 text-white">Accepted</span>
                                             @elseif($history->stats == 'Decline')
                                             <!-- Show Declined status -->
-                                            <span class="bg-red-500 rounded-md px-4 py-2 text-white"> Declined</span>
+                                            <span class="bg-red-500 rounded-md px-4 py-2 text-white">Declined</span>
                                             @endif
                                         </div>
                                     </td>
@@ -155,7 +167,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                <div class="flex h-auto items-center text-center mt-12 mb-12">
                     <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
                             <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
@@ -190,7 +202,7 @@
                     </div>
                 </div>
                 @role('Administrator')
-                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                <div class="flex h-auto items-center text-center mt-12 mb-12">
                     <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
                             <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
@@ -256,7 +268,7 @@
                 </div>
                 <!--  -->
 
-                <div class="flex h-auto items-center text-center mt-6 mb-6">
+                <div class="flex h-auto items-center text-center mt-12 mb-12">
                     <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
                             <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />

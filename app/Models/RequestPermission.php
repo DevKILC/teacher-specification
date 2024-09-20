@@ -11,7 +11,8 @@ class RequestPermission extends Model
     protected $fillable = [
         'user_id',
         'permission_id',
-        'stats',];
+        'stats',
+        'created_by'];
     protected $table = 'request_permission';
 
     public function permissions()

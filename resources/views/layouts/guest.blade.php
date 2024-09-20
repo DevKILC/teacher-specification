@@ -23,4 +23,4 @@
         </div>
 
         @livewireScripts
-    </body>litar
+    </body>
