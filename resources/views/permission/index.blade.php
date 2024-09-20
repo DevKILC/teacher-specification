@@ -34,12 +34,14 @@
                             Permission
                         </h1>
                     </div>
+                    @unlessrole('Administrator')
                     <!-- Request Permission Button -->
                     <div class="flex items-center mr-3">
                         <button class="bg-yellow-400 text-white px-4 py-2 rounded-md hover:bg-yellow-500" @click="openRequestPermission = true">
                             {{ __('Request Permission') }}
                         </button>
                     </div>
+                    @endunlessrole
                 </div>
 
                 <!-- Request Permission Modal -->
