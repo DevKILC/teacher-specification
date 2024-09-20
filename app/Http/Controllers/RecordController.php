@@ -69,9 +69,18 @@ class RecordController extends Controller
                         'date' => $activityRequest->date,
                     ]);
                 }
-            return redirect()->back()->with('success', 'Activity request accepted successfully.');
+                 session()->flash('success', 'Activity request accepted successfully.');
+            return redirect()->back();
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangani error validasi
+            session()->flash('error', $e->getMessage());
+            return redirect()->back()->withErrors($e->validator->errors())->withInput();
+    
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to accept activity request: ' . $e->getMessage());
+            // Tangani error lain
+            session()->flash('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function decline($record)
@@ -85,9 +94,18 @@ class RecordController extends Controller
             $activityRequest->updated_by = Auth::user()->name; // Menyimpan user ID yang menolak permintaan
             $activityRequest->save();
 
-            return redirect()->back()->with('success', 'Activity request declined successfully.');
+            session()->flash('success', 'Request decline successfully');
+            return redirect()->back();
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangani error validasi
+            session()->flash('error', $e->getMessage());
+            return redirect()->back()->withErrors($e->validator->errors())->withInput();
+    
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to decline activity request: ' . $e->getMessage());
+            // Tangani error lain
+            session()->flash('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     
