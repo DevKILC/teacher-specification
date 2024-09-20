@@ -46,13 +46,14 @@
                 type: ''
             },
         }">
-        @role('Administrator')
+        @can('Add Skill')
                         <div class="bg-white w-44 h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-8 ">
                             <x-button @click="openSkillModal = true">
                                 {{ __('Add Skill') }}
                             </x-button>
                         </div>
-                        <!-- Skill Modal -->
+        @endcan
+                      <!-- Skill Modal -->
                         <!-- ADD -->
                         <x-general.modal :open="'openSkillModal'" :title="__('Create Skill')">
                             <x-general.form-section id="addSkill" :submit="route('skill.store')">
@@ -165,7 +166,6 @@
 
                             </form>
                         </x-general.modal>
-                @endrole
                         <div class="w-[90%]">
                             <!-- Skill List -->
                             @if($skills->isEmpty())
@@ -179,9 +179,9 @@
                                         <th>Description</th>
                                         <th>Category</th>
                                         <th>Type</th>
-                                        @role('Administrator')
+                                        @can('Manage skill')
                                         <th>Actions</th>
-                                        @endrole
+                                        @endcan
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -192,7 +192,7 @@
                                         <td class="border px-4 py-2">{{ $skill->description }}</td>
                                         <td class="border px-4 py-2">{{ $skill->category->name }}</td>
                                         <td class="border px-4 py-2">{{ $skill->type }}</td>
-                                        @role('Administrator')
+                                        @can('Manage skill')
                                         <td class="border px-4 py-2 flex justify-center space-x-2">
                                             <x-button
                                                 class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
@@ -216,7 +216,7 @@
                                                 </x-button>
                                             </form>
                                         </td>
-                                        @endrole
+                                        @endcan
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -245,11 +245,12 @@
             },
         }">     
 
-        @role('Administrator')
+        @can('Add category')
                     <div class="bg-white w-44 h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-8 ">
                         <x-button @click="openCategoryModal = true">
                             {{ __('Add Category') }}
                         </x-button>
+        @endcan
                         <!-- Category Modal -->
                         <!-- ADD -->
                         <x-general.modal :open="'openCategoryModal'" :title="__('Create Category')">
@@ -304,7 +305,7 @@
                             </form>
                         </x-general.modal>
                     </div>
-        @endrole
+        
                     <div class="w-[90%]">
                         <!-- Category List -->
                         @if($categories->isEmpty())
@@ -315,9 +316,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    @role('Administrator')
+                                    @can('Manage Category')
                                     <th>Actions</th>
-                                    @endrole
+                                    @endcan
                                 </tr>
                             </thead>
                             <tbody>
@@ -325,7 +326,7 @@
                                 <tr>
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                     <td class="border px-4 py-2">{{ $category->name }}</td>
-                                    @role('Administrator')
+                                    @can('Manage category')
                                     <td class="border px-4 py-2 flex justify-center space-x-2">
                                         <x-button
                                             class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
@@ -346,7 +347,7 @@
                                             </x-button>
                                         </form>
                                     </td>
-                                    @endrole
+                                    @endcan
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -29,11 +29,11 @@
                     <h1 class="text-2xl text-left">Records Data</h1>
                 </div>
                 <div class="flex space-x-3 w-auto px-3 py-3 h-16 bg-white rounded-md shadow-md" x-data="{ openAddTeacherActivity: false, openAddActivityCategory: false, openRequestTeacherActivity : false }">
-                    @role('Administrator')
+                    @unlessrole('Administrator')
                     <!-- addactivity button and add activity category button  -->
                     <!-- addactivity button -->
                     <button @click="openAddTeacherActivity = true" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
-                        Add Teacher Activity
+                        Request Teacher Activity
                     </button>
 
                     <!-- Teacher Activity Modal -->
@@ -98,10 +98,13 @@
 
                         </x-general.form-section>
                     </x-general.modal>
+                    @endunlessrole
+                    @can('Add teacher Activity')
                     <!-- add activity category button -->
                     <button @click="openAddTeacherActivity = true" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
                         Add Teacher Activity
                     </button>
+                    @endcan
 
                     <!-- Teacher Activity Modal -->
                     <x-general.modal :open="'openAddTeacherActivity'" :title="__('Create Activity')">
@@ -165,11 +168,12 @@
 
                         </x-general.form-section>
                     </x-general.modal>
-
+                    @can('Add activity category')
                     <!-- addcategory button -->
                     <button @click="openAddActivityCategory = true" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
                         Add Activity Category
                     </button>
+                    @endcan
 
                     <x-general.modal :open="'openAddActivityCategory'" :title="__('Create Category')">
                         <!-- modalshow category -->
@@ -187,9 +191,9 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>Name</th>
-                                                @role('Administrator')
+                                                @can('Delete activity category')
                                                 <th>Option</th>
-                                                @endrole
+                                                @endcan
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -197,7 +201,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $category->name ?? 'N/A' }}</td>
-                                                @role('Administrator')
+                                               @can('Delete activity category')
                                                 <td class="flex justify-center">
                                                     <!-- Form to Delete Category -->
                                                     <form id="deleteActivityCategory" action="{{ route('categoryactivity.destroy', $category->id) }}" method="POST">
@@ -208,7 +212,7 @@
                                                         </x-button>
                                                     </form>
                                                 </td>
-                                                @endrole
+                                                @endcan
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -285,9 +289,9 @@
                                     <th>Activity</th>
                                     <th>Category</th>
                                     <th>Date</th>
-                                    @role('Administrator')
+                                 @can('Delete Activity')
                                     <th>Option</th>
-                                    @endrole
+                                    @endcan
 
                                 </tr>
                             </thead>
@@ -299,7 +303,7 @@
                                     <td class="border px-4 py-2">{{ $activity->activity ?? 'N/A' }}</td>
                                     <td class="border px-4 py-2">{{ $activity->category->name ?? 'N/A' }}</td>
                                     <td class="border px-4 py-2" >{{ $activity->date ?? 'N/A' }}</td>
-                                    @role('Administrator')
+                                    @can('Delete Activity')
                                     <td class=" border px-4 py-2 flex justify-center">
                                         <form id="deleteActivity" action="{{ route('record.destroy', $activity->id) }}" method="POST">
                                             @csrf
@@ -309,7 +313,7 @@
                                             </x-button>
                                         </form>
                                     </td>
-                                    @endrole
+                                    @endcan
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -346,9 +350,9 @@
                                 <th>Activity</th>
                                 <th>Category</th>
                                 <th>Status</th>
-                                @role('Administrator')
+                                @can('Can validate request activity')
                                 <th>Action</th>
-                                @endrole
+                                @endcan
                             </tr>
                         </thead>
                         <tbody>
@@ -386,7 +390,7 @@
                                     @endswitch
                                 </td>
 
-                                @role('Administrator')
+                                @can('Can validate request activity')
                                 <td class="border">
                                     <div class="flex space-x-3 justify-center">
                                         @if($history->stats == 'Pending')
@@ -411,7 +415,7 @@
                                         @endif
                                     </div>
                                 </td>
-                                @endrole
+                                @endcan
                             </tr>
                             @endforeach
                         </tbody>
