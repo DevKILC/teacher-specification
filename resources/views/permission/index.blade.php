@@ -181,7 +181,7 @@
                 <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex justify-center">
                     <!-- permiison yang di punyai -->
                     <div class="w-[90%]">
-                        @if($showPermission->isEmpty())
+                        @if($userPermission->isEmpty())
                         <p>No permission available.</p>
                         @else
                         <table class="table-auto py-10" id="datapermissions">
@@ -192,10 +192,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($showPermission as $show)
+                                @foreach( $userPermission as $show)
                                 <tr>
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                    <td class="border px-4 py-2">{{ $show->permission->name ?? 'Not Found' }}</td>
+                                    <td class="border px-4 py-2">{{ $show->name ?? 'Not Found' }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

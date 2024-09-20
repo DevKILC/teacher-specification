@@ -21,9 +21,7 @@
                     <table class="table-auto py-10" id="permissions-table">
                         <thead>
                             <tr>
-                            <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="permission-checkbox"
-                                    {{ $permission->selected ? 'checked' : '' }}>
-                                </td>
+                                <th class="flex space-x-2 items-center ">Select All <input class="ml-3" type="checkbox" id="select-all"></th>
                                 <th>ID</th>
                                 <th>Name</th> 
                             </tr>

@@ -53,11 +53,14 @@ class PermissionController extends Controller
 
         //    Mengmemperlihatkan data permisi yang dimiliki oleh user
        
-        $showPermission = ModelHasPermission::with('userManagement','permission')->where('model_id', Auth::id())->get();
+        // $showPermission = ModelHasPermission::with('userManagement','permission')->where('model_id', Auth::id())->get();
 
+        // Mengambil data user yang memiliki role administrator
+        $user = User::find(Auth::user()->id);
+        $userPermission = $user->getAllPermissions();
 
         return view('permission.index', [
-            'showPermission' => $showPermission,
+            'userPermission' => $userPermission,
             'histories' => $histories,
             'userId' => Auth::id(),
             'permissions' => Permission::all(),
@@ -186,13 +189,12 @@ class PermissionController extends Controller
     public function detailEditRolePermission($id)
     {
         $permissions = Permission::all();
-        $rolePermissions = Role::find($id)->permissions->pluck('id')->toArray();
+        $rolePermissions = Role::find($id)->permissions()->pluck('id')->toArray();
+
+        // Map semua permission, tambahkan properti `checked` jika role sudah memiliki permission tersebut
         $permissions = $permissions->map(function ($permission) use ($rolePermissions) {
-            return [
-                'id' => $permission->id,
-                'name' => $permission->name,
-                'checked' => in_array($permission->id, $rolePermissions)
-            ];
+            $permission->selected = in_array($permission->id, $rolePermissions);
+            return $permission;
         });
 
         return view('permission.edit-permission-role', [
@@ -210,7 +212,7 @@ class PermissionController extends Controller
 
 
             session()->flash('success', 'Permission updated successfully');
-            return redirect()->back();
+            return redirect()->route('permission.index');
 
         } catch (\Exception $e) {
             session()->flash('error', 'Error: ' . $e->getMessage());
