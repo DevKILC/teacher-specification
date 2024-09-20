@@ -41,7 +41,7 @@
             </x-nav-link>
             @role('Administrator')
                 <x-nav-link href="{{ route('user-management.index') }}" :active="request()->segment(1) === 'user-management'">
-                    {{ __('User Management') }}
+                    {{ __('User management') }}
                 </x-nav-link>
             @endrole
             {{-- @endcan --}}
