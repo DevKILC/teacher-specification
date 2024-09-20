@@ -208,6 +208,7 @@ class PermissionController extends Controller
             $role->syncPermissions($request->input('permissions'));
 
 
+
             session()->flash('success', 'Permission updated successfully');
             return redirect()->back();
 
