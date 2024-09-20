@@ -82,9 +82,13 @@ class PermissionController extends Controller
             // Menambahkan permisi ke user yang menerima permintaan
             $user_id->givePermissionTo($permission);
 
-            return redirect()->back()->with('success', 'Permission request accepted successfully.');
+            // session notifikasi
+            session()->flash('success', 'Permission request accepted successfully');
+            return redirect()->back();
+
         } catch (\Exception $e) {
-            return  $e->getMessage();
+            session()->flash('error', 'Error: ' . $e->getMessage());
+            return redirect()->back();
         }
     }
 
@@ -102,9 +106,12 @@ class PermissionController extends Controller
             $permissionRequest->updated_by = Auth::user()->name; // Menyimpan user ID yang menolak permintaan
             $permissionRequest->save();
 
-            return redirect()->back()->with('success', 'Permission request declined successfully.');
+            session()->flash('success', 'Permission request declined successfully');
+            return redirect()->back();
+
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to decline permission request: ' . $e->getMessage());
+            session()->flash('error', 'Error: ' . $e->getMessage());
+            return redirect()->back();
         }
     }
     /*
@@ -112,6 +119,7 @@ class PermissionController extends Controller
     */
     public function store(Request $request)
     {
+        try{
         $request->validate([
             'name' => 'required|string|unique:permissions,name',
         ]);
@@ -121,7 +129,13 @@ class PermissionController extends Controller
             'guard_name' => 'web'
         ]);
 
-        return redirect()->back()->with('success', 'Permission created successfully');
+        session()->flash('success', 'Permission created successfully');
+        return redirect()->back();
+
+    } catch (\Exception $e) {
+        session()->flash('error', 'Error: ' . $e->getMessage());
+        return redirect()->back();
+    }
     }
 
 
@@ -160,10 +174,12 @@ class PermissionController extends Controller
             // hapus permission yang berkaitan dengan request permission
             DB::table('request_permission')->where('permission_id', $id)->delete();
 
-            return redirect()->back()->with('success', 'Permission deleted successfully');
-            return redirect()->back()->with('success', 'Permission deleted successfully');
+            session()->flash('success', 'Permission deleted successfully');
+            return redirect()->back();
+
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to delete permission: ' . $e->getMessage());
+            session()->flash('error', 'Error: ' . $e->getMessage());
+            return redirect()->back();
         }
     }
 
@@ -192,10 +208,12 @@ class PermissionController extends Controller
             $role->syncPermissions($request->input('permissions'));
 
 
-            return redirect()->route('permission.index')->with('success', 'Role permission updated successfully');
+            session()->flash('success', 'Permission updated successfully');
+            return redirect()->back();
 
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Failed to update role permission: ' . $th->getMessage());
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error: ' . $e->getMessage());
+            return redirect()->back();
         }
     }
 
@@ -204,6 +222,7 @@ class PermissionController extends Controller
     */
     public function storeRole(Request $request)
     {
+        try{
         $request->validate([
             'name' => 'required|string|unique:roles,name',
         ]);
@@ -213,8 +232,14 @@ class PermissionController extends Controller
             'guard_name' => 'web'
         ]);
 
-        return redirect()->back()->with('success', 'Role created successfully');
+        session()->flash('success', 'Role created successfully');
+        return redirect()->back();
+
+    } catch (\Exception $e) {
+        session()->flash('error', 'Error: ' . $e->getMessage());
+        return redirect()->back();
     }
+}
 
 
     /*
@@ -230,12 +255,12 @@ class PermissionController extends Controller
                 $query->where('role_id', $id);
             })->update(['role_id' => null]);
 
-            return redirect()->route('permission.index')->with('success', 'Role deleted successfully');
+            session()->flash('success', 'Role deleted successfully');
+            return redirect()->back();
 
-            return redirect()->back()->with('success', 'Role deleted successfully');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to delete role: ' . $e->getMessage());
+            session()->flash('error', 'Error: ' . $e->getMessage());
+            return redirect()->back();
         }
-    }
 
-}
+    }
