@@ -1,7 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
         <div x-data="{ open: false }">
-            <!-- Header Title -->
             <h2 class="font-medium text-2xl text-gray-800 leading-tight">
                 {{ __('Permission of Role') }} {{ $role->name }}
             </h2>
@@ -15,26 +14,26 @@
                 @if($permissions->isEmpty())
                     <p>No Permission available.</p>
                 @else
-                <form action="{{ route('permission.update-role-permission' , $role->id ) }}" method="POST">
+                <form id="permissionsForm" action="{{ route('permission.update-role-permission', $role->id) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <table class="table-auto py-10" id="permissions-table">
+                    <table class="table-auto py-10" id="permissionsTable">
                         <thead>
                             <tr>
-                                <th class="flex space-x-2 items-center ">Select All <input class="ml-3" type="checkbox" id="select-all"></th>
+                                <th>Select All <input type="checkbox" id="select-all" class="ml-2"></th>
                                 <th>ID</th>
-                                <th>Name</th> 
+                                <th>Name</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($permissions as $permission)
                             <tr>
-                            <td class="border px-4 py-2 text-center">
-                                    <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="permission-checkbox"
-                                    {{ $permission->selected ? 'checked' : '' }}>
+                                <td class="border px-4 py-2 text-center">
+                                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" class="permission-checkbox"
+                                    {{ $permission->checked ? 'checked' : '' }}>
                                 </td>
                                 <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                <td class="border px-4 py-2">{{ $permission['name'] }}</td>
+                                <td class="border px-4 py-2">{{ $permission->name }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -53,13 +52,71 @@
     </div>
 
     <script>
-        document.addEventListener('alpine:init', () => {
-            $('#permissions-table').DataTable();
+        $(document).ready(function() {
+            // Inisialisasi DataTable
+            var table = $('#permissionsTable').DataTable({
+                pageLength: 10, // Jumlah data per halaman
+            });
 
-            // Select all checkboxes functionality
-            document.getElementById('select-all').addEventListener('click', function() {
-                let checkboxes = document.querySelectorAll('.permission-checkbox');
-                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+            // Array untuk menyimpan permission ID yang dipilih
+            var selectedPermissions = [];
+
+            // Event listener untuk "Select All" checkbox
+            $('#select-all').on('click', function() {
+                var rows = table.rows({ 'search': 'applied' }).nodes();
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+
+                // Tambahkan atau hapus permission yang di-select dari halaman ini
+                $('input[type="checkbox"]', rows).each(function() {
+                    var permissionId = $(this).val();
+                    if ($(this).prop('checked')) {
+                        if (!selectedPermissions.includes(permissionId)) {
+                            selectedPermissions.push(permissionId);
+                        }
+                    } else {
+                        selectedPermissions = selectedPermissions.filter(id => id !== permissionId);
+                    }
+                });
+            });
+
+            // Event listener untuk checkbox per permission
+            $('#permissionsTable tbody').on('change', 'input.permission-checkbox', function() {
+                var permissionId = $(this).val();
+                if ($(this).prop('checked')) {
+                    if (!selectedPermissions.includes(permissionId)) {
+                        selectedPermissions.push(permissionId);
+                    }
+                } else {
+                    selectedPermissions = selectedPermissions.filter(id => id !== permissionId);
+                }
+            });
+
+            // Saat form disubmit, tambahkan semua checkbox yang dipilih ke dalam form
+            $('#permissionsForm').on('submit', function(e) {
+                e.preventDefault(); // Mencegah submit default
+                // Kosongkan semua input yang sudah ada
+                $(this).find('input[name="permissions[]"]').remove();
+
+                // Tambahkan semua permission yang dipilih ke dalam form
+                selectedPermissions.forEach(function(id) {
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'permissions[]',
+                        value: id
+                    }).appendTo('#permissionsForm');
+                });
+
+                // Kirim form dengan data yang sudah ditambahkan
+                this.submit();
+            });
+
+            // Saat berpindah halaman, pastikan checkbox yang dipilih tetap tersimpan
+            table.on('page', function() {
+                var rows = table.rows({ 'search': 'applied' }).nodes();
+                $('input.permission-checkbox', rows).each(function() {
+                    var permissionId = $(this).val();
+                    $(this).prop('checked', selectedPermissions.includes(permissionId));
+                });
             });
         });
     </script>
