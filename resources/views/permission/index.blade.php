@@ -52,7 +52,7 @@
                             <div class="col-span-6 sm:col-span-4 w-full">
                                 <x-label for="permission" value="{{ __('Permission Name') }}" />
                                 <input type="hidden" name="userId" value="{{ $userId ?? ''}}">
-                                <select class="select-teacher w-48 pb-4 border-gray-300 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" name="permission">
+                                <select style="width: 100%;" class="select-permission w-48 pb-4 border-gray-300 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" name="permission">
                                     <option value="">Choose Permission</option>
                                     @foreach($permissions as $permission)
                                     <option value="{{ $permission->id }}" {{ request('id') == $permission->id ? 'selected' : '' }}>{{ $permission->name }}</option>
@@ -385,6 +385,7 @@
             $('#roles-table').DataTable();
             $('#requestpermissions').DataTable();
             $('#datapermissions').DataTable();
+            $('.select-permission').Select2();
         });
         // Delete Skill
         document.getElementById('deleteSkillButton').addEventListener('click', function(event) {
