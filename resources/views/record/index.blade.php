@@ -35,7 +35,7 @@
                     <button @click="openAddTeacherActivity = true" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
                         Request Teacher Activity
                     </button>
-
+                    @endunlessrole
                     <!-- Teacher Activity Modal -->
                     <x-general.modal :open="'openRequestTeacherActivity'" :title="__('Create Activity')">
                         <x-general.form-section id="addActivity" :submit="route('request-record-activity.store')">
@@ -98,7 +98,7 @@
 
                         </x-general.form-section>
                     </x-general.modal>
-                    @endunlessrole
+                  
                     @can('Add teacher Activity')
                     <!-- add activity category button -->
                     <button @click="openAddTeacherActivity = true" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
@@ -201,7 +201,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $category->name ?? 'N/A' }}</td>
-                                               @can('Delete activity category')
+                                                @can('Delete activity category')
                                                 <td class="flex justify-center">
                                                     <!-- Form to Delete Category -->
                                                     <form id="deleteActivityCategory" action="{{ route('categoryactivity.destroy', $category->id) }}" method="POST">
@@ -248,7 +248,6 @@
                             </x-slot>
                         </x-general.form-section>
                     </x-general.modal>
-                    @endrole
                 </div>
             </div>
             <!--  -->
@@ -284,12 +283,12 @@
                         <table class="table-auto w-full py-10" id="activity-table">
                             <thead>
                                 <tr>
-                                    <th >No</th>
+                                    <th>No</th>
                                     <th>Name</th>
                                     <th>Activity</th>
                                     <th>Category</th>
                                     <th>Date</th>
-                                 @can('Delete Activity')
+                                    @can('Delete Activity')
                                     <th>Option</th>
                                     @endcan
 
@@ -302,7 +301,7 @@
                                     <td class="border px-4 py-2">{{ $activity->teachers->name ?? 'N/A' }}</td>
                                     <td class="border px-4 py-2">{{ $activity->activity ?? 'N/A' }}</td>
                                     <td class="border px-4 py-2">{{ $activity->category->name ?? 'N/A' }}</td>
-                                    <td class="border px-4 py-2" >{{ $activity->date ?? 'N/A' }}</td>
+                                    <td class="border px-4 py-2">{{ $activity->date ?? 'N/A' }}</td>
                                     @can('Delete Activity')
                                     <td class=" border px-4 py-2 flex justify-center">
                                         <form id="deleteActivity" action="{{ route('record.destroy', $activity->id) }}" method="POST">
@@ -324,13 +323,13 @@
             </div>
 
             <div class="flex h-auto items-center text-center mt-4 mb-4">
-                    <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-                            <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
-                        </svg>
-                    </span>
-                    <h1 class="text-2xl text-left">Request History Data</h1>
-                </div>
+                <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                        <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
+                    </svg>
+                </span>
+                <h1 class="text-2xl text-left">Request History Data</h1>
+            </div>
 
             <!-- history data table-->
 
