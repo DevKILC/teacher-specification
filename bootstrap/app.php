@@ -15,6 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            // for tracking user online  or offline on middleware TrackUserActivity
+            'online-offline' => \App\Http\Middleware\LastActivity::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

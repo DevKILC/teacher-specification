@@ -2,20 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\TrackUserActivity;
+use App\Models\Sessions;
 use App\Models\User;
+use App\Models\UserManagement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class UserManagementController extends Controller
 {
     public function index()
-    {
-        return view('user-management.index', [
-            'users' => User::all(),
-        ]);
-    }
+    { // Fetch all users and their sessions
+        $users = UserManagement::get(); // Pastikan ada relasi 'sessions' pada model User
 
+        // Get all sessions
+        $sessions = Sessions::all();
+
+        // Get session lifetime from configuration (in minutes)
+        $sessionLifetime = (int) config('session.lifetime');
+
+        foreach ($users as $user) {
+            // Fetch the latest session for this user
+            $userSession = $sessions->where('user_id', $user->id)->first();
+
+            $isOnline = false;
+
+            // Check if the session exists
+            if ($userSession) {
+                $lastActivity = \Carbon\Carbon::parse($userSession->last_activity);
+                $expired = $lastActivity->addMinutes($sessionLifetime)->isPast(); // Check if session is expired
+
+                $isOnline = !$expired; // If not expired, user is online
+            }
+
+            // Add properties to the user object
+            $user->is_online = $isOnline;
+            $user->last_seen = $userSession ? \Carbon\Carbon::parse($userSession->last_activity)->diffForHumans() : 'Never';
+        }
+
+        // Pass the data to the view
+        return view('user-management.index', ['users' => $users]);
+    }
 
     public function detailEditPermission($id)
     {
@@ -23,18 +52,17 @@ class UserManagementController extends Controller
 
         // Ambil semua permissions yang sudah dimiliki oleh user
         $userPermissions = $user->permissions()->pluck('id')->toArray();
-        
+
         // Map semua permission, tambahkan properti `selected` jika user sudah memiliki permission tersebut
         $permissions = Permission::all()->map(function ($permission) use ($userPermissions) {
             $permission->selected = in_array($permission->id, $userPermissions);
             return $permission;
         });
-        
+
         return view('user-management.edit-permission', [
             'user' => $user,
             'permissions' => $permissions, // Pass mapped permissions ke view
         ]);
-        
     }
 
     public function updatePermission(Request $request, $id)

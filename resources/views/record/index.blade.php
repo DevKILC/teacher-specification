@@ -28,7 +28,7 @@
                     </span>
                     <h1 class="text-2xl text-left">Records Data</h1>
                 </div>
-                <div class="flex space-x-3 w-auto px-3 py-3 h-16 bg-white rounded-md shadow-md" x-data="{ openAddTeacherActivity: false, openAddActivityCategory: false, openRequestTeacherActivity : false }">
+                <div class="flex gap-3 w-auto px-3 py-3 h-16 bg-white rounded-md shadow-md" x-data="{ openAddTeacherActivity: false, openAddActivityCategory: false, openRequestTeacherActivity : false }">
                     @unlessrole('Administrator')
                     <!-- addactivity button and add activity category button  -->
                     <!-- addactivity button -->
@@ -99,7 +99,7 @@
                         </x-general.form-section>
                     </x-general.modal>
                   
-                    @can('Add teacher Activity')
+                    @can('Add teacher activity')
                     <!-- add activity category button -->
                     <button @click="openAddTeacherActivity = true" class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
                         Add Teacher Activity

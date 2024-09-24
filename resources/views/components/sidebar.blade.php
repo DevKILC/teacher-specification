@@ -39,12 +39,11 @@
             <x-nav-link href="{{ route('permission.index') }}" :active="request()->segment(1) === 'permission'">
                 {{ __('Permission') }}
             </x-nav-link>
-            @role('Administrator')
+            @can('User management')
                 <x-nav-link href="{{ route('user-management.index') }}" :active="request()->segment(1) === 'user-management'">
                     {{ __('User management') }}
                 </x-nav-link>
-            @endrole
-            {{-- @endcan --}}
+            @endcan
         </div>
 
         <!-- Settings Dropdown -->

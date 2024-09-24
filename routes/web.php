@@ -11,12 +11,13 @@ use App\Http\Controllers\RecordController;
 use App\Http\Controllers\RequestPermissionController;
 use App\Http\Controllers\RequestRecordActivityController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Middleware\TrackUserActivity;
+use App\Models\UserManagement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->middleware('online-offline');
     }
     return view('auth.login');
 });
@@ -27,7 +28,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
+    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard')->middleware('online-offline');
 
     Route::resource('teacher', TeacherController::class);
 
@@ -67,18 +68,14 @@ Route::middleware([
         Route::put('/accept/{id}', [PermissionController::class, 'accept'])->name('permissions.accept');
         Route::put('/decline/{id}', [PermissionController::class, 'decline'])->name('permissions.decline');
     });
-   
-
-
-    Route::prefix('user-management')->middleware(['permission:user-management'])->group(function () {
+    
+    Route::prefix('user-management')->middleware(['online-offline', 'permission:User management'])->group(function () {
         Route::get('/', [UserManagementController::class, 'index'])->name('user-management.index');
-        // permission
         Route::get('/{id}/edit-permission', [UserManagementController::class, 'detailEditPermission'])->name('user-management.edit-permission');
         Route::put('/{id}/update-permission', [UserManagementController::class, 'updatePermission'])->name('user-management.update-permission');
-        // role
         Route::get('/{id}/edit-role', [UserManagementController::class, 'detailEditRole'])->name('user-management.edit-role');
         Route::put('/{id}/update-role', [UserManagementController::class, 'updateRole'])->name('user-management.update-role');
     });
-
+    
 
 });

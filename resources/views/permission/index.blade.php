@@ -24,7 +24,7 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <!-- Top section -->
                 <div class="flex justify-between items-center text-left w-full h-16 mt-2 mb-6 bg-white py-5 rounded-md shadow-md">
-                    <div class=" flex items-center">
+                    <div class="flex items-center">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-16" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
                                 <path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
@@ -34,7 +34,19 @@
                             Permission
                         </h1>
                     </div>
-                    @unlessrole('Administrator')
+                </div>
+
+                <div class="flex h-auto items-center w-full justify-between text-center  mt-12 mb-12">
+                <div class="flex items-center">
+                    <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                            <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
+                        </svg>
+                    </span>
+                    <h1 class="text-2xl text-left">Request Permission Data History</h1>
+                </div>
+                <div class="flex w-auto px-3 py-3 h-16 bg-white rounded-md shadow-md">
+                @unlessrole('Administrator')
                     <!-- Request Permission Button -->
                     <div class="flex items-center mr-3">
                         <button class="bg-yellow-400 text-white px-4 py-2 rounded-md hover:bg-yellow-500" @click="openRequestPermission = true">
@@ -72,16 +84,7 @@
                         </x-slot>
                     </x-general.form-section>
                 </x-general.modal>
-
-                <div class="flex h-auto items-center text-center mt-12 mb-12">
-                    <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-                            <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
-                        </svg>
-                    </span>
-                    <h1 class="text-2xl text-left">Request History Data</h1>
                 </div>
-
                 <!-- history data table-->
 
                 <!-- history request -->
@@ -94,12 +97,12 @@
                         <table class="table-auto py-10" id="requestpermissions">
                             <thead>
                                 <tr>
-                                    <th class="border px-4 py-2">ID</th>
-                                    <th class="border px-4 py-2">Requested By</th>
-                                    <th class="border px-4 py-2">Permission Name</th>
-                                    <th class="border px-4 py-2">Status</th>
+                                    <th>ID</th>
+                                    <th>Requested By</th>
+                                    <th>Permission Name</th>
+                                    <th>Status</th>
                                     @role('Administrator')
-                                    <th class="border px-4 py-2">Action</th>
+                                    <th>Action</th>
                                     @endrole
                                 </tr>
                             </thead>

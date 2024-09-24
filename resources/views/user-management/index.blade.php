@@ -31,8 +31,10 @@
                         <table class="table-auto py-10" id="users-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>No</th>
                                     <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Last Seen</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -41,6 +43,19 @@
                                 <tr>
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                     <td class="border px-4 py-2">{{ $user->name }}</td>
+
+                                    <!-- Status Online -->
+                                    <td class="border px-4 py-2 text-center">
+                                        <span class="{{ $user->is_online ? 'bg-green-400 border-green-600 border-2 ' : 'bg-red-400  border-red-600 border-2  ' }} text-white w-auto px-2 py-1 rounded-md ">
+                                            {{ $user->is_online ? 'Online' : 'Offline' }}
+                                        </span>
+                                    </td>
+
+                                    <!-- Last Seen -->
+                                    <td class="border px-4 py-2 text-center">
+                                        {{ $user->last_seen }}
+                                    </td>
+
                                     <td class="border px-4 py-2 flex justify-center space-x-2">
                                         <a href="{{ route('user-management.edit-role', $user->id ) }}">
                                             <x-button class="text-white px-4 py-2 rounded-md">
@@ -57,12 +72,14 @@
                                 @endforeach
                             </tbody>
                         </table>
+
                         @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
         document.addEventListener('alpine:init', () => {
             $('#users-table').DataTable();
