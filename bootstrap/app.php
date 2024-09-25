@@ -18,6 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
             // for tracking user online  or offline on middleware TrackUserActivity
             'online-offline' => \App\Http\Middleware\LastActivity::class,
         ]);
+
+        
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

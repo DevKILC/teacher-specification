@@ -35,6 +35,7 @@ class UserManagementController extends Controller
                 $expired = $lastActivity->addMinutes($sessionLifetime)->isPast(); // Check if session is expired
 
                 $isOnline = !$expired; // If not expired, user is online
+    
             }
 
             // Add properties to the user object
