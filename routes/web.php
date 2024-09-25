@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect()->route('dashboard')->middleware('online-offline');
+        return redirect()->route('dashboard');
     }
     return view('auth.login');
 });
@@ -28,7 +28,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard')->middleware('online-offline');
+    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
 
     Route::resource('teacher', TeacherController::class);
 
@@ -69,7 +69,7 @@ Route::middleware([
         Route::put('/decline/{id}', [PermissionController::class, 'decline'])->name('permissions.decline');
     });
     
-    Route::prefix('user-management')->middleware(['online-offline', 'permission:User management'])->group(function () {
+    Route::prefix('user-management')->middleware([ 'permission:User management'])->group(function () {
         Route::get('/', [UserManagementController::class, 'index'])->name('user-management.index');
         Route::get('/{id}/edit-permission', [UserManagementController::class, 'detailEditPermission'])->name('user-management.edit-permission');
         Route::put('/{id}/update-permission', [UserManagementController::class, 'updatePermission'])->name('user-management.update-permission');
