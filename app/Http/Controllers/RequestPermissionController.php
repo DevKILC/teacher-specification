@@ -29,26 +29,43 @@ class RequestPermissionController extends Controller
         $userId = $user->id;
         $username = $user->name;
         $permissionId = $request->permission;
-
+    
         // Validate if the permission exists
         $permission = Permission::find($permissionId);
         if (!$permission) {
             session()->flash('error', 'Invalid permission selected');
             return redirect()->back();
         }
-
+    
         // Check if the user already has the requested permission
         if ($user->hasPermissionTo($permission->name)) {
             session()->flash('error', 'You already have this permission');
             return redirect()->back();
         }
-
-        // Check if the user has already requested this permission
-        if (RequestPermission::where('user_id', $userId)->where('permission_id', $permissionId)->exists()) {
-            session()->flash('error', 'You have already requested this permission');
+    
+        // Check if the user has reached the daily request limit (3 requests per day)
+        $today = now()->format('Y-m-d'); // Get today's date in 'Y-m-d' format
+        
+        $requestCountToday = RequestPermission::where('user_id', $userId)
+            ->whereDate('created_at', $today)
+            ->count();
+    
+        if ($requestCountToday >= 3) {
+            session()->flash('error', 'You have reached the maximum of 3 requests for today');
             return redirect()->back();
         }
-
+    
+        // Check if the user has requested this permission today
+        $requestPermissionToday = RequestPermission::where('user_id', $userId)
+            ->where('permission_id', $permissionId)
+            ->whereDate('created_at', $today)
+            ->exists();
+    
+        if ($requestPermissionToday) {
+            session()->flash('error', 'You have already requested this permission today');
+            return redirect()->back();
+        }
+    
         // Create the permission request
         try {
             RequestPermission::create([
@@ -57,15 +74,16 @@ class RequestPermissionController extends Controller
                 'stats' => 'Pending', // Default request status is 'Pending'
                 'created_by' => $username, // Menyimpan user ID yang membuat permintaan
             ]);
-
+    
             session()->flash('success', 'Permission request sent successfully');
             return redirect()->back();
-
+    
         } catch (\Exception $e) {
             session()->flash('error', 'Error: ' . $e->getMessage());
             return redirect()->back();
         }
     }
+    
 
 
 
