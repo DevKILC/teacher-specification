@@ -123,7 +123,7 @@
                                             <form action="{{ route('request-permission.destroy', $history->id) }}" method="POST" class="inline-block ml-2">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="bg-red-500 rounded-md px-2 py-2 text-white">Delete</button>
+                                                <button type="submit" class="bg-red-500 rounded-md px-2 py-2 text-white">Cancel</button>
                                             </form>
                                             @endunlessrole
                                         </div>

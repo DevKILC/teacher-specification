@@ -402,7 +402,7 @@
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit"
-                                                                class="bg-red-500 rounded-md px-2 py-2 text-white">Delete</button>
+                                                                class="bg-red-500 rounded-md px-2 py-2 text-white">Cancel</button>
                                                         </form>
                                                     @endunlessrole
                                                 </div>
