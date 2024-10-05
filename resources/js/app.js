@@ -10,7 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 5000,
-                timerProgressBar: true
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'swal-custom-popup' // Add custom class to popup
+                }
             });
         }
         
@@ -22,10 +25,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 5000,
-                timerProgressBar: true
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'swal-custom-popup' // Add custom class to popup
+                }
             });
         }
     }
 
-  
 });
+
+// Add custom CSS for z-index
+const style = document.createElement('style');
+style.innerHTML = `
+    .swal-custom-popup {
+        z-index: 9999 !important; /* Set z-index to ensure it's on top */
+    }
+`;
+document.head.appendChild(style);

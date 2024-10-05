@@ -46,7 +46,7 @@
                 type: ''
             },
         }">
-        @can('Add Skill')
+        @can('Add skill')
                         <div class="bg-white w-44 h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-8 ">
                             <x-button @click="openSkillModal = true">
                                 {{ __('Add Skill') }}

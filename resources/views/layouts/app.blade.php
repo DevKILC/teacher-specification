@@ -42,7 +42,6 @@
             window.addEventListener('pageshow', () => { loading = false })">
 
     <!-- loading line -->
-    <!-- line loadpage -->
     <div x-show="loading" class="fixed top-0 left-0 w-full z-[1000001]">
         <div class="h-1 bg-blue-500 animate-progress"></div>
     </div>
@@ -58,7 +57,7 @@
 
     <div class="min-h-screen bg-gray-100">
         @if (isset($header))
-        <header class="bg-white shadow sticky w-full">
+        <header class="bg-white shadow fixed w-full z-[999]">
             <div class="max-w-7xl mx-auto py-6 px-4 flex flex-row space-x-2 sm:px-6 lg:px-8 items-center">
                 <!-- Toggle Button -->
                 <button @click="open = !open" aria-label="Toggle Sidebar" class="text-gray-500 focus:outline-none pr-7 border-r-2">
@@ -77,7 +76,7 @@
         <x-sidebar />
 
         <!-- Page Content -->
-        <main @click="open = false">
+        <main @click="open = false" class="pt-[90px] pb-[90px]">
             {{ $slot }}
         </main>
     </div>

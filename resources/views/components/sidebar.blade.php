@@ -1,7 +1,7 @@
 <aside
       x-ref="sidebar"
     :class="{ '-translate-x-full': !open }"
-    class="sidebar bg-white border-r border-gray-100 h-full w-64 fixed transform transition-transform duration-300 ease-in-out top-0 left-0 z-[1000000] -translate-x-full">
+    class="sidebar bg-white border-r border-gray-100 h-full w-64 fixed transform transition-transform duration-300 ease-in-out top-0 left-0 z-[1000] -translate-x-full">
 
     <!-- Primary Navigation Menu -->
     <div class="flex flex-col justify-between h-full">
@@ -28,11 +28,11 @@
             <x-nav-link href="{{ route('teacher.index') }}" :active="request()->routeIs('teacher.index')">
                 {{ __('Teachers Profile') }}
             </x-nav-link>
-
+            @can('Skill management')
             <x-nav-link href="{{ route('skill.index') }}" :active="request()->routeIs('skill.index')">
                 {{ __('Skills') }}
             </x-nav-link>
-
+            @endcan
             <x-nav-link href="{{ route('record.index') }}" :active="request()->routeIs('record.index')">
                 {{ __('Records') }}
             </x-nav-link>

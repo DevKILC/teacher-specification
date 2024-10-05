@@ -23,7 +23,7 @@ class Teacher extends Model
                 return 'https://s3.ap-southeast-1.wasabisys.com/file-members.kampunginggris.id/' . $value;
             }
             if(!$value){
-            return 'https://dummyimage.com/600x400/000/fff';
+            return 'https://static.vecteezy.com/system/resources/thumbnails/001/840/618/small_2x/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg';
             }
         });
     }

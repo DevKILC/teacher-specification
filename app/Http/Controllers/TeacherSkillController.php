@@ -20,9 +20,9 @@ class TeacherSkillController extends Controller
         $allSkills = Skill::when($request->skill_name, function ($query, $skill_name) {
             return $query->where('name', 'LIKE', '%' . $skill_name . '%');
         })
-        ->when($request->typeOfSkill, function ($query, $typeOfSkill) {
-            return $query->where('type', $typeOfSkill);
-        })
+        // ->when($request->typeOfSkill, function ($query, $typeOfSkill) {
+        //     return $query->where('type', $typeOfSkill);
+        // })
         ->get();
 
 
@@ -141,7 +141,7 @@ class TeacherSkillController extends Controller
         try {
             // Cari data teacher_skill berdasarkan ID yang diberikan
             $teacherSkill = TeacherSkill::find($teacher_skill);
-    
+  
             // Jika tidak ditemukan, lempar error dan kembalikan pesan error
             if (!$teacherSkill) {
                 session()->flash('error', 'Skill not found.');

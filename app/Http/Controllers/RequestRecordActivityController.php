@@ -12,9 +12,9 @@ class RequestRecordActivityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -22,7 +22,7 @@ class RequestRecordActivityController extends Controller
      */
     public function store(Request $request)
     {
-      
+     
         $user = Auth::user();
         $userId = $user->id;
         $username = $user->name;
@@ -43,8 +43,8 @@ class RequestRecordActivityController extends Controller
             RequestRecordActivity::create([
                 'user_id' => $userId,
                 'teacher_id' => $request->id,
-                'activity' => $request->activity,
                 'category_id' => $request->category_id,
+                'activity' => $request->activity,
                 'date' => $request->date,
                 'stats' => 'Pending', // Default status is pending until teacher approves or rejects the request
                 'created_by' => $username,

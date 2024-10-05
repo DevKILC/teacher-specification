@@ -45,16 +45,16 @@
                     </span>
                     <h1 class="text-2xl text-left">Request Permission Data History</h1>
                 </div>
-                <div class="flex w-auto px-3 py-3 h-16 bg-white rounded-md shadow-md">
                 @unlessrole('Administrator')
+                <div class="flex w-auto px-3 py-3 h-16 bg-white rounded-md shadow-md">
                     <!-- Request Permission Button -->
-                    <div class="flex items-center mr-3">
+                    <div class="flex items-center">
                         <button class="bg-yellow-400 text-white px-4 py-2 rounded-md hover:bg-yellow-500" @click="openRequestPermission = true">
                             {{ __('Request Permission') }}
                         </button>
                     </div>
-                    @endunlessrole
                 </div>
+                @endunlessrole
 
                 <!-- Request Permission Modal -->
                 <x-general.modal :open="'openRequestPermission'" :title="__('Request Permission')">
