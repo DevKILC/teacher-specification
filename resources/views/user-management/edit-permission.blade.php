@@ -54,7 +54,14 @@
 
     <script>
         document.addEventListener('alpine:init', () => {
-            $('#permissions-table').DataTable();
+            $(document).ready(function() {
+    if (!$.fn.DataTable.isDataTable('#permissions-table')) {
+        $('#permissions-table').DataTable({
+            "pageLength": 25, // Set default show to 25 entries
+            "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "All"] ] // Menyediakan pilihan 25, 50, 100, All
+        });
+    }
+});
 
             // Select all checkboxes functionality
             document.getElementById('select-all').addEventListener('click', function() {

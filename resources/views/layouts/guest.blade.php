@@ -13,26 +13,31 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
         <!-- Styles -->
         @livewireStyles
+
+        <style>
+            [x-cloak] { display: none; }
+        </style>
     </head>
-    <body   x-init="window.addEventListener('beforeunload', () => { loading = true });
-        window.addEventListener('pageshow', () => { loading = false })">
+    <body x-data="{ loading: false }" x-init="
+        window.addEventListener('beforeunload', () => { loading = true });
+        window.addEventListener('pageshow', () => { loading = false });
+    ">
+        <!-- Loading Line -->
+        <div x-show="loading" class="fixed top-0 left-0 w-full z-[1000001]">
+            <div class="h-1 bg-blue-500 animate-progress"></div>
+        </div>
 
-        {{-- loading  --}}
-         <!-- loading line -->
-    <div x-show="loading" class="fixed top-0 left-0 w-full z-[1000001]">
-        <div class="h-1 bg-blue-500 animate-progress"></div>
-    </div>
-    <!-- Loading Spinner -->
-    <div x-show="loading" x-cloak class="fixed top-4 right-4 z-[1000001]">
-        <svg class="animate-spin h-4 w-4  text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-        </svg>
-    </div>
-
+        <!-- Loading Spinner -->
+        <div x-show="loading" x-cloak class="fixed top-4 right-4 z-[1000001]">
+            <svg class="animate-spin h-4 w-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+        </div>
 
         <div class="font-sans text-gray-900 antialiased">
             {{ $slot }}
@@ -40,3 +45,4 @@
 
         @livewireScripts
     </body>
+</html>

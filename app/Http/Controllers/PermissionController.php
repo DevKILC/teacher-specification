@@ -195,6 +195,7 @@ class PermissionController extends Controller
         $permissions = $permissions->map(function ($permission) use ($rolePermissions) {
             $permission->selected = in_array($permission->id, $rolePermissions);
             return $permission;
+            
         });
 
         return view('permission.edit-permission-role', [

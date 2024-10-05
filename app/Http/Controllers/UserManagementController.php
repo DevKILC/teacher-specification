@@ -50,14 +50,14 @@ class UserManagementController extends Controller
     public function detailEditPermission($id)
     {
         $user = User::find($id);
+        $permissions = Permission::all();
+        $rolePermissions = Role::find($id)->permissions()->pluck('id')->toArray();
 
-        // Ambil semua permissions yang sudah dimiliki oleh user
-        $userPermissions = $user->permissions()->pluck('id')->toArray();
-
-        // Map semua permission, tambahkan properti `selected` jika user sudah memiliki permission tersebut
-        $permissions = Permission::all()->map(function ($permission) use ($userPermissions) {
-            $permission->selected = in_array($permission->id, $userPermissions);
+        // Map semua permission, tambahkan properti `checked` jika role sudah memiliki permission tersebut
+        $permissions = $permissions->map(function ($permission) use ($rolePermissions) {
+            $permission->selected = in_array($permission->id, $rolePermissions);
             return $permission;
+            
         });
 
         return view('user-management.edit-permission', [
@@ -90,7 +90,7 @@ class UserManagementController extends Controller
             return $role;
         });
 
-        return view('user-management.edit-permission-role', [
+        return view('user-management.edit-role', [
             'user' => $user,
             'roles' => $roles,
         ]);

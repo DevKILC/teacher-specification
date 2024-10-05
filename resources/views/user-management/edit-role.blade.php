@@ -18,7 +18,7 @@
                 <form action="{{ route('user-management.update-role' , $user->id ) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <table class="table-auto py-10" id="permissions-table">
+                    <table class="table-auto py-10" id="role-table">
                         <thead>
                             <tr>
                             <th class="flex space-x-2 items-center ">Select All <input class="ml-3" type="checkbox" id="select-all"></th>
@@ -54,7 +54,14 @@
 
     <script>
         document.addEventListener('alpine:init', () => {
-            $('#permissions-table').DataTable();
+            $(document).ready(function() {
+    if (!$.fn.DataTable.isDataTable('#role-table')) {
+        $('#role-table').DataTable({
+            "pageLength": 25, // Set default show to 25 entries
+            "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "All"] ] // Menyediakan pilihan 25, 50, 100, All
+        });
+    }
+});
 
             // Select all checkboxes functionality
             document.getElementById('select-all').addEventListener('click', function() {
