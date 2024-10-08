@@ -25,19 +25,19 @@
                 {{ __('Dashboard') }}
             </x-nav-link>
 
-            <x-nav-link href="{{ route('teacher.index') }}" :active="request()->routeIs('teacher.index')">
+            <x-nav-link href="{{ route('teacher.index') }}" :active="request()->segment(1) === 'teacher'">
                 {{ __('Teachers Profile') }}
             </x-nav-link>
             @can('Skill management')
-            <x-nav-link href="{{ route('skill.index') }}" :active="request()->routeIs('skill.index')">
+            <x-nav-link href="{{ route('skill.index') }}" :active="request()->segment(1) === 'skill'">
                 {{ __('Skills') }}
             </x-nav-link>
             @endcan
-            <x-nav-link href="{{ route('record.index') }}" :active="request()->routeIs('record.index')">
+            <x-nav-link href="{{ route('record.index') }}" :active="request()->segment(1) === 'record'">
                 {{ __('Records') }}
             </x-nav-link>
             <x-nav-link href="{{ route('permission.index') }}" :active="request()->segment(1) === 'permission'">
-                {{ __('Permission') }}
+                {{ __('Permissions') }}
             </x-nav-link>
             @can('User management')
                 <x-nav-link href="{{ route('user-management.index') }}" :active="request()->segment(1) === 'user-management'">
