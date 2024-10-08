@@ -65,7 +65,6 @@
                         @if($allSkills->isEmpty())
                         <p>No skills available or found.</p>
                         @else
-                        @else
                         <div class="grid grid-cols-6 gap-4 w-[95%]">
                             @foreach($allSkills as $skill)
                             <div class="flex items-center space-x-2 p-2"
