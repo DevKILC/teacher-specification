@@ -17,15 +17,9 @@ class TeacherSkillController extends Controller
     public function index(Request $request)
     {
 
-        $allSkills = Skill::when($request->skill_name, function ($query, $skill_name) {
-            return $query->where('name', 'LIKE', '%' . $skill_name . '%');
-        })
-        // ->when($request->typeOfSkill, function ($query, $typeOfSkill) {
-        //     return $query->where('type', $typeOfSkill);
-        // })
-        ->get();
 
-
+        $allSkills =  Skill::all();
+        
         $teachers = $request->id ? Teacher::with('teacherSkills.skills')->find($request->id) : Teacher::dummyData();
     
         
@@ -103,12 +97,11 @@ class TeacherSkillController extends Controller
     public function show($teacher_id, Request $request)
     { 
         $allSkills = Skill::when($request->skill_name, function ($query, $skill_name) {
-            return $query->where('name', 'LIKE', '%' . $skill_name . '%');
-        })
-        ->when($request->typeOfSkill, function ($query, $typeOfSkill) {
-            return $query->where('type', $typeOfSkill);
-        })
-        ->get();
+            return $query->where(DB::raw('LOWER(name)'), 'like', '%' . $skill_name . '%')
+                         ->orWhere(DB::raw('LOWER(type)'), 'like', '%' . $skill_name . '%');
+                     
+        })->get();
+        
 
 
         $teachers = Teacher::with('teacherSkills.skills')->find($teacher_id);
