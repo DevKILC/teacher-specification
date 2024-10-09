@@ -276,12 +276,12 @@
 
                 <div class="flex flex-col w-full justify-center">
                     <!-- date filter -->
-                    <div class="w-full h-16 ml-5 flex justify-start ">
-                        <form id="dateFilter" class="flex flex-row w-[50%] items-center gap-x-4 pr-4 "
+                    <div class="w-full h-16 ml-5 flex justify-center ">
+                        <form id="dateFilter" class="flex flex-row w-[90%] items-center gap-4 pr-[5%] "
                             action="{{ route('record.index') }}" method="GET">
                             <!-- Date From -->
                             <input type="date" name="start" value="{{ request('start') }}"
-                                class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" require />
+                                class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" placeholder="Start" require />
                             <!-- Date To -->
                             <input type="date" name="end" value="{{ request('end') }}"
                                 class="border-2 border-gray-300 rounded-md px-4 py-2 w-full" require />
