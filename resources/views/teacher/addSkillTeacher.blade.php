@@ -31,7 +31,7 @@
                     </span>
                     <h1 class="text-2xl text-left">Skills Data</h1>
                 </div>
-                <form action="{{ route('teacher-skill.show', $teachers->id) }}" method="GET">
+                <form action="{{ route('teacher-skill.show', isset($teachers) ? $teachers->id : 0) }}" method="GET">
                     <div class="w-auto px-3 py-3 h-auto flex gap-3 bg-white shadow-md rounded-md">
                         <input type="text" name="skill_name" value="" class="rounded-md"
                             placeholder="Search skill here...">
@@ -43,7 +43,7 @@
                                     d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
                             </svg>
                         </button>
-                        <a href="{{ route('teacher-skill.show', $teachers->id) }}"
+                        <a href="{{ route('teacher-skill.show',isset($teachers) ? $teachers->id : 0) }}"
                             class="bg-red-600 text-white hover:bg-red-700 py-2 px-4 rounded-md text-center">
                             Reset
                         </a>
@@ -65,8 +65,10 @@
                         <option value="ONLINE">Online</option>
                     </select>
                 </div>
-                @if ($teachers->id === 0)
-                    <p>No teacher selected or cannot adding skill for dummy teacher , try choose teacher first!.</p>
+                @if (request()->segment(2) === '0')
+                <div class="flex justify-center">
+                    <p>No teacher selected or cannot adding skill for dummy teacher , try choose teacher first!</p>
+                </div>
                 @else
                     <form action="{{ route('teacher-skill.store') }}" method="POST">
                         @csrf
@@ -82,9 +84,10 @@
                                             <input type="checkbox" id="skill_{{ $skill->id }}" name="skill_id[]"
                                                 value="{{ $skill->id }}"
                                                 @if (isset($teachersSkillsGetValidation) && in_array($skill->id, $teachersSkillsGetValidation->toArray())) disabled checked
-                                        class="accent-gray-400 cursor-not-allowed" @endif>
+                                        class="accent-gray-400 bg-gray-500 cursor-not-allowed" @endif>
                                             <label for="skill_{{ $skill->id }}"
-                                                class="text-gray-700">{{ $skill->name }}</label>
+                                                class="text-gray-700" @if (isset($teachersSkillsGetValidation) && in_array($skill->id, $teachersSkillsGetValidation->toArray())) 
+                                                class=" text-gray-300 cursor-not-allowed" @endif>{{ $skill->name }}</label>
                                         </div>
                                     @endforeach
                                 </div>

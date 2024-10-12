@@ -34,7 +34,7 @@ class Teacher extends Model
         $dummyTeacher->id ='0'; // ID dummy
         $dummyTeacher->name = 'Dummy Teacher'; // Nama dummy
         $dummyTeacher->address = '123 Dummy Address'; // Alamat dummy
-        $dummyTeacher->number = '0000000000'; // Nomor dummy
+        $dummyTeacher->phone = '0000000000'; // Nomor dummy
 
         // Menetapkan teacherSkills dummy
 

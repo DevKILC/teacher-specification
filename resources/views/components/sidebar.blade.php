@@ -25,7 +25,7 @@
                 {{ __('Dashboard') }}
             </x-nav-link>
 
-            <x-nav-link href="{{ route('teacher.index') }}" :active="request()->segment(1) === 'teacher'">
+            <x-nav-link href="{{ route('teacher.index') }}" :active="request()->segment(1) === 'teacher' ||  request()->segment(1) === 'teacher-skill'">
                 {{ __('Teachers Profile') }}
             </x-nav-link>
             @can('Skill management')
