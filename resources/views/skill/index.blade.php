@@ -316,7 +316,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    @can('Manage Category')
+                                    @can('Manage category')
                                     <th>Actions</th>
                                     @endcan
                                 </tr>
