@@ -50,20 +50,22 @@ class UserManagementController extends Controller
     public function detailEditPermission($id)
     {
         $user = User::find($id);
-        $permissions = Permission::all();
-        $rolePermissions = Role::find($id)->permissions()->pluck('id')->toArray();
+        $permissions = Permission::all(); // Fetch all permissions
 
-        // Map semua permission, tambahkan properti `checked` jika role sudah memiliki permission tersebut
-        $permissions = $permissions->map(function ($permission) use ($rolePermissions) {
-            $permission->selected = in_array($permission->id, $rolePermissions);
+        // Fetch the user's specific permissions
+        $userPermissions = $user ? $user->getAllPermissions()->pluck('id')->toArray() : []; // Get user's permissions, ensure $user is valid
+        
+        // Map all permissions, and mark `selected` if the user already has the permission
+        $permissions = $permissions->map(function ($permission) use ($userPermissions) {
+            $permission->selected = in_array($permission->id, $userPermissions);
             return $permission;
-            
         });
-
+        
         return view('user-management.edit-permission', [
             'user' => $user,
-            'permissions' => $permissions, // Pass mapped permissions ke view
+            'permissions' => $permissions, // Pass mapped permissions to the view
         ]);
+        
     }
 
     public function updatePermission(Request $request, $id)

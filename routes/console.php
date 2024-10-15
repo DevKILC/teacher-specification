@@ -11,4 +11,4 @@ Artisan::command('inspire', function () {
 
 // route for console/command/CleanExpiredSessions
 
-Schedule::command(CleanExpiredAndDuplicateSessions::class)->cron('0 0 */3 * *');;
+Schedule::command(CleanExpiredAndDuplicateSessions::class)->everyMinute();;
