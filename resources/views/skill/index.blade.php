@@ -47,7 +47,7 @@
             },
         }">
         @can('Add skill')
-                        <div class="bg-white w-44 h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-8 ">
+                        <div class="bg-white w-auto h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-3 ">
                             <x-button @click="openSkillModal = true">
                                 {{ __('Add Skill') }}
                             </x-button>
@@ -246,7 +246,7 @@
         }">     
 
         @can('Add category')
-                    <div class="bg-white w-44 h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-8 ">
+                    <div class="bg-white w-auto h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-3 ">
                         <x-button @click="openCategoryModal = true">
                             {{ __('Add Category') }}
                         </x-button>

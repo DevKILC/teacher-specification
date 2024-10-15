@@ -34,7 +34,7 @@
                                     <th>No</th>
                                     <th>Name</th>
                                     <th>Status</th>
-                                    <th>Last Seen</th>
+                                    <th>Active Since</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
