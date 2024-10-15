@@ -122,10 +122,10 @@
                             @else
                                 @forelse($teachers->teacherSkills as $index => $teacherSkill)
                                     <tr class="border-b border-gray-300"
-                                        x-show="selectedType === '' || selectedType === '{{ $teacherSkill->skills->type }}'">
+                                    x-show="selectedType === '' || selectedType === '{{ optional($teacherSkill->skills)->type }}'">
                                         <td class="py-2 text-gray-800 font-medium">{{ $index + 1 }}</td>
                                         <td class="py-2 text-gray-700">
-                                            {{ $teacherSkill->skills->name ?? 'No skills available' }}</td>
+                                            {{ $teacherSkill->skills->name ?? 'Skill Not Found or Being Deleted' }}</td>
                                         @role('Administrator')
                                             <td class="py-2 text-right">
                                                 <div class="relative">

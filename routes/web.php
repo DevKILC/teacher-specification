@@ -10,6 +10,7 @@ use App\Http\Controllers\SkillController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\RequestPermissionController;
 use App\Http\Controllers\RequestRecordActivityController;
+use App\Http\Controllers\RestoreSkillAndCategoryController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Middleware\TrackUserActivity;
 use App\Models\UserManagement;
@@ -45,6 +46,9 @@ Route::middleware([
     Route::resource('request-permission', RequestPermissionController::class);
 
     Route::resource('request-record-activity', RequestRecordActivityController::class);
+
+    Route::resource('restore-skill-category', RestoreSkillAndCategoryController::class);
+
 
     Route::prefix('record')->group(function(){
 

@@ -90,9 +90,9 @@
                                                 class=" text-gray-300 cursor-not-allowed" @endif>{{ $skill->name }}</label>
                                         </div>
                                     @endforeach
-                                </div>
+                                    </div>
                         </div>
-                        @endif
+                        
                         <div class="w-[95%] h-16 mt-10 flex items-center justify-end ">
                             <div class="flex space-x-5">
                                 <a href="">
@@ -101,6 +101,7 @@
                                 <x-button type="submit">{{ __('Save') }}</x-button>
                             </div>
                         </div>
+                        @endif
                     </form>
             </div>
             @endif
