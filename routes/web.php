@@ -49,6 +49,8 @@ Route::middleware([
 
     Route::resource('restore-skill-category', RestoreSkillAndCategoryController::class);
 
+    Route::put('restore-skill-category',[RestoreSkillAndCategoryController::class,'restore'])->name('restore-skill-category.restore');
+
 
     Route::prefix('record')->group(function(){
 

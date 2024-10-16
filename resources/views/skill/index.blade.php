@@ -389,12 +389,12 @@
 
             {{-- Restore Skill Button --}}
         
-            <form action="{{ route('restore-skill-category.index') }}" method="POST">
+            <a href="{{ route('restore-skill-category.index') }}">
                 @csrf
                 <button class="text-center rounded-md text-white font-medium w-full h-auto mt-12 mb-12 py-4 shadow-md bg-yellow-400 hover:bg-yellow-500">
                     Restore Skills or Categories Data
                 </button>
-            </form>
+            </a>
             
          
 

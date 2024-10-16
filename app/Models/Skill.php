@@ -11,6 +11,7 @@ class Skill extends Model
     use SoftDeletes;
 
     protected $table = 'skills';
+    protected $dates = ['deleted_at']; 
 
     protected $fillable = [
         'name',
