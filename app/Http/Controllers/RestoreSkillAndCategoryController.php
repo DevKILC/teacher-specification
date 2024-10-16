@@ -14,7 +14,7 @@ class RestoreSkillAndCategoryController extends Controller
      */
     public function index()
     {
-        return view('skill.restoreSkillAndCategory', [
+        return view('skill.index', [
             'skills' => Skill::withTrashed()->with('category')->get(),
             'categories' => Category::withTrashed()->get(),
 

@@ -78,7 +78,7 @@
                             </div>
                             <hr class="opacity-50" />
                             <div class="p-4">
-                                <p class="font-light -p-5  text-center"><span class="text-3xl font-bold text-green-600">{{ $skillCount }} </span>Skill</p>
+                                <p class="font-light -p-5  text-center"><span class="text-3xl font-bold text-green-600">{{ $skillCount }} </span>Skills</p>
                             </div>
                         </div>
                     </div>
