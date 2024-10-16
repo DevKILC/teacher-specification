@@ -29,7 +29,7 @@
                 {{ __('Teachers Profile') }}
             </x-nav-link>
             @can('Skill management')
-            <x-nav-link href="{{ route('skill.index') }}" :active="request()->segment(1) === 'skill'">
+            <x-nav-link href="{{ route('skill.index') }}" :active="request()->segment(1) === 'skill' ||  request()->segment(1) === 'restore-skill-category'">
                 {{ __('Skills') }}
             </x-nav-link>
             @endcan

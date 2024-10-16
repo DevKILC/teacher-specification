@@ -100,7 +100,7 @@
                         <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
                     </svg>
                 </span>
-                <h1 class="text-2xl text-left">Catgories Data</h1>
+                <h1 class="text-2xl text-left">Categories Data</h1>
             </div>
 
             <!-- Categories -->
@@ -125,7 +125,7 @@
                                         <th>ID</th>
                                         <th>Name</th>
 
-                                        <th>Select All <input class="ml-3" type="checkbox" id="select-all-category">
+                                        <th>Select All <input class="ml-3" type="checkbox" id="select-category">
                                         </th>
 
                                     </tr>
@@ -167,7 +167,7 @@
             checkboxes.forEach(checkbox => checkbox.checked = this.checked);
         });
         // Select all checkboxes functionality
-        document.getElementById('select-all-category').addEventListener('click', function() {
+        document.getElementById('select-category').addEventListener('click', function() {
             let checkboxes = document.querySelectorAll('.category-checkbox');
             checkboxes.forEach(checkbox => checkbox.checked = this.checked);
         });

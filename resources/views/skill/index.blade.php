@@ -254,7 +254,7 @@
                         <path d="M640-160v-280h160v280H640Zm-240 0v-640h160v640H400Zm-240 0v-440h160v440H160Z" />
                     </svg>
                 </span>
-                <h1 class="text-2xl text-left">Catgories Data</h1>
+                <h1 class="text-2xl text-left">Categories Data</h1>
             </div>
 
             <!-- Categories -->

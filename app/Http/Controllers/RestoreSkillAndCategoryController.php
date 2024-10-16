@@ -33,48 +33,48 @@ class RestoreSkillAndCategoryController extends Controller
             'category' => 'array', // pastikan category adalah array
             'category.*' => 'exists:categories,id', // pastikan setiap category valid di tabel categories
         ]);
-
-        // Ambil semua category yang ingin di-restore
-        $restoredCategories = isset($validated['category']) ? $validated['category'] : [];
-
+    
         $errorMessages = []; // Simpan pesan error di sini
-
+    
+        // Restore skill jika ada input skill yang di-restore
         if (isset($validated['skill'])) {
             // Ambil skill yang soft-deleted
             $skills = Skill::onlyTrashed()->whereIn('id', $validated['skill'])->get();
     
             foreach ($skills as $skill) {
                 // Cek apakah kategori dari skill sudah ada (baik tidak terhapus ataupun terhapus)
-                $categoryExists = Category::where('id', $skill->category_id)->exists();
+                $categoryExists = Category::withTrashed()->where('id', $skill->category_id)->exists();
     
                 if (!$categoryExists) {
                     // Jika kategori terkait tidak ada sama sekali, hapus skill secara permanen (hard delete)
-                    $errorMessages[] = "Skill '{$skill->name}' Restore failed because the related category was not found.";
+                    $skill->forceDelete();
+                    $errorMessages[] = "Skill '{$skill->name}' restore failed because the related category was not found. The skill has been permanently deleted.";
                 } else {
                     // Jika kategori terkait ada (baik terhapus maupun tidak), restore skill
                     $skill->restore();
                 }
             }
-
+        }
+    
         // Restore category jika ada input category yang di-restore
         if (isset($validated['category'])) {
             $categories = Category::onlyTrashed()->whereIn('id', $validated['category'])->get();
-
+    
             foreach ($categories as $category) {
                 $category->restore();
             }
         }
-
+    
         // Cek jika ada pesan error
         if (!empty($errorMessages)) {
             // Redirect kembali dengan pesan error
             return redirect()->back()->withErrors($errorMessages)->withInput();
         }
-
+    
         // Jika tidak ada error, berikan pesan sukses
-        return redirect()->back()->with('success', 'Selected skills or categories processed successfully!');
+        return redirect()->route('skill.index')->with('success', 'Selected skills or categories processed successfully!');
     }
-    }
+    
     /**
      * Display the specified resource.
      */

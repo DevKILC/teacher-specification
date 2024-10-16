@@ -83,8 +83,26 @@
                                 <p class="text-gray-700"> You do not have any permission for this information </p>
                             </div>
                         @endif
+                        
+                        <div class="flex w-full items-center border-yellow-400 border-b-2 pb-2">
+                            <h1 class="text-left text-xl ">Certification</h1>
+                        </div>
+                            <div class="flex flex-col">
+                                <label for="c1" class="font-semibold">Certification 1</label>
+                                <p id="c1" class="text-gray-700"> {{$teacher->certifications[0]->name ?? 'No Certification' }} </p>
+                            </div>
+    
+                            <div class="flex flex-col">
+                                <label for="c2" class="font-semibold">Certification 2</label>
+                                <p id="c2" class="text-gray-700"> {{ $teacher->certifications[1]->name ?? 'No Certification' }} </p>
+                            </div>
+    
+                            <div class="flex flex-col">
+                                <label for="c3" class="font-semibold">Certification 3</label>
+                                <p id="c3" class="text-gray-700"> {{ $teacher->certifications[2]->name ?? 'No Certification' }} </p>
+                            </div>
+                    
                     </div>
-
                 </div>
 
                 <!-- Skills container -->
