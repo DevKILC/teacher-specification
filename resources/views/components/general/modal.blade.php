@@ -15,7 +15,9 @@
         </div>
         <div class="w-full">
             <!-- Modal Body -->
-            {{ $slot }}
+            <div class="w-full">
+                {{ $slot }}
+            </div>
         </div>
     </div>
 </div>
