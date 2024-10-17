@@ -98,7 +98,7 @@
                                 <!-- Skill Type -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="type" class="w-full" value="{{ __('Type') }}" />
-                                    <select id="type" name="type" x-model="skill.type" required>
+                                    <select id="type" class="w-full" name="type" x-model="skill.type" required>
                                         <option value="">{{ __('Select Type') }}</option>
                                         <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>
                                             {{ __('Online') }}</option>
