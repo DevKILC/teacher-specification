@@ -151,7 +151,7 @@
                                                 <option value="{{ $category->id }}"
                                                     {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                                     {{ $category->name }}
-                                                </option>
+                                                </option> 
                                             @endforeach
                                         </select>
                                         <x-input-error for="category_id" class="mt-2" />
