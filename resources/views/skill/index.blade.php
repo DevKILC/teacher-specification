@@ -208,24 +208,23 @@
                                     @foreach ($skills as $skill)
                                         <tr>
                                             <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                            <td class="border px-4 py-2">{{ $skill->name }}</td>
-                                            <td class="border px-4 py-2">{{ $skill->description }}</td>
-                                            <td class="border px-4 py-2">{{ $skill->category->name }}</td>
-                                            <td class="border px-4 py-2">{{ $skill->type }}</td>
+                                            <td class="border px-4 py-2">{{ $skill->name ?? "Not Found"  }}</td>
+                                            <td class="border px-4 py-2">{{ $skill->description ?? "Not Found" }}</td>
+                                            <td class="border px-4 py-2">{{ $skill->category->name ?? "Not Found" }}</td>
+                                            <td class="border px-4 py-2">{{ $skill->type?? "Not Found" }}</td>
                                             @can('Manage skill')
                                                 <td class="border px-4 py-2 flex justify-center space-x-2">
                                                     <x-button
-                                                        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                                                        @click="
-                                                skill = {
-                                                    id: {{ $skill->id }},
-                                                    name: '{{ $skill->name }}',
-                                                    description: '{{ $skill->description }}',
-                                                    category_id: {{ $skill->category_id }},
-                                                    type: '{{ $skill->type }}'
-                                                };
-                                                openAddSkillModal = true;
-                                            ">
+                                                    @click="
+                                                    skill = {
+                                                        id: {{ $skill->id }},
+                                                        name: '{{ $skill->name ?? 'Unnamed Skill' }}',
+                                                        description: '{{ $skill->description ?? 'No description available' }}',
+                                                        category_id: {{ $skill->category_id }},
+                                                        type: '{{ $skill->type ?? 'Unknown' }}'
+                                                    };
+                                                    openAddSkillModal = true;
+                                                ">
                                                         {{ __('EDIT') }}
                                                     </x-button>
                                                     <form id="deleteSkill"
@@ -353,7 +352,7 @@
                                 @foreach ($categories as $category)
                                     <tr>
                                         <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                        <td class="border px-4 py-2">{{ $category->name }}</td>
+                                        <td class="border px-4 py-2">{{ $category->name ?? "Not Found" }}</td>
                                         @can('Manage category')
                                             <td class="border px-4 py-2 flex justify-center space-x-2">
                                                 <x-button
