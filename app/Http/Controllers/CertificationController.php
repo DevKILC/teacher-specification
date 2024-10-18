@@ -31,29 +31,37 @@ class CertificationController extends Controller
         $request->validate([
             'teacher_id' => 'required|exists:teachers,id',
         ]);
-
+        
         try {
+            // Cek apakah teacher sudah memiliki 3 certification
+            $teacherCertificationsCount = Certification::where('teacher_id', $request->teacher_id)->count();
+        
+            if ($teacherCertificationsCount >= 3) {
+                // Jika teacher memiliki 3 certification, beri pesan error dan kembalikan
+                return redirect()->back()->with('error', 'Teachers already have 3 certifications, cannot add more.');
+            }
+        
+            // Jika belum ada 3 certification, tambahkan data baru
             Certification::create([
                 'teacher_id' => $request->teacher_id,
                 'name' => $request->name
-
             ]);
-    
-            // Success message and redirect
+        
+            // Pesan sukses dan redirect
             session()->flash('success', 'Certification added successfully');
             return redirect()->back();
-
+        
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Handle validation exceptions
+            // Menangani validasi exception
             session()->flash('error', $e->getMessage());
             return redirect()->back()->withErrors($e->validator->errors())->withInput();
-
+        
         } catch (\Exception $e) {
-            // Handle general exceptions
+            // Menangani exception umum
             session()->flash('error', $e->getMessage());
             return redirect()->back()->with('error', $e->getMessage());
         }
-    }
+    }        
 
     /**
      * Display the specified resource.
