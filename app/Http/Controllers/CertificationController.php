@@ -28,7 +28,31 @@ class CertificationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'teacher_id' => 'required|exists:teachers,id',
+        ]);
+
+        try {
+            Certification::create([
+                'teacher_id' => $request->teacher_id,
+                'name' => $request->name
+
+            ]);
+    
+            // Success message and redirect
+            session()->flash('success', 'Certification added successfully');
+            return redirect()->back();
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation exceptions
+            session()->flash('error', $e->getMessage());
+            return redirect()->back()->withErrors($e->validator->errors())->withInput();
+
+        } catch (\Exception $e) {
+            // Handle general exceptions
+            session()->flash('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**

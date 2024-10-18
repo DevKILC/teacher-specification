@@ -9,6 +9,10 @@ class Certification extends Model
 {
     use HasFactory;
     protected $table = 'certifications';
+    protected $fillable = [
+        'teacher_id',  // Foreign Key
+        'name',
+    ];
 
     public function certifications()
     {   

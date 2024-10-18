@@ -84,23 +84,80 @@
                             </div>
                         @endif
                         
-                        <div class="flex w-full items-center border-yellow-400 border-b-2 pb-2">
+                        <div class="flex w-full items-center border-yellow-400 border-b-2 pb-2 justify-between " x-data="{ openCertificationModal : false}">
                             <h1 class="text-left text-xl ">Certification</h1>
+                            @if (auth()->user()->can('Add teacher skills') || auth()->user()->hasRole('Administrator'))
+                            <!-- Jika user memiliki permission Add teacher skills ATAU user adalah Administrator -->
+                            
+                                <x-button @click="openCertificationModal = true">
+                                    {{ __('+ Add Certifications') }}
+                                </x-button>
+
+
+                            <!-- Certificate Modal -->
+                            <x-general.modal :open="'openCertificationModal'" :title="__('Create Certification')">
+                                <x-general.form-section id="addCertification" :submit="route('certification.store')">
+                                    <x-slot name="form">
+                                        <!-- Certification Name -->
+                                        <input type="hidden"  name="teacher_id" value="{{ $teachers->id }}">
+                                        <div class="col-span-6 sm:col-span-4 w-full">
+                                            <x-label for="name" value="{{ __('Certification Name') }}" />
+                                            <x-input class="w-full" id="certificationName" type="text" name="name"
+                                                value="{{ old('name') }}" required />
+                                            <x-input-error for="name" class="mt-2" />
+                                        </div>
+                                    </x-slot>
+        
+                                    <x-slot name="actions">
+                                        <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                                            {{ __('Save') }}
+                                        </x-button>
+                                        <x-button type="button" class="ml-4" @click="openCertificationModal = false">
+                                            {{ __('Cancel') }}
+                                        </x-button>
+                                    </x-slot>
+                                </x-general.form-section>
+                            </x-general.modal>
+
+                        @endif
                         </div>
-                            <div class="flex flex-col">
-                                <label for="c1" class="font-semibold">Certification 1</label>
-                                <p id="c1" class="text-gray-700"> {{$teacher->certifications[0]->name ?? 'No Certification' }} </p>
-                            </div>
-    
-                            <div class="flex flex-col">
-                                <label for="c2" class="font-semibold">Certification 2</label>
-                                <p id="c2" class="text-gray-700"> {{ $teacher->certifications[1]->name ?? 'No Certification' }} </p>
-                            </div>
-    
-                            <div class="flex flex-col">
-                                <label for="c3" class="font-semibold">Certification 3</label>
-                                <p id="c3" class="text-gray-700"> {{ $teacher->certifications[2]->name ?? 'No Certification' }} </p>
-                            </div>
+                        <table class="w-full mt-1 border-collapse">
+                            @if (!$teachers)
+                                <tr>
+                                    <td colspan="3" class="text-center text-gray-500">No Certification available.</td>
+                                </tr>
+                            @else
+                                @forelse($teachers->certifications as $certificate)
+                                    <tr class="border-b border-gray-300">
+                                        <td class="py-2 text-gray-800 font-medium">{{ $loop->iteration }}</td>
+                                        <td class="py-2 text-gray-700">
+                                            {{$certificate->name ?? 'No Certification' }}</td>
+                                        @role('Administrator')
+                                            <td class="py-2 text-right">
+                                                <div class="relative">
+                                                    <form action="{{ route('certification.destroy', $certificate->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="p-2 rounded hover:bg-gray-100 focus:outline-none">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                                viewBox="0 -960 960 960" width="24px" fill="#EA3323">
+                                                                <path
+                                                                    d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        @endrole
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3" class="text-center text-gray-500">No Certifications available.</td>
+                                    </tr>
+                                @endforelse
+                            @endif
+                        </table>
                     
                     </div>
                 </div>
