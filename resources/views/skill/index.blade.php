@@ -74,7 +74,7 @@
                                 <!-- Skill Description -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="description" value="{{ __('Skill Description') }}" />
-                                    <x-text-area id="skillDescription" class="w-full" name="description" rows="3"
+                                    <x-text-area id="skillDescription" class="w-full" style="border-radius:5px " name="description" rows="3"
                                         x-model="skill.description" required>{{ old('description') }}</x-textarea>
                                         <x-input-error for="description" class="mt-2" />
                                 </div>
