@@ -169,10 +169,9 @@
                         @if (auth()->user()->can('Add teacher skills') || auth()->user()->hasRole('Administrator'))
                             <!-- Jika user memiliki permission Add teacher skills ATAU user adalah Administrator -->
                             <a href="{{ route('teacher-skill.show', $teachers->id) }}">
-                                <button
-                                    class="w-[150px] lg:w-[150px] h-[30px] lg:h-[40px] bg-yellow-400 hover:bg-yellow-500 rounded-md text-white text-sm">
+                                <x-button>
                                     + Add New Skill
-                                </button>
+                                </x-button>
                             </a>
                         @endif
                     </div>
