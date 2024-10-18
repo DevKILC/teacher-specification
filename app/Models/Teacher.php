@@ -16,15 +16,19 @@ class Teacher extends Model
     protected function imgUrl(): Attribute
     {
         return Attribute::get(function ($value) {
+            if($value == NULL){
+                return 'https://static.vecteezy.com/system/resources/thumbnails/001/840/618/small_2x/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg';
+            }
+            if(!$value){
+                return 'https://static.vecteezy.com/system/resources/thumbnails/001/840/618/small_2x/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg';
+            }
             if (str_contains($value, 'google')) {
                 return $value;
             }
             if ($value) {
                 return 'https://s3.ap-southeast-1.wasabisys.com/file-members.kampunginggris.id/' . $value;
             }
-            if(!$value){
-            return 'https://static.vecteezy.com/system/resources/thumbnails/001/840/618/small_2x/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg';
-            }
+            
         });
     }
 
@@ -34,7 +38,6 @@ class Teacher extends Model
         $dummyTeacher->id ='0'; // ID dummy
         $dummyTeacher->name = 'Dummy Teacher'; // Nama dummy
         $dummyTeacher->address = '123 Dummy Address'; // Alamat dummy
-        $dummyTeacher->phone = '0000000000'; // Nomor dummy
 
         // Menetapkan teacherSkills dummy
 

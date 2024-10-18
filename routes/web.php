@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryActivityController;
+use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\TeacherController;
@@ -40,6 +41,8 @@ Route::middleware([
     Route::resource('record', RecordController::class);
     
     Route::resource('category', CategoryController::class);
+
+    Route::resource('certification', CertificationController::class);
 
     Route::resource('categoryactivity', CategoryActivityController::class);
 
