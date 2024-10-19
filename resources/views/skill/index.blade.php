@@ -74,7 +74,8 @@
                                 <!-- Skill Description -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="description" value="{{ __('Skill Description') }}" />
-                                    <x-text-area id="skillDescription" class="w-full" style="border-radius:5px " name="description" rows="3"
+                                    <x-text-area id="skillDescription" class="w-full" style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" name="description" rows="3"
                                         x-model="skill.description" required>{{ old('description') }}</x-textarea>
                                         <x-input-error for="description" class="mt-2" />
                                 </div>
@@ -82,7 +83,8 @@
                                 <!-- Skill Category -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                                    <select id="skillCategory" class="w-full" name="category_id"
+                                    <select  style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" id="skillCategory" class="w-full" name="category_id"
                                         x-model="skill.category_id" required>
                                         <option value="">{{ __('Select a category') }}</option>
                                         @foreach ($categories as $category)
@@ -98,7 +100,8 @@
                                 <!-- Skill Type -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="type" class="w-full" value="{{ __('Type') }}" />
-                                    <select id="type" class="w-full" name="type" x-model="skill.type" required>
+                                    <select id="type" class="w-full"  style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" name="type" x-model="skill.type" required>
                                         <option value="">{{ __('Select Type') }}</option>
                                         <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>
                                             {{ __('Online') }}</option>
@@ -137,14 +140,16 @@
 
                                     <div class="col-span-6 sm:col-span-4 w-full">
                                         <x-label for="description" value="{{ __('Skill Description') }}" />
-                                        <x-text-area class="w-full" id="skillDescription" name="description"
+                                        <x-text-area class="w-full" style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" id="skillCategory" id="skillDescription" name="description"
                                             rows="3" x-model="skill.description" required></x-textarea>
                                             <x-input-error for="description" class="mt-2" />
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-4 w-full">
                                         <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                                        <select class="w-full" id="skillCategory" name="category_id"
+                                        <select class="w-full" style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" id="skillCategory" id="skillCategory" name="category_id"
                                             x-model="skill.category_id" required>
                                             <option value="">{{ __('Select a category') }}</option>
                                             @foreach ($categories as $category)
@@ -159,7 +164,8 @@
 
                                     <div class="col-span-6 sm:col-span-4 w-full">
                                         <x-label for="type" value="{{ __('Type') }}" />
-                                        <select class="w-full" id="type" name="type" x-model="skill.type"
+                                        <select style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" id="skillCategory" class="w-full" id="type" name="type" x-model="skill.type"
                                             required>
                                             <option value="">{{ __('Select Type') }}</option>
                                             <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>

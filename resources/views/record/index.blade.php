@@ -108,10 +108,9 @@
 
                     @can('Add teacher activity')
                         <!-- add activity category button -->
-                        <button @click="openAddTeacherActivity = true"
-                            class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
+                        <x-button @click="openAddTeacherActivity = true">
                             Add Teacher Activity
-                        </button>
+                        </x-button>
                     @endcan
 
                     <!-- Teacher Activity Modal -->
@@ -141,14 +140,16 @@
                                 <!-- Activity Description -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="activity" class="w-full" value=" {{ __('Activity') }}" />
-                                    <x-text-area name="activity" rows="3" required></x-text-area>
+                                    <x-text-area name="activity" rows="3" style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" id="skillCategory" required></x-text-area>
                                     <x-input-error for="description" class="mt-2" />
                                 </div>
 
                                 <!-- Category -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="category_id" value="{{ __('Activity Category') }}" />
-                                    <select id="activityCategory" class="w-full" name="category_id" required>
+                                    <select id="activityCategory" style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" id="skillCategory" class="w-full" name="category_id" required>
                                         <option value="">{{ __('Select a category') }}</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
@@ -163,7 +164,8 @@
                                 <!-- Date -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="date" value="{{ __('Activity Date') }}" />
-                                    <input type="date" class="w-full" name="date" required />
+                                    <input type="date" style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" id="skillCategory" class="w-full" name="date" required />
                                     <x-input-error for="date" class="mt-2" />
                                 </div>
 
@@ -191,10 +193,9 @@
                         <!-- modalshow category -->
                         <div class="" x-data="{ openActivityCategory: false }">
                             <!-- button show category -->
-                            <button @click="openActivityCategory = true"
-                                class="bg-yellow-400 mb-5 mt-5 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
+                            <x-button @click="openActivityCategory = true">
                                 {{ __('Show Category') }}
-                            </button>
+                            </x-button>
                             <!-- Modal Component -->
                             <x-general.modal :open="'openActivityCategory'" :title="__('Categories List')">
                                 <!-- Category Table -->
@@ -248,7 +249,8 @@
                                 <!-- Category Name -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="name" value="{{ __('Category Name') }}" />
-                                    <x-input id="name" type="text" class="w-full" name="name"
+                                    <x-input style="border-radius:5px ;  border-style: solid;
+  border-color: gray;" id="skillCategory" id="name" type="text" class="w-full" name="name"
                                         value="{{ old('name') }}" required />
                                     <x-input-error for="name" class="mt-2" />
                                 </div>
@@ -344,7 +346,7 @@
                     @endif
                 </div>
             </div>
-        </div>
+       
 
         <div class="flex h-auto items-center text-center mt-4 mb-4">
             <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
@@ -462,6 +464,7 @@
             </div>
         </div>
     </div>
+</div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Loading saat menambahkan skill ke teacher
