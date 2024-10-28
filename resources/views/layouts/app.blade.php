@@ -39,11 +39,8 @@
 
 <body class="font-poppins antialiased relative" 
     x-data="{ open: false, loading: false }" 
-    x-init="window.addEventListener('beforeunload', (event) => {
-        loading = true;
-        event.returnValue = 'Still loading...'; // Pesan peringatan
-    });
-    window.addEventListener('pageshow', () => { loading = false })"
+    x-init="window.addEventListener('beforeunload', () => { loading = true });
+            window.addEventListener('pageshow', () => { loading = false })"
     :class="{ 'pointer-events-none': loading }">
     <!-- loading line -->
     <div x-show="loading" class="fixed top-0 left-0 w-full z-[1000001]">
@@ -51,14 +48,10 @@
     </div>
     <!-- Loading Spinner -->
     <div x-show="loading" x-cloak class="fixed top-4 right-4 z-[1000001]">
-        <svg class="animate-spin h-4 w-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg class="animate-spin h-4 w-4  text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
         </svg>
-    </div>
-    <!-- Notification for loading -->
-    <div x-show="loading" x-cloak class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000002] bg-white shadow-lg rounded-lg p-4">
-        <p class="text-gray-700">Still loading...</p>
     </div>
 
     <x-banner />
