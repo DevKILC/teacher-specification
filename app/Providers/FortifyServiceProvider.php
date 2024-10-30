@@ -49,38 +49,38 @@ class FortifyServiceProvider extends ServiceProvider
     
 
 
-        // Fortify::authenticateUsing(function (Request $request) {
+        Fortify::authenticateUsing(function (Request $request) {
             
-        //     // call api to authenticate user
-        //     $response = Http::post('https://new-user-service.kampunginggrislc.com/api/user-service/officers/sign-in', [
-        //         'email' => $request->email,
-        //         'password' => $request->password,
-        //         'token_fcm' => 'web'
-        //     ]);
+            // call api to authenticate user
+            $response = Http::post(config('api.API_BASE_LOGIN_URL'), [
+                'email' => $request->email,
+                'password' => $request->password,
+                'token_fcm' => 'web'
+            ]);
 
-        //     $user = $response->json();
+            $user = $response->json();
 
-        //     if($user['success'] == true) {
-        //         $data = $user['message'];
+            if($user['success'] == true) {
+                $data = $user['message'];
 
-        //         $existingUser = User::where('email', $data['email'])->first();
+                $existingUser = User::where('email', $data['email'])->first();
 
-        //         if ($existingUser) {
-        //             return $existingUser;
-        //         } else {
-        //             $newUser = User::create([
-        //                 'name' => $data['name'],
-        //                 'email' => $data['email'],
-        //                 'profile_photo_path' => $data['img_url'],  // Adjust to profile_photo_path if you store it
-        //                 'password' => bcrypt(Str::random(16)), // Generate a random password
-        //             ]);
+                if ($existingUser) {
+                    return $existingUser;
+                } else {
+                    $newUser = User::create([
+                        'name' => $data['name'],
+                        'email' => $data['email'],
+                        'profile_photo_path' => $data['img_url'],  // Adjust to profile_photo_path if you store it
+                        'password' => bcrypt(Str::random(16)), // Generate a random password
+                    ]);
 
 
-        //             return $newUser;
-        //         }
-        //     }
+                    return $newUser;
+                }
+            }
 
-        //     return null;
-        // });
+            return null;
+        });
     }
 }
