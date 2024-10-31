@@ -16,9 +16,10 @@ class SkillController extends Controller
      */
     public function index()
     {
-        return view('skill.index',[
-            'skills' => Skill::with('category')->get(),
-            'categories' => Category::all()
+        return view('skill.index', [
+            'skills' => Skill::with('category')->orderBy('created_at', 'desc')->get(),
+            'categories' => Category::orderBy('created_at', 'desc')->get(),
+
         ]);
     }
 
@@ -43,13 +44,12 @@ class SkillController extends Controller
         ]);
 
         try {
-    
+
             Skill::create($validated);
-    
+
             // make flash message
             session()->flash('success', 'Skill created successfully');
             return redirect()->route('skill.index');
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation exceptions
             // return redirect()->back()->withErrors($e->validator->errors())->withInput();
@@ -96,7 +96,6 @@ class SkillController extends Controller
             // make flash message
             session()->flash('success', 'Skill updated successfully');
             return redirect()->route('skill.index');
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation exceptions
             // return redirect()->back()->withErrors($e->validator->errors())->withInput();
@@ -104,7 +103,6 @@ class SkillController extends Controller
         } catch (\Exception $e) {
             // Handle general exceptions
             return redirect()->back()->with('error', $e->getMessage());
-            
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with('error', $th->getMessage());
@@ -123,18 +121,15 @@ class SkillController extends Controller
                 $skill->delete();
                 // hapus teacher_skill
                 TeacherSkill::where('skill_id', $skill->id)->delete();
-
             });
 
             // Berikan pesan sukses dan redirect ke halaman sebelumnya
             session()->flash('success', 'Skill deleted successfully');
             return redirect()->back();
-    
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Tangani error validasi
             session()->flash('error', $e->getMessage());
             return redirect()->back()->withErrors($e->validator->errors())->withInput();
-    
         } catch (\Exception $e) {
             // Tangani error lain
             session()->flash('error', 'An error occurred: ' . $e->getMessage());

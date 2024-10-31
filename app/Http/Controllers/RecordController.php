@@ -24,6 +24,7 @@ class RecordController extends Controller
         if ($start && $end) {
             $allActivities = Record::with(['teachers', 'category']) // Pastikan relasi menggunakan nama yang benar
                 ->whereBetween('date', [$start, $end])
+                ->orderBy('created_at', 'desc')
                 ->get();
         } else {
             // Jika tidak ada filter tanggal, ambil semua activities
