@@ -51,13 +51,13 @@
                             type: ''
                         },
                     }">
-                    @can('Add skill')
+                    @if(userHasPath('add-skill'))
                         <div class="bg-white w-auto h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-3 ">
                             <x-button @click="openSkillModal = true">
                                 {{ __('Add Skill') }}
                             </x-button>
                         </div>
-                    @endcan
+                    @endif
                     <!-- Skill Modal -->
                     <!-- ADD -->
                     <x-general.modal :open="'openSkillModal'" :title="__('Create Skill')">
@@ -205,9 +205,9 @@
                                         <th>Description</th>
                                         <th>Category</th>
                                         <th>Type</th>
-                                        @can('Manage skill')
+                                        @if(userHasPath('detail-skill'))
                                             <th>Actions</th>
-                                        @endcan
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -218,7 +218,7 @@
                                             <td class="border px-4 py-2">{{ $skill->description ?? "Not Found" }}</td>
                                             <td class="border px-4 py-2">{{ $skill->category->name ?? "Not Found" }}</td>
                                             <td class="border px-4 py-2">{{ $skill->type?? "Not Found" }}</td>
-                                            @can('Manage skill')
+                                            @if(userHasPath('detail-skill'))
                                                 <td class="border px-4 py-2 flex justify-center space-x-2">
                                                     <x-button
                                                     @click="
@@ -242,7 +242,7 @@
                                                         </x-button>
                                                     </form>
                                                 </td>
-                                            @endcan
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -273,12 +273,12 @@
                     },
                 }">
 
-                @can('Add category')
+                @if(userHasPath('add-category-skill'))
                     <div class="bg-white w-auto h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-3 ">
                         <x-button @click="openCategoryModal = true">
                             {{ __('Add Category') }}
                         </x-button>
-                    @endcan
+                    @endif
                     <!-- Category Modal -->
                     <!-- ADD -->
                     <x-general.modal :open="'openCategoryModal'" :title="__('Create Category')">
@@ -349,9 +349,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    @can('Manage category')
+                                    @if(userHasPath('detail-category-skill'))
                                         <th>Actions</th>
-                                    @endcan
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -359,7 +359,7 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                         <td class="border px-4 py-2">{{ $category->name ?? "Not Found" }}</td>
-                                        @can('Manage category')
+                                        @if(userHasPath('detail-category-skill'))
                                             <td class="border px-4 py-2 flex justify-center space-x-2">
                                                 <x-button
                                                     class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
@@ -382,7 +382,7 @@
                                                     </x-button>
                                                 </form>
                                             </td>
-                                        @endcan
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -393,13 +393,14 @@
 
 
             {{-- Restore Skill Button --}}
-        
+            @if(userHasAction('restore-skill-category:show'))
             <a href="{{ route('restore-skill-category.index') }}">
                 @csrf
                 <button class="text-center rounded-md text-white font-medium w-full h-auto mt-12 mb-12 py-4 shadow-md bg-yellow-400 hover:bg-yellow-500">
                     Restore Skills or Categories Data
                 </button>
             </a>
+            @endif
             
          
 

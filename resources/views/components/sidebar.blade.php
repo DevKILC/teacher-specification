@@ -28,22 +28,34 @@
             <x-nav-link href="{{ route('teacher.index') }}" :active="request()->segment(1) === 'teacher' ||  request()->segment(1) === 'teacher-skill'">
                 {{ __('Teachers Profile') }}
             </x-nav-link>
-            @can('Skill management')
+         
+
+            @if (userHasAction('skill:show'))
+            <x-nav-link href="{{ route('skill.index') }}" :active="request()->segment(1) === 'skill' || request()->segment(1) === 'restore-skill-category'">
+                {{ __('Skills & Category') }}
+            </x-nav-link>
+        @endif
+            {{-- @can('Skill management')
             <x-nav-link href="{{ route('skill.index') }}" :active="request()->segment(1) === 'skill' ||  request()->segment(1) === 'restore-skill-category'">
                 {{ __('Skills & Category') }}
             </x-nav-link>
-            @endcan
+            @endcan --}}
             <x-nav-link href="{{ route('record.index') }}" :active="request()->segment(1) === 'record'">
                 {{ __('Records') }}
             </x-nav-link>
-            <x-nav-link href="{{ route('permission.index') }}" :active="request()->segment(1) === 'permission'">
+            {{-- <x-nav-link href="{{ route('permission.index') }}" :active="request()->segment(1) === 'permission'">
                 {{ __('Roles & Permissions') }}
+            </x-nav-link> --}}
+            {{-- @if (userHasAction('user-management:show'))
+            <x-nav-link href="{{ route('user-management.index') }}" :active="request()->segment(1) === 'user-management'">
+                {{ __('User management') }}
             </x-nav-link>
-            @can('User management')
+            @endif --}}
+            {{-- @can('User management')
                 <x-nav-link href="{{ route('user-management.index') }}" :active="request()->segment(1) === 'user-management'">
                     {{ __('User management') }}
                 </x-nav-link>
-            @endcan
+            @endcan --}}
         </div>
 
         <!-- Settings Dropdown -->

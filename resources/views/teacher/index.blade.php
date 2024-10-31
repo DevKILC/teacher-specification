@@ -63,7 +63,7 @@
                         <div class="flex w-full items-center border-yellow-400 border-b-2 pb-2">
                             <h1 class="text-left text-xl ">Biodata</h1>
                         </div>
-                        @if (auth()->user()->can('Read teacher biodata') || auth()->user()->hasRole('Administrator'))
+                        @if (userHasPath('read-teacher-skill'))
                             <div class="flex flex-col">
                                 <label for="username" class="font-semibold">Username</label>
                                 <p id="username" class="text-gray-700"> {{ $teachers->username ?? 'Not Found' }} </p>
@@ -86,7 +86,7 @@
                         
                         <div class="flex w-full items-center border-yellow-400 border-b-2 pb-2 justify-between " x-data="{ openCertificationModal : false}">
                             <h1 class="text-left text-xl ">Certification</h1>
-                            @if (auth()->user()->can('Add teacher skills') || auth()->user()->hasRole('Administrator'))
+                            @if (userHasPath('add-teacher-skill'))
                             <!-- Jika user memiliki permission Add teacher skills ATAU user adalah Administrator -->
                             
                                 <x-button @click="openCertificationModal = true">
@@ -132,7 +132,7 @@
                                         <td class="py-2 text-gray-800 font-medium">{{ $loop->iteration }}</td>
                                         <td class="py-2 text-gray-700">
                                             {{$certificate->name ?? 'No Certification' }}</td>
-                                        @role('Administrator')
+                                       @if(userHasPath('delete-teacher-skill'))
                                             <td class="py-2 text-right">
                                                 <div class="relative">
                                                     <form action="{{ route('certification.destroy', $certificate->id) }}"
@@ -149,7 +149,7 @@
                                                     </form>
                                                 </div>
                                             </td>
-                                        @endrole
+                                        @endif
                                     </tr>
                                 @empty
                                     <tr>
@@ -166,7 +166,7 @@
                 <div class="w-full lg:w-[60%] flex flex-col h-auto bg-white shadow-md rounded-md p-6">
                     <div class="flex flex-row justify-between items-center border-yellow-400 border-b-2 pb-2">
                         <h1 class="text-left font-thin text-xl lg:text-[30px]">Skills list</h1>
-                        @if (auth()->user()->can('Add teacher skills') || auth()->user()->hasRole('Administrator'))
+                        @if (userHasPath('add-teacher-skill'))
                             <!-- Jika user memiliki permission Add teacher skills ATAU user adalah Administrator -->
                             <a href="{{ route('teacher-skill.show', $teachers->id) }}">
                                 <x-button>
@@ -200,7 +200,7 @@
                                         <td class="py-2 text-gray-800 font-medium">{{ $index + 1 }}</td>
                                         <td class="py-2 text-gray-700">
                                             {{ $teacherSkill->skills->name ?? 'Skill Not Found or Being Deleted' }}</td>
-                                        @role('Administrator')
+                                        @if(userHasPath('delete-teacher-skill'))
                                             <td class="py-2 text-right">
                                                 <div class="relative">
                                                     <form action="{{ route('teacher-skill.destroy', $teacherSkill->id) }}"
@@ -217,7 +217,7 @@
                                                     </form>
                                                 </div>
                                             </td>
-                                        @endrole
+                                        @endif
                                     </tr>
                                 @empty
                                     <tr>

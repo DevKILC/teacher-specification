@@ -37,7 +37,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
@@ -46,11 +46,11 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-    
+
 
 
         Fortify::authenticateUsing(function (Request $request) {
-            
+
             // call api to authenticate user
             $response = Http::post(config('api.API_BASE_LOGIN_URL'), [
                 'email' => $request->email,
@@ -60,7 +60,10 @@ class FortifyServiceProvider extends ServiceProvider
 
             $user = $response->json();
 
-            if($user['success'] == true) {
+            // Store a piece of data in the session...
+            session(['user' => $response->json()]);
+
+            if ($user['success'] == true) {
                 $data = $user['message'];
 
                 $existingUser = User::where('email', $data['email'])->first();

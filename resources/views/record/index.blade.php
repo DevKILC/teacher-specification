@@ -32,14 +32,14 @@
                     <h1 class="text-2xl text-left">Records Data</h1>
                 </div>
                 <div class="flex gap-3 w-auto px-3 py-3 h-16 bg-white rounded-md shadow-md" x-data="{ openAddTeacherActivity: false, openAddActivityCategory: false, openRequestTeacherActivity: false }">
-                    @unlessrole('Administrator')
+                   
                         <!-- addactivity button and add activity category button  -->
                         <!-- addactivity button -->
                         <button @click="openRequestTeacherActivity = true"
                             class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
                             Request Teacher Activity
                         </button>
-                    @endunlessrole
+                 
                     <!-- Teacher Activity Modal -->
                     <x-general.modal :open="'openRequestTeacherActivity'" :title="__('Create Activity')">
                         <x-general.form-section id="addActivity" :submit="route('request-record-activity.store')">
@@ -106,12 +106,12 @@
                         </x-general.form-section>
                     </x-general.modal>
 
-                    @can('Add teacher activity')
+                    @if(userHasPath('add-record-activity'))
                         <!-- add activity category button -->
                         <x-button @click="openAddTeacherActivity = true">
                             Add Teacher Activity
                         </x-button>
-                    @endcan
+                    @endif
 
                     <!-- Teacher Activity Modal -->
                     <x-general.modal :open="'openAddTeacherActivity'" :title="__('Create Activity')">
@@ -181,13 +181,13 @@
 
                         </x-general.form-section>
                     </x-general.modal>
-                    @can('Add activity category')
+                    @if(userHasPath('add-activity-category'))
                         <!-- addcategory button -->
                         <button @click="openAddActivityCategory = true"
                             class="bg-yellow-400 text-white hover:bg-yellow-500 py-2 px-4 rounded-md w-30 h-10">
                             Add Activity Category
                         </button>
-                    @endcan
+                    @endif
 
                     <x-general.modal :open="'openAddActivityCategory'" :title="__('Create Category')">
                         <!-- modalshow category -->
@@ -205,9 +205,9 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>Name</th>
-                                                @can('Delete activity category')
+                                                @if(userHasPath('delete-activity-category'))
                                                     <th>Option</th>
-                                                @endcan
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -215,7 +215,7 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $category->name ?? 'N/A' }}</td>
-                                                    @can('Delete activity category')
+                                                    @if(userHasPath('delete-activity-category'))
                                                         <td class="flex justify-center">
                                                             <!-- Form to Delete Category -->
                                                             <form id="deleteActivityCategory"
@@ -229,7 +229,7 @@
                                                                 </x-button>
                                                             </form>
                                                         </td>
-                                                    @endcan
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -312,9 +312,9 @@
                                         <th>Activity</th>
                                         <th>Category</th>
                                         <th>Date</th>
-                                        @can('Delete Activity')
+                                        @if(userHasPath('delete-record-activity'))
                                             <th>Option</th>
-                                        @endcan
+                                        @endif
 
                                     </tr>
                                 </thead>
@@ -326,7 +326,7 @@
                                             <td class="border px-4 py-2">{{ $activity->activity ?? 'N/A' }}</td>
                                             <td class="border px-4 py-2">{{ $activity->category->name ?? 'N/A' }}</td>
                                             <td class="border px-4 py-2">{{ $activity->date ?? 'N/A' }}</td>
-                                            @can('Delete Activity')
+                                            @if(userHasPath('delete-record-activity'))
                                                 <td class=" border px-4 py-2 flex justify-center">
                                                     <form id="deleteActivity"
                                                         action="{{ route('record.destroy', $activity->id) }}"
@@ -338,7 +338,7 @@
                                                         </x-button>
                                                     </form>
                                                 </td>
-                                            @endcan
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -376,9 +376,9 @@
                                 <th>Activity</th>
                                 <th>Category</th>
                                 <th>Status</th>
-                                @can('Can validate request activity')
+                                @if(userHasPath('validate-record-activity'))
                                     <th>Action</th>
-                                @endcan
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -404,7 +404,7 @@
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit"
-                                                                class="bg-red-500 rounded-md px-2 py-2 text-white">Cancel</button>
+                                                                class="bg-red-500 rounded-md px-2 py-2 text-white">ifcel</button>
                                                         </form>
                                                     @endunlessrole
                                                 </div>
@@ -424,7 +424,7 @@
                                         @endswitch
                                     </td>
 
-                                    @can('Can validate request activity')
+                                    @if(userHasPath('validate-record-activity'))
                                         <td class="border">
                                             <div class="flex space-x-3 justify-center">
                                                 @if ($history->stats == 'Pending')
@@ -455,7 +455,7 @@
                                                 @endif
                                             </div>
                                         </td>
-                                    @endcan
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
