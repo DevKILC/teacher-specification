@@ -171,7 +171,7 @@
                                 <tr class="bg-white hover:bg-gray-100">
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                     <td class="border px-4 py-2">{{ $teacher->name ?? 'N/A' }}</td>
-                                    @if(userHasAction('dashboard:show'))
+                                    @if(userHasAction('dashboard:detail-teacher'))
                                     <td class="border px-4 py-2">{{ $teacher->address ?? 'N/A' }}</td>
                                     <td class="border px-4 py-2">{{ $teacher->phone ?? 'N/A' }}</td>
                                     @endif
