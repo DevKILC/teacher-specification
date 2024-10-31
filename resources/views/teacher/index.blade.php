@@ -51,8 +51,29 @@
                 <div class="w-full lg:w-[60%] h-auto">
                     <!-- Photo -->
                     <div class="w-full flex items-center bg-white h-auto rounded-md shadow-md p-6">
-                        <img src="{{ $teachers->img_url }}" alt="Teacher Picture"
-                            class="w-[150px] h-[150px] bg-yellow-400 border-yellow-400 border-2 rounded-full object-cover">
+                        <div x-data="{ openimgphoto: false }">
+                            <!-- Thumbnail Image -->
+                            <img 
+                                src="{{ $teachers->img_url }}" 
+                                alt="Teacher Picture" 
+                                @click="openimgphoto = true" 
+                                class="w-[150px] h-[150px] bg-yellow-400 border-yellow-400 border-2 rounded-full object-cover cursor-pointer"
+                            >
+                        
+                            <!-- Modal -->
+                            <div 
+                                x-show="openimgphoto" 
+                                @click.away="openimgphoto = false" 
+                                x-cloak
+                                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                                
+                                <div class="bg-white rounded-lg p-4 max-w-[90%] max-h-[90%]">
+                                    <button @click="openimgphoto = false" class="text-gray-500 hover:text-gray-700 text-xl font-bold absolute top-4 right-4">&times;</button>
+                                    <img src="{{ $teachers->img_url }}" alt="Teacher Picture" class="w-full h-full object-cover rounded-lg">
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="ml-6">
                             <!-- name & addres -->
                             <h1 class="text-2xl text-left">{{ $teachers->name ?? 'N/A' }}</h1>
