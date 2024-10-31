@@ -41,8 +41,8 @@
                 <!-- Skill -->
                 <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative flex justify-center"
                     x-data="{
-                        openSkillModal: false,
                         openAddSkillModal: false,
+                        openEditSkill: false,
                         skill: {
                             id: 0,
                             name: '',
@@ -53,14 +53,14 @@
                     }">
                     @if(userHasPath('add-skill'))
                         <div class="bg-white w-auto h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-3 ">
-                            <x-button @click="openSkillModal = true">
+                            <x-button @click="openAddSkillModal = true">
                                 {{ __('Add Skill') }}
                             </x-button>
                         </div>
                     @endif
                     <!-- Skill Modal -->
                     <!-- ADD -->
-                    <x-general.modal :open="'openSkillModal'" :title="__('Create Skill')">
+                    <x-general.modal :open="'openAddSkillModal'" :title="__('Create Skill')">
                         <x-general.form-section id="addSkill" :submit="route('skill.store')">
                             <x-slot name="form">
                                 <!-- Skill Name -->
@@ -74,7 +74,7 @@
                                 <!-- Skill Description -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="description" value="{{ __('Skill Description') }}" />
-                                    <x-text-area id="skillDescription" class="w-full" style="border-radius:5px ;  border-style: solid;
+                                    <x-text-area id="skillDescription" class="w-full text-ellipsis" style="border-radius:5px ;  border-style: solid;
   border-color: gray;" name="description" rows="3"
                                         x-model="skill.description" required>{{ old('description') }}</x-textarea>
                                         <x-input-error for="description" class="mt-2" />
@@ -116,14 +116,14 @@
                                 <x-button class="bg-blue-500 text-white hover:bg-blue-600">
                                     {{ __('Save') }}
                                 </x-button>
-                                <x-button type="button" class="ml-4" @click="openSkillModal = false">
+                                <x-button type="button" class="ml-4" @click="openAddSkillModal = false">
                                     {{ __('Cancel') }}
                                 </x-button>
                             </x-slot>
                         </x-general.form-section>
                     </x-general.modal>
                     <!-- EDIT -->
-                    <x-general.modal :open="'openAddSkillModal'" :title="__('Update Skill')">
+                    <x-general.modal :open="'openEditSkill'" :title="__('Update Skill')">
                         <form id="editSkill" :action="'{{ route('skill.update', '') }}/' + skill.id" method="POST">
                             @csrf
                             @method('PUT')
@@ -182,7 +182,7 @@
                             <div
                                 class="flex flex-row gap-5 items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
                                 <x-button type="button" class="bg-red-500 text-white hover:bg-red-600"
-                                    @click="openAddSkillModal = false">
+                                    @click="openEditSkill = false">
                                     {{ __('Cancel') }}
                                 </x-button>
                                 <x-button type="submit" class="bg-blue-500 text-white hover:bg-blue-600">
@@ -215,7 +215,9 @@
                                         <tr>
                                             <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                             <td class="border px-4 py-2">{{ $skill->name ?? "Not Found"  }}</td>
-                                            <td class="border px-4 py-2">{{ $skill->description ?? "Not Found" }}</td>
+                                            <td class="border px-4 py-2 text-ellipsis">
+                                                {{ Str::limit($skill->description ?? "Not Found", 50) }}
+                                            </td>                                            
                                             <td class="border px-4 py-2">{{ $skill->category->name ?? "Not Found" }}</td>
                                             <td class="border px-4 py-2">{{ $skill->type?? "Not Found" }}</td>
                                             @if(userHasPath('detail-skill'))
@@ -229,7 +231,7 @@
                                                         category_id: {{ $skill->category_id }},
                                                         type: '{{ $skill->type ?? 'Unknown' }}'
                                                     };
-                                                    openAddSkillModal = true;
+                                                    openEditSkill = true;
                                                 ">
                                                         {{ __('EDIT') }}
                                                     </x-button>

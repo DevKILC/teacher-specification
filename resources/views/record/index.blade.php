@@ -323,7 +323,9 @@
                                         <tr>
                                             <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                             <td class="border px-4 py-2">{{ $activity->teachers->username ?? 'N/A' }}</td>
-                                            <td class="border px-4 py-2">{{ $activity->activity ?? 'N/A' }}</td>
+                                            <td class="border px-4 py-2 text-ellipsis">
+                                                {{ Str::limit($activity->activity ?? "Not Found", 50) }}
+                                            </td>    
                                             <td class="border px-4 py-2">{{ $activity->category->name ?? 'N/A' }}</td>
                                             <td class="border px-4 py-2">{{ $activity->date ?? 'N/A' }}</td>
                                             @if(userHasPath('delete-record-activity'))
