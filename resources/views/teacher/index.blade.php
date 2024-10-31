@@ -79,7 +79,7 @@
                         </div>
                         @if (userHasPath('read-teacher-skill'))
                             <div class="flex flex-col">
-                                <label for="username" class="font-semibold">name</label>
+                                <label for="username" class="font-semibold">Name</label>
                                 <p id="username" class="text-gray-700"> {{ $teachers->name ?? 'Not Found' }} </p>
                             </div>
 
