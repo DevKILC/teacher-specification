@@ -157,10 +157,10 @@
                                 <tr>
                                     <th class="px-4 py-2">No</th>
                                     <th class="px-4 py-2">Name</th>
-                                    @can('Read teacher biodata')
+                                    @if(userHasAction('dashboard:show'))
                                     <th class="px-4 py-2">Address</th>
                                     <th class="px-4 py-2">Number</th>
-                                    @endcan
+                                    @endif
                                     <th class="px-4 py-2">Certification 1</th>
                                     <th class="px-4 py-2">Certification 2</th>
                                     <th class="px-4 py-2">Certification 3</th>
@@ -171,10 +171,10 @@
                                 <tr class="bg-white hover:bg-gray-100">
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                     <td class="border px-4 py-2">{{ $teacher->name ?? 'N/A' }}</td>
-                                    @can('Read teacher biodata')
+                                    @if(userHasAction('dashboard:show'))
                                     <td class="border px-4 py-2">{{ $teacher->address ?? 'N/A' }}</td>
                                     <td class="border px-4 py-2">{{ $teacher->phone ?? 'N/A' }}</td>
-                                    @endcan
+                                    @endif
                                     <td class="border px-4 py-2">{{ $teacher->certifications[0]->name ?? 'No Certification' }}</td>
                                     <td class="border px-4 py-2">{{ $teacher->certifications[1]->name ?? 'No Certification' }}</td>
                                     <td class="border px-4 py-2">{{ $teacher->certifications[2]->name ?? 'No Certification' }}</td>
