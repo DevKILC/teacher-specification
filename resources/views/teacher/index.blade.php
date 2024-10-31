@@ -30,7 +30,7 @@
                             <option value="">Choose Teacher</option>
                             @foreach ($allTeachers as $teacher)
                                 <option value="{{ $teacher->id }}"
-                                    {{ request('id') == $teacher->id ? 'selected' : '' }}>{{ $teacher->name }}</option>
+                                    {{ request('id') == $teacher->id ? 'selected' : '' }}>{{ $teacher->username }}</option>
                             @endforeach
                         </select>
                         <button type="submit"
@@ -60,23 +60,16 @@
                                 class="w-[150px] h-[150px] bg-yellow-400 border-yellow-400 border-2 rounded-full object-cover cursor-pointer"
                             >
                         
-                            <!-- Modal -->
-                            <div 
-                                x-show="openimgphoto" 
-                                @click.away="openimgphoto = false" 
-                                x-cloak
-                                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                                
-                                <div class="bg-white rounded-lg p-4 max-w-[90%] max-h-[90%]">
-                                    <button @click="openimgphoto = false" class="text-gray-500 hover:text-gray-700 text-xl font-bold absolute top-4 right-4">&times;</button>
-                                    <img src="{{ $teachers->img_url }}" alt="Teacher Picture" class="w-full h-full object-cover rounded-lg">
-                                </div>
-                            </div>
+                            <!-- Modal Component -->
+                            <x-general.modal :open="'openimgphoto'" :title="__('Profile Picture')">
+                                <!-- Set max width and height for the image inside modal -->
+                                <img src="{{ $teachers->img_url }}" alt="Teacher Picture" class="w-full max-w-[400px] max-h-[400px] object-cover rounded-lg mx-auto">
+                            </x-general.modal>
                         </div>
                         
                         <div class="ml-6">
                             <!-- name & addres -->
-                            <h1 class="text-2xl text-left">{{ $teachers->name ?? 'N/A' }}</h1>
+                            <h1 class="text-2xl text-left">{{ $teachers->username ?? 'N/A' }}</h1>
                             <p class="mt-2 text-sm"> {{ $teachers->email ?? 'Not Found' }}</p>
                         </div>
                     </div>
@@ -86,8 +79,8 @@
                         </div>
                         @if (userHasPath('read-teacher-skill'))
                             <div class="flex flex-col">
-                                <label for="username" class="font-semibold">Username</label>
-                                <p id="username" class="text-gray-700"> {{ $teachers->username ?? 'Not Found' }} </p>
+                                <label for="username" class="font-semibold">name</label>
+                                <p id="username" class="text-gray-700"> {{ $teachers->name ?? 'Not Found' }} </p>
                             </div>
 
                             <div class="flex flex-col">

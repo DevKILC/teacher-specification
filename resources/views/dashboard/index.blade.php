@@ -157,6 +157,7 @@
                                 <tr>
                                     <th class="px-4 py-2">No</th>
                                     <th class="px-4 py-2">Name</th>
+                                    <th class="px-4 py-2">Username</th>
                                     @if(userHasAction('dashboard:detail-teacher'))
                                     <th class="px-4 py-2">Address</th>
                                     <th class="px-4 py-2">Number</th>
@@ -171,6 +172,7 @@
                                 <tr class="bg-white hover:bg-gray-100">
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                     <td class="border px-4 py-2">{{ $teacher->name ?? 'N/A' }}</td>
+                                    <td class="border px-4 py-2">{{ $teacher->username ?? 'N/A' }}</td>
                                     @if(userHasAction('dashboard:detail-teacher'))
                                     <td class="border px-4 py-2">{{ $teacher->address ?? 'N/A' }}</td>
                                     <td class="border px-4 py-2">{{ $teacher->phone ?? 'N/A' }}</td>

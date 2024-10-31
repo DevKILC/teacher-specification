@@ -57,7 +57,7 @@
                                         @foreach ($allTeachers as $teacher)
                                             <option value="{{ $teacher->id }}"
                                                 {{ request('id') == $teacher->id ? 'selected' : '' }}>
-                                                {{ $teacher->name }}
+                                                {{ $teacher->username }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -130,7 +130,7 @@
                                         @foreach ($allTeachers as $teacher)
                                             <option value="{{ $teacher->id }}"
                                                 {{ request('id') == $teacher->id ? 'selected' : '' }}>
-                                                {{ $teacher->name }}
+                                                {{ $teacher->username }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -322,7 +322,7 @@
                                     @foreach ($allActivities as $activity)
                                         <tr>
                                             <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                            <td class="border px-4 py-2">{{ $activity->teachers->name ?? 'N/A' }}</td>
+                                            <td class="border px-4 py-2">{{ $activity->teachers->username ?? 'N/A' }}</td>
                                             <td class="border px-4 py-2">{{ $activity->activity ?? 'N/A' }}</td>
                                             <td class="border px-4 py-2">{{ $activity->category->name ?? 'N/A' }}</td>
                                             <td class="border px-4 py-2">{{ $activity->date ?? 'N/A' }}</td>
@@ -386,7 +386,7 @@
                                 <tr>
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                     <td class="border px-4 py-2">{{ $history->user->name ?? 'Not Found' }}</td>
-                                    <td class="border px-4 py-2">{{ $history->teacher->name ?? 'Not Found' }}</td>
+                                    <td class="border px-4 py-2">{{ $history->teacher->username ?? 'Not Found' }}</td>
                                     <td class="border px-4 py-2">{{ $history->activity ?? 'Not Found' }}</td>
                                     <td class="border px-4 py-2">
                                         {{ $history->category_activity->name ?? 'Not Found' }}</td>
