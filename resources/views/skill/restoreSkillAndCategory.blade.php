@@ -72,7 +72,9 @@
                                             <tr>
                                                 <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                                 <td class="border px-4 py-2">{{ $skill->name }}</td>
-                                                <td class="border px-4 py-2">{{ $skill->description }}</td>
+                                                <td class="border px-4 py-2 text-ellipsis">
+                                                    {{ Str::limit($skill->description ?? "Not Found", 50) }}
+                                                </td>                
                                                 <td class="border px-4 py-2">{{ $skill->category->name }}</td>
                                                 <td class="border px-4 py-2">{{ $skill->type }}</td>
 
