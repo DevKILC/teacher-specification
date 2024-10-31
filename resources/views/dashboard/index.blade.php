@@ -157,7 +157,7 @@
                                 <tr>
                                     <th class="px-4 py-2">No</th>
                                     <th class="px-4 py-2">Name</th>
-                                    @if(userHasAction('dashboard:show'))
+                                    @if(userHasAction('dashboard:detail-teacher'))
                                     <th class="px-4 py-2">Address</th>
                                     <th class="px-4 py-2">Number</th>
                                     @endif
