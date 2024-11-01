@@ -28,7 +28,7 @@
                         @if($users->isEmpty())
                         <p>No User available.</p>
                         @else
-                        <table class="table-auto py-10" id="users-table">
+                        <table class="stripe table-auto py-10" id="users-table">
                             <thead>
                                 <tr>
                                     <th>No</th>

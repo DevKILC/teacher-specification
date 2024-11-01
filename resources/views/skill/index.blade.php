@@ -197,7 +197,7 @@
                         @if ($skills->isEmpty())
                             <p>No skills available.</p>
                         @else
-                            <table class="table-auto border-collapse py-10" id="skills-table">
+                            <table class="stripe table-auto border-collapse py-10" id="skills-table">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -212,16 +212,16 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($skills as $skill)
-                                        <tr>
-                                            <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                            <td class="border px-4 py-2">{{ $skill->name ?? "Not Found"  }}</td>
-                                            <td class="border px-4 py-2 text-ellipsis">
+                                        <tr class="{{ $loop->even ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
+                                            <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
+                                            <td class="border-b px-4 py-2">{{ $skill->name ?? "Not Found"  }}</td>
+                                            <td class="border-b px-4 py-2 text-ellipsis">
                                                 {{ Str::limit($skill->description ?? "Not Found", 50) }}
                                             </td>                                            
-                                            <td class="border px-4 py-2">{{ $skill->category->name ?? "Not Found" }}</td>
-                                            <td class="border px-4 py-2">{{ $skill->type?? "Not Found" }}</td>
+                                            <td class="border-b px-4 py-2">{{ $skill->category->name ?? "Not Found" }}</td>
+                                            <td class="border-b px-4 py-2">{{ $skill->type?? "Not Found" }}</td>
                                             @if(userHasPath('detail-skill'))
-                                                <td class="border px-4 py-2 flex justify-center space-x-2">
+                                                <td class="border-b px-4 py-2 flex justify-center space-x-2">
                                                     <x-button
                                                     @click="
                                                     skill = {
@@ -346,7 +346,7 @@
                     @if ($categories->isEmpty())
                         <p>No Categories available.</p>
                     @else
-                        <table class="table-auto py-10" id="categories-table">
+                        <table class="stripe table-auto py-10" id="categories-table">
                             <thead class="">
                                 <tr>
                                     <th>ID</th>
@@ -358,11 +358,11 @@
                             </thead>
                             <tbody>
                                 @foreach ($categories as $category)
-                                    <tr>
-                                        <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                        <td class="border px-4 py-2">{{ $category->name ?? "Not Found" }}</td>
+                                    <tr class="{{ $loop->even ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
+                                        <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
+                                        <td class="border-b px-4 py-2">{{ $category->name ?? "Not Found" }}</td>
                                         @if(userHasPath('detail-category-skill'))
-                                            <td class="border px-4 py-2 flex justify-center space-x-2">
+                                            <td class="border-b px-4 py-2 flex justify-center space-x-2">
                                                 <x-button
                                                     class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                                                     @click="

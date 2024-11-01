@@ -152,7 +152,7 @@
                     <p class="text-center">No teachers available.</p>
                     @else
                     <div class="w-[90%] h-full mx-auto">
-                        <table class="table-auto w-full py-10" id="teachers-table">
+                        <table class="stripe table-auto w-full py-10" id="teachers-table">
                             <thead class="">
                                 <tr>
                                     <th class="px-4 py-2">No</th>
@@ -170,16 +170,16 @@
                             <tbody class="text-gray-700">
                                 @foreach($teachers as $teacher)
                                 <tr class="bg-white hover:bg-gray-100">
-                                    <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                    <td class="border px-4 py-2">{{ $teacher->name ?? 'N/A' }}</td>
-                                    <td class="border px-4 py-2">{{ $teacher->username ?? 'N/A' }}</td>
+                                    <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
+                                    <td class="border-b px-4 py-2">{{ $teacher->name ?? 'N/A' }}</td>
+                                    <td class="border-b px-4 py-2">{{ $teacher->username ?? 'N/A' }}</td>
                                     @if(userHasAction('dashboard:detail-teacher'))
-                                    <td class="border px-4 py-2">{{ $teacher->address ?? 'N/A' }}</td>
-                                    <td class="border px-4 py-2">{{ $teacher->phone ?? 'N/A' }}</td>
+                                    <td class="border-b px-4 py-2">{{ $teacher->address ?? 'N/A' }}</td>
+                                    <td class="border-b px-4 py-2">{{ $teacher->phone ?? 'N/A' }}</td>
                                     @endif
-                                    <td class="border px-4 py-2">{{ $teacher->certifications[0]->name ?? 'No Certification' }}</td>
-                                    <td class="border px-4 py-2">{{ $teacher->certifications[1]->name ?? 'No Certification' }}</td>
-                                    <td class="border px-4 py-2">{{ $teacher->certifications[2]->name ?? 'No Certification' }}</td>
+                                    <td class="border-b px-4 py-2">{{ $teacher->certifications[0]->name ?? 'No Certification' }}</td>
+                                    <td class="border-b px-4 py-2">{{ $teacher->certifications[1]->name ?? 'No Certification' }}</td>
+                                    <td class="border-b px-4 py-2">{{ $teacher->certifications[2]->name ?? 'No Certification' }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -196,8 +196,16 @@
     @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#teachers-table').DataTable();
-        });
+    $('#teachers-table').DataTable({
+        "createdRow": function(row, data, dataIndex) {
+            if (dataIndex % 2 === 0) {
+                $(row).addClass('bg-gray-100'); // Warna latar belakang untuk baris genap
+            } else {
+                $(row).addClass('bg-white'); // Warna latar belakang untuk baris ganjil
+            }
+        }
+    });
+});
 
         var ctxOffline = document.getElementById('offlineChart').getContext('2d');
         var offlineChart = new Chart(ctxOffline, {

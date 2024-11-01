@@ -94,7 +94,7 @@
                         @if($histories->isEmpty())
                         <p>No Request available,Try to request a permission</p>
                         @else
-                        <table class="table-auto py-10" id="requestpermissions">
+                        <table class="stripe table-auto py-10" id="requestpermissions">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -187,7 +187,7 @@
                         @if($userPermission->isEmpty())
                         <p>No permission available.</p>
                         @else
-                        <table class="table-auto py-10" id="datapermissions">
+                        <table class="stripe table-auto py-10" id="datapermissions">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -228,7 +228,7 @@
                         @if($permissions->isEmpty())
                         <p>No Permission available.</p>
                         @else
-                        <table class="table-auto py-10" id="permissions-table">
+                        <table class="stripe table-auto py-10" id="permissions-table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -292,7 +292,7 @@
                         @if($roles->isEmpty())
                         <p>No Roles available.</p>
                         @else
-                        <table class="table-auto py-10" id="roles-table">
+                        <table class="stripe table-auto py-10" id="roles-table">
                             <thead>
                                 <tr>
                                     <th>ID</th>

@@ -200,7 +200,7 @@
                             <x-general.modal :open="'openActivityCategory'" :title="__('Categories List')">
                                 <!-- Category Table -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
-                                    <table class="table-auto w-full py-10" id="activitycategory-table">
+                                    <table class="stripe table-auto w-full py-10" id="activitycategory-table">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
@@ -304,7 +304,7 @@
                         <p class="text-center">No Activity available.</p>
                     @else
                         <div class=" ml-14 w-[90%] pt-10 h-full">
-                            <table class="table-auto w-full py-10" id="activity-table">
+                            <table class="stripe table-auto w-full py-10" id="activity-table">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -320,16 +320,16 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($allActivities as $activity)
-                                        <tr>
-                                            <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                            <td class="border px-4 py-2">{{ $activity->teachers->username ?? 'N/A' }}</td>
-                                            <td class="border px-4 py-2 text-ellipsis">
+                                        <tr class="{{ $loop->even ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
+                                            <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
+                                            <td class="border-b px-4 py-2">{{ $activity->teachers->username ?? 'N/A' }}</td>
+                                            <td class="border-b px-4 py-2 text-ellipsis">
                                                 {{ Str::limit($activity->activity ?? "Not Found", 50) }}
                                             </td>    
-                                            <td class="border px-4 py-2">{{ $activity->category->name ?? 'N/A' }}</td>
-                                            <td class="border px-4 py-2">{{ $activity->date ?? 'N/A' }}</td>
+                                            <td class="border-b px-4 py-2">{{ $activity->category->name ?? 'N/A' }}</td>
+                                            <td class="border-b px-4 py-2">{{ $activity->date ?? 'N/A' }}</td>
                                             @if(userHasPath('delete-record-activity'))
-                                                <td class=" border px-4 py-2 flex justify-center">
+                                                <td class=" border-b px-4 py-2 flex justify-center">
                                                     <form id="deleteActivity"
                                                         action="{{ route('record.destroy', $activity->id) }}"
                                                         method="POST">
@@ -369,7 +369,7 @@
                 @if ($histories->isEmpty())
                     <p>No Request available,Try to request a activity</p>
                 @else
-                    <table class="table-auto py-10" id="requestactivities">
+                    <table class="stripe table-auto py-10" id="requestactivities">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -385,14 +385,14 @@
                         </thead>
                         <tbody>
                             @foreach ($histories as $history)
-                                <tr>
-                                    <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                    <td class="border px-4 py-2">{{ $history->user->name ?? 'Not Found' }}</td>
-                                    <td class="border px-4 py-2">{{ $history->teacher->username ?? 'Not Found' }}</td>
-                                    <td class="border px-4 py-2">{{ $history->activity ?? 'Not Found' }}</td>
-                                    <td class="border px-4 py-2">
+                                <tr class="{{ $loop->even ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
+                                    <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
+                                    <td class="border-b px-4 py-2">{{ $history->user->name ?? 'Not Found' }}</td>
+                                    <td class="border-b px-4 py-2">{{ $history->teacher->username ?? 'Not Found' }}</td>
+                                    <td class="border-b px-4 py-2">{{ $history->activity ?? 'Not Found' }}</td>
+                                    <td class="border-b px-4 py-2">
                                         {{ $history->category_activity->name ?? 'Not Found' }}</td>
-                                    <td class="border px-4 py-2 flex flex-row justify-center space-x-3">
+                                    <td class="border-b px-4 py-2 flex flex-row justify-center space-x-3">
                                         @switch($history->stats)
                                             @case('Pending')
                                                 <div class="flex items-center">
@@ -427,7 +427,7 @@
                                     </td>
 
                                     @if(userHasPath('validate-record-activity'))
-                                        <td class="border">
+                                        <td class="border-b">
                                             <div class="flex space-x-3 justify-center">
                                                 @if ($history->stats == 'Pending')
                                                     <!-- Show Accept and Decline buttons if status is Pending -->

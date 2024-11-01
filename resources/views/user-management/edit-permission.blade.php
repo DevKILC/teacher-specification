@@ -18,7 +18,7 @@
                 <form action="{{ route('user-management.update-permission' , $user->id ) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <table class="table-auto py-10" id="permissions-table">
+                    <table class="stripe table-auto py-10" id="permissions-table">
                         <thead>
                             <tr>
                             <th class="flex space-x-2 items-center ">Select All <input class="ml-3" type="checkbox" id="select-all"></th>

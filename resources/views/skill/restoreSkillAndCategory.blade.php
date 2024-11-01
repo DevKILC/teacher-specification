@@ -54,7 +54,7 @@
                             @if ($skills->isEmpty())
                                 <p>No skills available.</p>
                             @else
-                                <table class="table-auto border-collapse py-10" id="skills-table">
+                                <table class="stripe table-auto border-collapse py-10" id="skills-table">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -69,16 +69,16 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($skills as $skill)
-                                            <tr>
-                                                <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                                <td class="border px-4 py-2">{{ $skill->name }}</td>
-                                                <td class="border px-4 py-2 text-ellipsis">
+                                            <tr class="{{ $loop->even ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
+                                                <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
+                                                <td class="border-b px-4 py-2">{{ $skill->name }}</td>
+                                                <td class="border-b px-4 py-2 text-ellipsis">
                                                     {{ Str::limit($skill->description ?? "Not Found", 50) }}
                                                 </td>                
-                                                <td class="border px-4 py-2">{{ $skill->category->name }}</td>
-                                                <td class="border px-4 py-2">{{ $skill->type }}</td>
+                                                <td class="border-b px-4 py-2">{{ $skill->category->name }}</td>
+                                                <td class="border-b px-4 py-2">{{ $skill->type }}</td>
 
-                                                <td class="border px-4 py-2 text-center align-middle">
+                                                <td class="border-b px-4 py-2 text-center align-middle">
 
                                                     <input type="checkbox" name="skill[]" value="{{ $skill->id }}"
                                                         class="skill-checkbox">
@@ -121,7 +121,7 @@
                         @if ($categories->isEmpty())
                             <p>No Categories available.</p>
                         @else
-                            <table class="table-auto py-10" id="categories-table">
+                            <table class="stripe table-auto py-10" id="categories-table">
                                 <thead class="">
                                     <tr>
                                         <th>ID</th>
@@ -134,10 +134,10 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($categories as $category)
-                                        <tr>
-                                            <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                            <td class="border px-4 py-2">{{ $category->name }}</td>
-                                            <td class="border px-4 py-2 text-center align-middle">
+                                        <tr class="{{ $loop->even ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
+                                            <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
+                                            <td class="border-b px-4 py-2">{{ $category->name }}</td>
+                                            <td class="border-b px-4 py-2 text-center align-middle">
                                                 <input type="checkbox" name="category[]" value="{{ $category->id }}" class="category-checkbox">
                                             </td>
                                             
