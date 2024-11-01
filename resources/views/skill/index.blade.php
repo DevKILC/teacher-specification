@@ -51,7 +51,7 @@
                             type: ''
                         },
                     }">
-                    @if(userHasPath('add-skill'))
+                    @if (userHasPath('add-skill'))
                         <div class="bg-white w-auto h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-3 ">
                             <x-button @click="openAddSkillModal = true">
                                 {{ __('Add Skill') }}
@@ -74,18 +74,21 @@
                                 <!-- Skill Description -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="description" value="{{ __('Skill Description') }}" />
-                                    <x-text-area id="skillDescription" class="w-full text-ellipsis" style="border-radius:5px ;  border-style: solid;
-  border-color: gray;" name="description" rows="3"
-                                        x-model="skill.description" required>{{ old('description') }}</x-textarea>
+                                    <x-text-area id="skillDescription" class="w-full text-ellipsis"
+                                        style="border-radius:5px ;  border-style: solid;
+  border-color: gray;"
+                                        name="description" rows="3" x-model="skill.description"
+                                        required>{{ old('description') }}</x-textarea>
                                         <x-input-error for="description" class="mt-2" />
                                 </div>
 
                                 <!-- Skill Category -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                                    <select  style="border-radius:5px ;  border-style: solid;
-  border-color: gray;" id="skillCategory" class="w-full" name="category_id"
-                                        x-model="skill.category_id" required>
+                                    <select style="border-radius:5px ;  border-style: solid;
+  border-color: gray;"
+                                        id="skillCategory" class="w-full" name="category_id" x-model="skill.category_id"
+                                        required>
                                         <option value="">{{ __('Select a category') }}</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
@@ -100,8 +103,10 @@
                                 <!-- Skill Type -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="type" class="w-full" value="{{ __('Type') }}" />
-                                    <select id="type" class="w-full"  style="border-radius:5px ;  border-style: solid;
-  border-color: gray;" name="type" x-model="skill.type" required>
+                                    <select id="type" class="w-full"
+                                        style="border-radius:5px ;  border-style: solid;
+  border-color: gray;"
+                                        name="type" x-model="skill.type" required>
                                         <option value="">{{ __('Select Type') }}</option>
                                         <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>
                                             {{ __('Online') }}</option>
@@ -140,23 +145,27 @@
 
                                     <div class="col-span-6 sm:col-span-4 w-full">
                                         <x-label for="description" value="{{ __('Skill Description') }}" />
-                                        <x-text-area class="w-full" style="border-radius:5px ;  border-style: solid;
-  border-color: gray;" id="skillCategory" id="skillDescription" name="description"
+                                        <x-text-area class="w-full"
+                                            style="border-radius:5px ;  border-style: solid;
+  border-color: gray;"
+                                            id="skillCategory" id="skillDescription" name="description"
                                             rows="3" x-model="skill.description" required></x-textarea>
                                             <x-input-error for="description" class="mt-2" />
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-4 w-full">
                                         <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                                        <select class="w-full" style="border-radius:5px ;  border-style: solid;
-  border-color: gray;" id="skillCategory" id="skillCategory" name="category_id"
+                                        <select class="w-full"
+                                            style="border-radius:5px ;  border-style: solid;
+  border-color: gray;"
+                                            id="skillCategory" id="skillCategory" name="category_id"
                                             x-model="skill.category_id" required>
                                             <option value="">{{ __('Select a category') }}</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}"
                                                     {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                                     {{ $category->name }}
-                                                </option> 
+                                                </option>
                                             @endforeach
                                         </select>
                                         <x-input-error for="category_id" class="mt-2" />
@@ -165,8 +174,9 @@
                                     <div class="col-span-6 sm:col-span-4 w-full">
                                         <x-label for="type" value="{{ __('Type') }}" />
                                         <select style="border-radius:5px ;  border-style: solid;
-  border-color: gray;" id="skillCategory" class="w-full" id="type" name="type" x-model="skill.type"
-                                            required>
+  border-color: gray;"
+                                            id="skillCategory" class="w-full" id="type" name="type"
+                                            x-model="skill.type" required>
                                             <option value="">{{ __('Select Type') }}</option>
                                             <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>
                                                 {{ __('Online') }}</option>
@@ -205,7 +215,7 @@
                                         <th>Description</th>
                                         <th>Category</th>
                                         <th>Type</th>
-                                        @if(userHasPath('detail-skill'))
+                                        @if (userHasPath('detail-skill'))
                                             <th>Actions</th>
                                         @endif
                                     </tr>
@@ -214,16 +224,17 @@
                                     @foreach ($skills as $skill)
                                         <tr class="{{ $loop->even ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
                                             <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
-                                            <td class="border-b px-4 py-2">{{ $skill->name ?? "Not Found"  }}</td>
+                                            <td class="border-b px-4 py-2">{{ $skill->name ?? 'Not Found' }}</td>
                                             <td class="border-b px-4 py-2 text-ellipsis">
-                                                {{ Str::limit($skill->description ?? "Not Found", 50) }}
-                                            </td>                                            
-                                            <td class="border-b px-4 py-2">{{ $skill->category->name ?? "Not Found" }}</td>
-                                            <td class="border-b px-4 py-2">{{ $skill->type?? "Not Found" }}</td>
-                                            @if(userHasPath('detail-skill'))
+                                                {{ Str::limit($skill->description ?? 'Not Found', 50) }}
+                                            </td>
+                                            <td class="border-b px-4 py-2">{{ $skill->category->name ?? 'Not Found' }}
+                                            </td>
+                                            <td class="border-b px-4 py-2">{{ $skill->type ?? 'Not Found' }}</td>
+                                            @if (userHasPath('detail-skill'))
                                                 <td class="border-b px-4 py-2 flex justify-center space-x-2">
                                                     <x-button
-                                                    @click="
+                                                        @click="
                                                     skill = {
                                                         id: {{ $skill->id }},
                                                         name: '{{ $skill->name ?? 'Unnamed Skill' }}',
@@ -236,7 +247,8 @@
                                                         {{ __('EDIT') }}
                                                     </x-button>
                                                     <form id="deleteSkill"
-                                                        action="{{ route('skill.destroy', $skill->id) }}" method="POST">
+                                                        action="{{ route('skill.destroy', $skill->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <x-button type="submit" id="deleteSkillButton">
@@ -275,253 +287,262 @@
                     },
                 }">
 
-                @if(userHasPath('add-category-skill'))
+                @if (userHasPath('add-category-skill'))
                     <div class="bg-white w-auto h-16 absolute rounded-t-lg -mt-24  right-0 py-3 px-3 ">
                         <x-button @click="openCategoryModal = true">
                             {{ __('Add Category') }}
                         </x-button>
-                    @endif
-                    <!-- Category Modal -->
-                    <!-- ADD -->
-                    <x-general.modal :open="'openCategoryModal'" :title="__('Create Category')">
-                        <x-general.form-section id="addCategory" :submit="route('category.store')">
-                            <x-slot name="form">
-                                <!-- Category Name -->
+                @endif
+                <!-- Category Modal -->
+                <!-- ADD -->
+                <x-general.modal :open="'openCategoryModal'" :title="__('Create Category')">
+                    <x-general.form-section id="addCategory" :submit="route('category.store')">
+                        <x-slot name="form">
+                            <!-- Category Name -->
+                            <div class="col-span-6 sm:col-span-4 w-full">
+                                <x-label for="name" value="{{ __('Category Name') }}" />
+                                <x-input class="w-full" id="categoryName" type="text" name="name"
+                                    value="{{ old('name') }}" required />
+                                <x-input-error for="name" class="mt-2" />
+                            </div>
+                        </x-slot>
+
+                        <x-slot name="actions">
+                            <x-button class="bg-blue-500 text-white hover:bg-blue-600">
+                                {{ __('Save') }}
+                            </x-button>
+                            <x-button type="button" class="ml-4" @click="openCategoryModal = false">
+                                {{ __('Cancel') }}
+                            </x-button>
+                        </x-slot>
+                    </x-general.form-section>
+                </x-general.modal>
+
+                <!-- EDIT -->
+                <x-general.modal :open="'openAddCategoryModal'" :title="__('Update Category')">
+                    <form id="editcategory" :action="'{{ route('category.update', '') }}/' + category.id"
+                        method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="px-4 py-5 bg-white sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md">
+                            <div class="grid grid-cols-6 gap-6">
+                                <!-- Form Fields -->
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="name" value="{{ __('Category Name') }}" />
                                     <x-input class="w-full" id="categoryName" type="text" name="name"
-                                        value="{{ old('name') }}" required />
+                                        x-model="category.name" required />
                                     <x-input-error for="name" class="mt-2" />
                                 </div>
-                            </x-slot>
-
-                            <x-slot name="actions">
-                                <x-button class="bg-blue-500 text-white hover:bg-blue-600">
-                                    {{ __('Save') }}
-                                </x-button>
-                                <x-button type="button" class="ml-4" @click="openCategoryModal = false">
-                                    {{ __('Cancel') }}
-                                </x-button>
-                            </x-slot>
-                        </x-general.form-section>
-                    </x-general.modal>
-
-                    <!-- EDIT -->
-                    <x-general.modal :open="'openAddCategoryModal'" :title="__('Update Category')">
-                        <form id="editcategory" :action="'{{ route('category.update', '') }}/' + category.id"
-                            method="POST">
-                            @csrf
-                            @method('PUT')
-
-                            <div class="px-4 py-5 bg-white sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md">
-                                <div class="grid grid-cols-6 gap-6">
-                                    <!-- Form Fields -->
-                                    <div class="col-span-6 sm:col-span-4 w-full">
-                                        <x-label for="name" value="{{ __('Category Name') }}" />
-                                        <x-input class="w-full" id="categoryName" type="text" name="name"
-                                            x-model="category.name" required />
-                                        <x-input-error for="name" class="mt-2" />
-                                    </div>
-                                </div>
                             </div>
+                        </div>
 
-                            <!-- Save Button -->
-                            <div
-                                class="flex flex-row gap-5 items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
-                                <x-button type="button" class="bg-red-500 text-white hover:bg-red-600"
-                                    @click="openAddCategoryModal = false">
-                                    {{ __('Cancel') }}
-                                </x-button>
-                                <x-button type="submit" class="bg-blue-500 text-white hover:bg-blue-600">
-                                    {{ __('Update') }}
-                                </x-button>
-                            </div>
+                        <!-- Save Button -->
+                        <div
+                            class="flex flex-row gap-5 items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
+                            <x-button type="button" class="bg-red-500 text-white hover:bg-red-600"
+                                @click="openAddCategoryModal = false">
+                                {{ __('Cancel') }}
+                            </x-button>
+                            <x-button type="submit" class="bg-blue-500 text-white hover:bg-blue-600">
+                                {{ __('Update') }}
+                            </x-button>
+                        </div>
 
-                        </form>
-                    </x-general.modal>
-                </div>
+                    </form>
+                </x-general.modal>
+            </div>
 
-                <div class="w-[90%]">
-                    <!-- Category List -->
-                    @if ($categories->isEmpty())
-                        <p>No Categories available.</p>
-                    @else
-                        <table class="stripe table-auto py-10" id="categories-table">
-                            <thead class="">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    @if(userHasPath('detail-category-skill'))
-                                        <th>Actions</th>
-                                    @endif
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($categories as $category)
-                                    <tr class="{{ $loop->even ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
-                                        <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
-                                        <td class="border-b px-4 py-2">{{ $category->name ?? "Not Found" }}</td>
-                                        @if(userHasPath('detail-category-skill'))
-                                            <td class="border-b px-4 py-2 flex justify-center space-x-2">
-                                                <x-button
-                                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                                                    @click="
+            <div class="w-[90%]">
+                <!-- Category List -->
+                @if ($categories->isEmpty())
+                    <p>No Categories available.</p>
+                @else
+                    <table class="stripe table-auto py-10" id="categories-table">
+                        <thead class="">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                @if (userHasPath('detail-category-skill'))
+                                    <th>Actions</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($categories as $category)
+                                <tr class="{{ $loop->even ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
+                                    <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
+                                    <td class="border-b px-4 py-2">{{ $category->name ?? 'Not Found' }}</td>
+                                    @if (userHasPath('detail-category-skill'))
+                                        <td class="border-b px-4 py-2 flex justify-center space-x-2">
+                                            <x-button
+                                                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                                                @click="
                                             category = {
                                                     id: {{ $category->id }},
                                                     name: '{{ $category->name }}',
                                                 };
                                                 openAddCategoryModal = true;
                                             ">
-                                                    {{ __('EDIT') }}
+                                                {{ __('EDIT') }}
+                                            </x-button>
+                                            <form id="deleteCategory"
+                                                action="{{ route('category.destroy', $category->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-button type="submit" id="deleteCategoryButton">
+                                                    {{ __('DELETE') }}
                                                 </x-button>
-                                                <form id="deleteCategory"
-                                                    action="{{ route('category.destroy', $category->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <x-button type="submit" id="deleteCategoryButton">
-                                                        {{ __('DELETE') }}
-                                                    </x-button>
-                                                </form>
-                                            </td>
-                                        @endif
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @endif
-                </div>
+                                            </form>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
             </div>
+        </div>
 
 
-            {{-- Restore Skill Button --}}
-            @if(userHasAction('restore-skill-category:show'))
+        {{-- Restore Skill Button --}}
+        @if (userHasAction('restore-skill-category:show'))
             <a href="{{ route('restore-skill-category.index') }}">
                 @csrf
-                <button class="text-center rounded-md text-white font-medium w-full h-auto mt-12 mb-12 py-4 shadow-md bg-yellow-400 hover:bg-yellow-500">
+                <button
+                    class="text-center rounded-md text-white font-medium w-full h-auto mt-12 mb-12 py-4 shadow-md bg-yellow-400 hover:bg-yellow-500">
                     Restore Skills or Categories Data
                 </button>
             </a>
-            @endif
-            
-         
+        @endif
 
 
-        </div>
+
+
+    </div>
 
     </div>
     <script>
-        document.addEventListener('alpine:init', () => {
-            $('#skills-table').DataTable();
-            $('#categories-table').DataTable();
-        });
-        // Delete Skill
-        document.getElementById('deleteSkillButton').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent automatic form submission
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Are you sure you want to delete this skill?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, remove it!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
+        document.addEventListener('DOMContentLoaded', function() {
+
+            document.addEventListener('alpine:init', () => {
+                $('#skills-table').DataTable();
+                $('#categories-table').DataTable();
+            });
+
+            // edit and add category loading 
+            const editCategoryForm = document.getElementById('editCategory');
+            if (editCategoryForm) {
+                editCategoryForm.addEventListener('submit', function() {
                     Swal.fire({
                         title: 'Processing...',
-                        text: 'Please wait while we are deleting the skill',
+                        text: 'Please wait while we updating the category',
                         allowOutsideClick: false,
                         didOpen: () => {
                             Swal.showLoading();
                         }
                     });
-                    document.getElementById('deleteSkill').submit(); // Submit form after confirmation
-                }
-            });
-        });
-
-        // Delete Category
-        document.getElementById('deleteCategoryButton').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent automatic form submission
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'This will also delete all skills associated with this category. Do you want to continue?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, remove it!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
+                });
+            }
+            const addCategoryForm = document.getElementById('addCategory');
+            if (addCategoryForm) {
+                addCategoryForm.addEventListener('submit', function() {
                     Swal.fire({
                         title: 'Processing...',
-                        text: 'Please wait while we are deleting the category',
+                        text: 'Please wait while we adding the category',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+
+                    });
+                });
+            }
+            // edit and add new skill
+            const editSkillForm = document.getElementById('editSkill');
+            if (editSkillForm) {
+                editSkillForm.addEventListener('submit', function() {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we updating the skill',
                         allowOutsideClick: false,
                         didOpen: () => {
                             Swal.showLoading();
                         }
                     });
-                    document.getElementById('deleteCategory').submit(); // Submit form after confirmation
-                }
-            });
-        });
-        // edit and add category loading 
-        const editCategoryForm = document.getElementById('editCategory');
-        if (editCategoryForm) {
-            editCategoryForm.addEventListener('submit', function() {
-                Swal.fire({
-                    title: 'Processing...',
-                    text: 'Please wait while we updating the category',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
                 });
-            });
-        }
-        const addCategoryForm = document.getElementById('addCategory');
-        if (addCategoryForm) {
-            addCategoryForm.addEventListener('submit', function() {
-                Swal.fire({
-                    title: 'Processing...',
-                    text: 'Please wait while we adding the category',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
+            }
+            const addSkillForm = document.getElementById('addSkill');
+            if (addSkillForm) {
+                addSkillForm.addEventListener('submit', function() {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we adding the skill',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                });
+            }
 
-                });
-            });
-        }
-        // edit and add new skill
-        const editSkillForm = document.getElementById('editSkill');
-        if (editSkillForm) {
-            editSkillForm.addEventListener('submit', function() {
+            // Delete Skill
+            document.getElementById('deleteSkillButton').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent automatic form submission
                 Swal.fire({
-                    title: 'Processing...',
-                    text: 'Please wait while we updating the skill',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
+                    title: 'Are you sure?',
+                    text: 'Are you sure you want to delete this skill?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, remove it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Processing...',
+                            text: 'Please wait while we are deleting the skill',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        document.getElementById('deleteSkill')
+                    .submit(); // Submit form after confirmation
                     }
                 });
             });
-        }
-        const addSkillForm = document.getElementById('addSkill');
-        if (addSkillForm) {
-            addSkillForm.addEventListener('submit', function() {
+
+            // Delete Category
+            document.getElementById('deleteCategoryButton').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent automatic form submission
                 Swal.fire({
-                    title: 'Processing...',
-                    text: 'Please wait while we adding the skill',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
+                    title: 'Are you sure?',
+                    text: 'This will also delete all skills associated with this category. Do you want to continue?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, remove it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Processing...',
+                            text: 'Please wait while we are deleting the category',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        document.getElementById('deleteCategory')
+                    .submit(); // Submit form after confirmation
                     }
                 });
             });
-        }
+
+        });
     </script>
 </x-app-layout>

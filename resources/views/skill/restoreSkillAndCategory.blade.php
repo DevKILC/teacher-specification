@@ -75,7 +75,7 @@
                                                 <td class="border-b px-4 py-2 text-ellipsis">
                                                     {{ Str::limit($skill->description ?? "Not Found", 50) }}
                                                 </td>                
-                                                <td class="border-b px-4 py-2">{{ $skill->category->name }}</td>
+                                                <td class="border-b px-4 py-2">{{ $skill->category->name ?? 'Not Found , You need to restore category first' }}</td>
                                                 <td class="border-b px-4 py-2">{{ $skill->type }}</td>
 
                                                 <td class="border-b px-4 py-2 text-center align-middle">

@@ -150,10 +150,10 @@
                                             <td class="py-2 text-right">
                                                 <div class="relative">
                                                     <form action="{{ route('certification.destroy', $certificate->id) }}"
-                                                        method="POST">
+                                                        method="POST" id="deleteCertificationFormTeacher">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="p-2 rounded hover:bg-gray-100 focus:outline-none">
+                                                        <button class="p-2 rounded hover:bg-gray-100 focus:outline-none" id="removeCertification">
                                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px"
                                                                 viewBox="0 -960 960 960" width="24px" fill="#EA3323">
                                                                 <path
@@ -218,10 +218,10 @@
                                             <td class="py-2 text-right">
                                                 <div class="relative">
                                                     <form action="{{ route('teacher-skill.destroy', $teacherSkill->id) }}"
-                                                        method="POST">
+                                                        method="POST" id="deleteSkillFormTeacher">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="p-2 rounded hover:bg-gray-100 focus:outline-none">
+                                                        <button class="p-2 rounded hover:bg-gray-100 focus:outline-none" id="removeSkillButton">
                                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px"
                                                                 viewBox="0 -960 960 960" width="24px" fill="#EA3323">
                                                                 <path
@@ -249,14 +249,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Loading saat menambahkan skill ke teacher
             $(".select-teacher").select2({
-
             });
-            const addSkillForm = document.getElementById('addSkillTeacher');
-            if (addSkillForm) {
-                addSkillForm.addEventListener('submit', function() {
+            const addCertificationForm = document.getElementById('addCertification');
+            if (addCertificationForm) {
+                addCertificationForm.addEventListener('submit', function() {
                     Swal.fire({
                         title: 'Processing...',
-                        text: 'Please wait while we adding the skill',
+                        text: 'Please wait while we adding the Certification',
                         allowOutsideClick: false,
                         didOpen: () => {
                             Swal.showLoading();
@@ -287,6 +286,32 @@
                             }
                         });
                         document.getElementById('deleteSkillFormTeacher')
+                    .submit(); // Submit form setelah konfirmasi SweetAlert
+                    }
+                });
+            });
+            document.getElementById('removeCertification').addEventListener('click', function(event) {
+                event.preventDefault(); // Mencegah form di-submit secara otomatis
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Are you sure you want to remove this certification from this teacher?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, remove it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Processing...',
+                            text: 'Please wait while we delete the Certification',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        document.getElementById('deleteCertificationFormTeacher')
                     .submit(); // Submit form setelah konfirmasi SweetAlert
                     }
                 });

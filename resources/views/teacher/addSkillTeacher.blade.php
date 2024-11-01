@@ -70,7 +70,7 @@
                     <p>No teacher selected or cannot adding skill for dummy teacher , try choose teacher first!</p>
                 </div>
                 @else
-                    <form action="{{ route('teacher-skill.store') }}" method="POST">
+                    <form action="{{ route('teacher-skill.store') }}" method="POST" id="addSkillTeacher">
                         @csrf
                         <input type="hidden" name="teacher_id" value="{{ $teachers->id ?? '' }}">
                         <div class="w-full mx-3 flex justify-center">
@@ -107,4 +107,19 @@
             @endif
         </div>
     </div>
+    <script>
+         const addSkillForm = document.getElementById('addSkillTeacher');
+            if (addSkillForm) {
+                addSkillForm.addEventListener('submit', function() {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we adding the skill',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                });
+            }
+    </script>
 </x-app-layout>
