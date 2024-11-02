@@ -16,89 +16,67 @@ class DashboardController extends Controller
     {
         // Mengambil semua data guru
         $teachers = Teacher::with('certifications')->get();
-        // menhitung data
+        // menghitung data
         $teachersCount = Teacher::count();
-        $skillCount =  Skill::count();
+        $skillCount = Skill::count();
         $categoryCount = Category::count();
-        $activityCount =  Record::count();
+        $activityCount = Record::count();
         $categoryActivityCount = CategoryActivity::count();
         $teacherSkillCount = TeacherSkill::count();
         $certification = Certification::count();
 
         $totalCount = $teachersCount + $skillCount + $categoryCount + $activityCount + $categoryActivityCount + $teacherSkillCount + $certification;
 
-
         // Mengambil semua kategori
         $allCategories = Category::with('skills')->get();
+        $teacherSkills = TeacherSkill::with('skills.category')->get(); // with skills and category relationship
 
-        $teacherSkills = TeacherSkill::with('skills.category')->get();  // with skills and category relationship
+        // Menyiapkan labels (nama kategori)
+        $labels = [];
+        $resultsOffline = [];
+        $resultsOnline = [];
 
-     
+        foreach ($allCategories as $category) {
+            $labels[] = $category->name;
 
-    // Menyiapkan labels (nama kategori)
-$labels = [];
+            // Offline
+            $qualifiedTeacherCountOffline = $this->countQualifiedTeachers($teacherSkills, $category, 'OFFLINE');
+            $resultsOffline[] = $qualifiedTeacherCountOffline;
 
-// Menyiapkan data jumlah skill berdasarkan kategori dan tipe untuk setiap label
-$dataOffline = [];
-$dataOnline = [];
-
-foreach ($allCategories as $category) {
-    $labels[] = $category->name;
-
-    // Offline
-    $teacherSkillsInCategory = $teacherSkills->filter(function ($teacherSkill) use ($category) {
-        return $teacherSkill->skills->category->id === $category->id &&  $teacherSkill->skills->type === 'OFFLINE';
-    });
-
-    // Group skills by teacher ID
-    $groupedByTeacher = $teacherSkillsInCategory->groupBy('teacher_id');
-
-    // Count teachers with more than 3 distinct categories
-    $qualifiedTeacherCount = $groupedByTeacher->filter(function ($skills) {
-        return $skills->pluck('skills.category_id')->count() >= 3;
-    })->count();
-
-    // Add result to the output array
-    $resultsOffline[] = [
-        'total_teacher' => $qualifiedTeacherCount,
-    ];
-
-    // Online
-    $teacherSkillsInCategory = $teacherSkills->filter(function ($teacherSkill) use ($category) {
-        return $teacherSkill->skills->category->id === $category->id &&  $teacherSkill->skills->type === 'ONLINE';
-    });
-
-    // Group skills by teacher ID
-    $groupedByTeacher = $teacherSkillsInCategory->groupBy('teacher_id');
-
-    // Count teachers with more than 3 distinct categories
-    $qualifiedTeacherCount = $groupedByTeacher->filter(function ($skills) {
-        return $skills->pluck('skills.category_id')->count() >= 3;
-    })->count();
-
-    // Add result to the output array
-    $resultsOnline[] = [
-        'total_teacher' => $qualifiedTeacherCount,
-    ];
-  
-}
+            // Online
+            $qualifiedTeacherCountOnline = $this->countQualifiedTeachers($teacherSkills, $category, 'ONLINE');
+            $resultsOnline[] = $qualifiedTeacherCountOnline;
+        }
 
         return view('dashboard.index', [
             'teachers' => $teachers,
             'teachersCount' => $teachersCount,
             'labels' => $labels,
-            'dataOffline' => $resultsOffline['total_teacher'],
-            'dataOnline' => $resultsOnline['total_teacher'],
+            'dataOffline' => $resultsOffline,
+            'dataOnline' => $resultsOnline,
             'totalCount' => $totalCount,
             'skillCount' => $skillCount,
             'teacherSkillCount' => $teacherSkillCount,
             'categoryCount' => $categoryCount,
             'activityCount' => $activityCount,
             'categoryActivityCount' => $categoryActivityCount,
-            'teacherSkillCount' => $teacherSkillCount,
             'certification' => $certification,
             'allCategories' => $allCategories,
-
         ]);
+    }
+
+    // Method to count qualified teachers based on category and type
+    private function countQualifiedTeachers($teacherSkills, $category, $type) {
+        $teacherSkillsInCategory = $teacherSkills->filter(function ($teacherSkill) use ($category, $type) {
+            return $teacherSkill->skills->category->id === $category->id && $teacherSkill->skills->type === $type;
+        });
+
+        // Group skills by teacher ID
+        $groupedByTeacher = $teacherSkillsInCategory->groupBy('teacher_id');
+
+        // Count teachers with more than 3 distinct categories
+        return $groupedByTeacher->filter(function ($skills) {
+            return $skills->pluck('skills.category_id')->count() >= 3; // Use unique() for distinct categories
+        })->count();
     }
 }
