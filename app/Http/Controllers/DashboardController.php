@@ -30,9 +30,12 @@ class DashboardController extends Controller
 
         // Mengambil semua kategori
         $allCategories = Category::with('skills')->get();
+
+        $teacherSkills = TeacherSkill::with('skills.category')->get();  // with skills and category relationship
+
      
 
-     // Menyiapkan labels (nama kategori)
+    // Menyiapkan labels (nama kategori)
 $labels = [];
 
 // Menyiapkan data jumlah skill berdasarkan kategori dan tipe untuk setiap label
@@ -42,50 +45,50 @@ $dataOnline = [];
 foreach ($allCategories as $category) {
     $labels[] = $category->name;
 
-    // Menghitung jumlah teacher dengan minimal 3 skill kategori untuk tipe OFFLINE
-    $offlineTeachers = TeacherSkill::whereHas('skills', function($query) use ($category) {
-        $query->where('category_id', $category->id)
-              ->where('type', 'OFFLINE')
-              ->whereNull('deleted_at');
-    })->get()->groupBy('teacher_id');
+    // Offline
+    $teacherSkillsInCategory = $teacherSkills->filter(function ($teacherSkill) use ($category) {
+        return $teacherSkill->skills->category->id === $category->id &&  $teacherSkill->skills->type === 'OFFLINE';
+    });
 
-    $countOffline = 0;
-    foreach ($offlineTeachers as $teacherId => $skills) {
-        $uniqueCategories = $skills->pluck('category_id')->unique()->count();
-        if ($uniqueCategories >= 3) {
-            $countOffline++;
-        }
-    }
+    // Group skills by teacher ID
+    $groupedByTeacher = $teacherSkillsInCategory->groupBy('teacher_id');
 
-    // Menghitung jumlah teacher dengan minimal 3 skill kategori untuk tipe ONLINE
-    $onlineTeachers = TeacherSkill::whereHas('skills', function($query) use ($category) {
-        $query->where('category_id', $category->id)
-              ->where('type', 'ONLINE')
-              ->whereNull('deleted_at');
-    })->get()->groupBy('teacher_id');
+    // Count teachers with more than 3 distinct categories
+    $qualifiedTeacherCount = $groupedByTeacher->filter(function ($skills) {
+        return $skills->pluck('skills.category_id')->count() >= 3;
+    })->count();
 
-    $countOnline = 0;
-    foreach ($onlineTeachers as $teacherId => $skills) {
-        $uniqueCategories = $skills->pluck('category_id')->unique()->count();
-        if ($uniqueCategories >= 3) {
-            $countOnline++;
-        }
-    }
+    // Add result to the output array
+    $resultsOffline[] = [
+        'total_teacher' => $qualifiedTeacherCount,
+    ];
 
-    // Menyimpan hasil hitungan ke dalam array dataOffline dan dataOnline
-    $dataOffline[] = $countOffline;
-    $dataOnline[] = $countOnline;
+    // Online
+    $teacherSkillsInCategory = $teacherSkills->filter(function ($teacherSkill) use ($category) {
+        return $teacherSkill->skills->category->id === $category->id &&  $teacherSkill->skills->type === 'ONLINE';
+    });
+
+    // Group skills by teacher ID
+    $groupedByTeacher = $teacherSkillsInCategory->groupBy('teacher_id');
+
+    // Count teachers with more than 3 distinct categories
+    $qualifiedTeacherCount = $groupedByTeacher->filter(function ($skills) {
+        return $skills->pluck('skills.category_id')->count() >= 3;
+    })->count();
+
+    // Add result to the output array
+    $resultsOnline[] = [
+        'total_teacher' => $qualifiedTeacherCount,
+    ];
+  
 }
-
-            
-        
 
         return view('dashboard.index', [
             'teachers' => $teachers,
             'teachersCount' => $teachersCount,
             'labels' => $labels,
-            'dataOffline' => $dataOffline,
-            'dataOnline' => $dataOnline,
+            'dataOffline' => $resultsOffline['total_teacher'],
+            'dataOnline' => $resultsOnline['total_teacher'],
             'totalCount' => $totalCount,
             'skillCount' => $skillCount,
             'teacherSkillCount' => $teacherSkillCount,

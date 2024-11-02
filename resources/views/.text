@@ -1,0 +1,35 @@
+  // Mengelompokkan TeacherSkill untuk kategori dan tipe OFFLINE berdasarkan teacher_id
+  $offlineTeachers = TeacherSkill::whereHas('skills', function($query) use ($category) {
+    $query->where('category_id', $category->id)
+          ->where('type', 'OFFLINE')
+          ->whereNull('deleted_at');
+})->get()->groupBy('teacher_id');
+
+$countOffline = 0;
+foreach ($offlineTeachers as $teacherId => $skills) {
+    // Menghitung kategori unik yang dimiliki oleh teacher
+    $uniqueCategories = $skills->pluck('category_id')->unique()->count();
+    // Menambahkan poin jika teacher memiliki 3 atau lebih kategori unik
+    if ($uniqueCategories >= 3) {
+        $countOffline++;
+    }
+}
+
+// Mengelompokkan TeacherSkill untuk kategori dan tipe ONLINE berdasarkan teacher_id
+$onlineTeachers = TeacherSkill::whereHas('skills', function($query) use ($category) {
+    $query->where('category_id', $category->id)
+          ->where('type', 'ONLINE')
+          ->whereNull('deleted_at');
+})->get()->groupBy('teacher_id');
+
+$countOnline = 0;
+foreach ($onlineTeachers as $teacherId => $skills) {
+    $uniqueCategories = $skills->pluck('category_id')->unique()->count();
+    if ($uniqueCategories >= 3) {
+        $countOnline++;
+    }
+}
+
+// Menyimpan hasil hitungan ke dalam array dataOffline dan dataOnline
+$dataOffline[] = $countOffline;
+$dataOnline[] = $countOnline;
