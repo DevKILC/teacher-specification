@@ -67,7 +67,7 @@
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="name" value="{{ __('Skill Name') }}" />
                                     <x-input id="skillName" class="w-full" type="text" name="name"
-                                        x-model="skill.name" required />
+                                        x-model="skill.name" value="{{ old('name') }}" required />
                                     <x-input-error for="name" class="mt-2" />
                                 </div>
 
@@ -171,9 +171,9 @@
                                                     <x-button
                                                         @click="
                                                     skill = {
-                                                        id: '{{ $skill->id }}',
-                                                        name: '{{ $skill->name }}',
-                                                        description: '{{ $skill->description }}',
+                                                        id: {{ $skill->id }},
+                                                        name: '{{ $skill->name ?? 'Unnamed Skill' }}',
+                                                        description: '{{ $skill->description ?? 'No description available' }}',
                                                         category_id: {{ $skill->category_id }},
                                                         type: '{{ $skill->type ?? 'Unknown' }}'
                                                     };
@@ -183,7 +183,7 @@
                                                     </x-button>
 
                                                        <!-- EDIT -->
-                                                       <x-general.modal :open="'edit_sKill'" :title="__('Update Skill')" x-show="edit_sKill" @click.away="edit_sKill = false" style="display: none;">
+                                                       <x-general.modal :open="'edit_sKill'" :title="__('Update Skill')">
                                                         <form id="editSkill" :action="'{{ route('skill.update', '') }}/' + skill.id" method="POST">
                                                             @csrf
                                                             @method('PUT')
@@ -195,7 +195,7 @@
                                                                     <div class="col-span-6 sm:col-span-4 w-full">
                                                                         <x-label for="name" value="{{ __('Skill Name') }}" />
                                                                         <x-input id="skillName" class="w-full" type="text" name="name"
-                                                                                 x-model="skill.name" />
+                                                                                 x-model="skill.name" required />
                                                                         <x-input-error for="name" class="mt-2" />
                                                                     </div>
                                                 
@@ -204,14 +204,14 @@
                                                                         <x-label for="description" value="{{ __('Skill Description') }}" />
                                                                         <x-text-area id="skillDescription" name="description" rows="3"
                                                                                      class="w-full border-gray-300 rounded"
-                                                                                     x-model="skill.description" ></x-text-area>
+                                                                                     x-model="skill.description" required></x-text-area>
                                                                         <x-input-error for="description" class="mt-2" />
                                                                     </div>
                                                 
                                                                     <!-- Skill Category -->
                                                                     <div class="col-span-6 sm:col-span-4 w-full">
                                                                         <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                                                                        <select id="skillCategory" name="category_id" x-model="skill.category_id" 
+                                                                        <select id="skillCategory" name="category_id" x-model="skill.category_id" required
                                                                                 class="w-full border-gray-300 rounded">
                                                                             <option value="">{{ __('Select a category') }}</option>
                                                                             @foreach ($categories as $category)
@@ -226,7 +226,7 @@
                                                                     <!-- Skill Type -->
                                                                     <div class="col-span-6 sm:col-span-4 w-full">
                                                                         <x-label for="type" value="{{ __('Type') }}" />
-                                                                        <select id="type" name="type" x-model="skill.type" 
+                                                                        <select id="type" name="type" x-model="skill.type" required
                                                                                 class="w-full border-gray-300 rounded">
                                                                             <option value="">{{ __('Select Type') }}</option>
                                                                             <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
