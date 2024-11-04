@@ -61,31 +61,32 @@ class WelcomeViewController extends Controller
             $teacherSkillCounts[$skill->id] = $teacherSkillCountPerSkill;
         };
 
+        // Start with a base query including eager loading
+        $query = TeacherSkill::with('teachers.certifications', 'skills.category');
 
-        // Search functionality
-        if ($request->has('category_name') && $request->has('skill_name')) {
-            // Kalau ada 'category_name' dan 'skill_name'
-            $teachers = TeacherSkill::with('teachers', 'skills.category')
-                ->whereHas('skills', function ($query) use ($request) {
-                    $query->where('skill_id', $request->skill_name)
-                        ->where('category_id', $request->category_name);
-                })->get();
-        } else if ($request->has('category_name')) {
-            // Kalau cuma 'category_name' yang ada
-            $teachers = TeacherSkill::with('teachers', 'skills.category')
-                ->whereHas('skills', function ($query) use ($request) {
-                    $query->where('category_id', $request->category_name);
-                })->get();
-        } else if ($request->has('skill_name')) {
-            // Kalau cuma 'skill_name' yang ada
-            $teachers = TeacherSkill::with('teachers', 'skills.category')
-                ->whereHas('skills', function ($query) use ($request) {
-                    $query->where('skill_id', $request->skill_name);
-                })->get();
-        } else {
-            // Kalau nggak ada parameter apa-apa, ambil semua data
-            $teachers = TeacherSkill::with('teachers.certifications', 'skills.category')->get();
-        }
+        // Apply filters conditionally using `when` based on the presence and non-empty value of each parameter
+        $query->when($request->filled('category_name') && $request->filled('skill_name'), function ($q) use ($request) {
+            // If both category_name and skill_name are provided
+            $q->whereHas('skills', function ($skillQuery) use ($request) {
+                $skillQuery->where('category_id', $request->category_name)
+                    ->where('skill_id', $request->skill_name);
+            });
+        })->when($request->filled('category_name') && !$request->filled('skill_name'), function ($q) use ($request) {
+            // If only category_name is provided
+            $q->whereHas('skills', function ($skillQuery) use ($request) {
+                $skillQuery->where('category_id', $request->category_name);
+            });
+        })->when(!$request->filled('category_name') && $request->filled('skill_name'), function ($q) use ($request) {
+            // If only skill_name is provided
+            $q->whereHas('skills', function ($skillQuery) use ($request) {
+                $skillQuery->where('skill_id', $request->skill_name);
+            });
+        });
+
+        // Execute the query and get results
+        $teachers = $query->get();
+
+
 
         return view('welcome', [
             'categories' => $results,

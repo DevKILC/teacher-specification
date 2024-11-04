@@ -13,19 +13,20 @@ return new class extends Migration {
     {
         // Drop server if exists
         DB::statement("DROP SERVER IF EXISTS kimo CASCADE;");
-
+        DB::statement("CREATE EXTENSION IF NOT EXISTS mysql_fdw;
+");
         // Create a new foreign server
         DB::statement("
             CREATE SERVER kimo
             FOREIGN DATA WRAPPER mysql_fdw
-            OPTIONS (host '139.99.120.146', port '2023');
+            OPTIONS (host '103.74.5.92', port '2024');
         ");
 
         // Create user mapping for the current user
         DB::statement("
             CREATE USER MAPPING FOR CURRENT_USER
             SERVER kimo
-            OPTIONS (username 'root', password 'lcbisa88');
+            OPTIONS (username 'root', password 'bhBtMZL2bV@uTqS');
         ");
 
         // Drop the foreign table if it exists

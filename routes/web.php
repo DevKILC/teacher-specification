@@ -13,16 +13,15 @@ use App\Http\Controllers\RequestPermissionController;
 use App\Http\Controllers\RequestRecordActivityController;
 use App\Http\Controllers\RestoreSkillAndCategoryController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\WelcomeViewController;
 use App\Http\Middleware\TrackUserActivity;
 use App\Models\UserManagement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect()->route('dashboard');
-    }
-    return view('auth.login');
-});
+use OpenSpout\Common\Entity\Row;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
+Route::resource('/', WelcomeViewController::class);
 
 Route::middleware([
     'auth:sanctum',
@@ -31,6 +30,9 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
+
+    // Route::resource('welcome',WelcomeViewController::class)->middleware('guest')
+    ;
 
     Route::resource('teacher', TeacherController::class);
 
