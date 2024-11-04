@@ -67,7 +67,7 @@
                                 <div class="col-span-6 sm:col-span-4 w-full">
                                     <x-label for="name" value="{{ __('Skill Name') }}" />
                                     <x-input id="skillName" class="w-full" type="text" name="name"
-                                        x-model="skill.name" value="{{ old('name') }}" required />
+                                        x-model="skill.name" required />
                                     <x-input-error for="name" class="mt-2" />
                                 </div>
 
@@ -171,8 +171,9 @@
                                                     <x-button
                                                         @click="
                                                     skill = {
-                                                        id: {{ $skill->id }},
-                                                        name: '{{ $skill->name ?? 'Unnamed Skill' }}',
+                                                        id: '{{ $skill->id }}',
+                                                        name: '{{ $skill->name }}',
+                                                        description: '{{ $skill->description }}',
                                                         category_id: {{ $skill->category_id }},
                                                         type: '{{ $skill->type ?? 'Unknown' }}'
                                                     };
@@ -194,7 +195,7 @@
                                                                     <div class="col-span-6 sm:col-span-4 w-full">
                                                                         <x-label for="name" value="{{ __('Skill Name') }}" />
                                                                         <x-input id="skillName" class="w-full" type="text" name="name"
-                                                                                 x-model="skill.name" required />
+                                                                                 x-model="skill.name" />
                                                                         <x-input-error for="name" class="mt-2" />
                                                                     </div>
                                                 
@@ -203,14 +204,14 @@
                                                                         <x-label for="description" value="{{ __('Skill Description') }}" />
                                                                         <x-text-area id="skillDescription" name="description" rows="3"
                                                                                      class="w-full border-gray-300 rounded"
-                                                                                     x-model="skill.description" required></x-text-area>
+                                                                                     x-model="skill.description" ></x-text-area>
                                                                         <x-input-error for="description" class="mt-2" />
                                                                     </div>
                                                 
                                                                     <!-- Skill Category -->
                                                                     <div class="col-span-6 sm:col-span-4 w-full">
                                                                         <x-label for="category_id" value="{{ __('Skill Category') }}" />
-                                                                        <select id="skillCategory" name="category_id" x-model="skill.category_id" required
+                                                                        <select id="skillCategory" name="category_id" x-model="skill.category_id" 
                                                                                 class="w-full border-gray-300 rounded">
                                                                             <option value="">{{ __('Select a category') }}</option>
                                                                             @foreach ($categories as $category)
@@ -225,7 +226,7 @@
                                                                     <!-- Skill Type -->
                                                                     <div class="col-span-6 sm:col-span-4 w-full">
                                                                         <x-label for="type" value="{{ __('Type') }}" />
-                                                                        <select id="type" name="type" x-model="skill.type" required
+                                                                        <select id="type" name="type" x-model="skill.type" 
                                                                                 class="w-full border-gray-300 rounded">
                                                                             <option value="">{{ __('Select Type') }}</option>
                                                                             <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>{{ __('Online') }}</option>
