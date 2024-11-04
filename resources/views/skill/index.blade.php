@@ -183,7 +183,8 @@
                                                     </x-button>
 
                                                        <!-- EDIT -->
-                                                       <x-general.modal :open="'edit_sKill'" :title="__('Update Skill')">
+                                                       {{-- modal --}}
+                                                       <x-general.modal :open="'edit_sKill'" :title="__('Update Skill')" >
                                                         <form id="editSkill" :action="'{{ route('skill.update', '') }}/' + skill.id" method="POST">
                                                             @csrf
                                                             @method('PUT')
