@@ -1,6 +1,6 @@
 @props(['open' => false, 'title' => 'Modal Title'])
 
-<div x-show="{{ $open }}" @click.away="{{ $open }} = false" class="fixed inset-0 flex items-center justify-center z-50" x-cloak>
+<div x-show="{{ $open }}" class="fixed inset-0 flex items-center justify-center z-50" x-cloak>
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
         <!-- Modal Header -->
         <div class="flex justify-between items-center border-b pb-2 mb-4">
