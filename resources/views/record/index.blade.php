@@ -343,7 +343,7 @@
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <x-button type="submit" class="deteleActivityButton">
+                                                        <x-button type="submit" class="deleteActivityButton">
                                                             {{ __('DELETE') }}
                                                         </x-button>
                                                     </form>
