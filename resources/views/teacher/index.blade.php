@@ -149,15 +149,12 @@
                                        @if(userHasPath('delete-teacher-skill'))
                                             <td class="py-2 text-right">
                                                 <div class="relative">
-                                                    <form action="{{ route('certification.destroy', $certificate->id) }}"
-                                                        method="POST" id="deleteCertificationFormTeacher">
+                                                    <form action="{{ route('certification.destroy', $certificate->id) }}" method="POST" class="deleteCertificationFormTeacher">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="p-2 rounded hover:bg-gray-100 focus:outline-none" id="removeCertification">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
-                                                                viewBox="0 -960 960 960" width="24px" fill="#EA3323">
-                                                                <path
-                                                                    d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
+                                                        <button type="button" class="removeCertification p-2 rounded hover:bg-gray-100 focus:outline-none">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#EA3323">
+                                                                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
                                                             </svg>
                                                         </button>
                                                     </form>
@@ -217,11 +214,10 @@
                                         @if(userHasPath('delete-teacher-skill'))
                                             <td class="py-2 text-right">
                                                 <div class="relative">
-                                                    <form action="{{ route('teacher-skill.destroy', $teacherSkill->id) }}"
-                                                        method="POST" id="deleteSkillFormTeacher">
+                                                    <form action="{{ route('teacher-skill.destroy', $teacherSkill->id) }}" method="POST" class="deleteSkillFormTeacher">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="p-2 rounded hover:bg-gray-100 focus:outline-none" id="removeSkillButton">
+                                                        <button class="removeSkillButton p-2 rounded hover:bg-gray-100 focus:outline-none" id="">
                                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px"
                                                                 viewBox="0 -960 960 960" width="24px" fill="#EA3323">
                                                                 <path
@@ -264,58 +260,78 @@
                 });
             }
             // Konfirmasi dan loading saat menghapus skill dari teacher
-            document.getElementById('removeSkillButton').addEventListener('click', function(event) {
-                event.preventDefault(); // Mencegah form di-submit secara otomatis
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Are you sure you want to remove this skill from this teacher?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, remove it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Processing...',
-                            text: 'Please wait while we delete the skill',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                        document.getElementById('deleteSkillFormTeacher')
-                    .submit(); // Submit form setelah konfirmasi SweetAlert
-                    }
-                });
+            document.querySelectorAll('.removeSkillButton').forEach((button, index) => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah form di-submit secara otomatis
+
+        // Ambil form terdekat dari tombol yang diklik
+        const form = button.closest('.deleteSkillFormTeacher');
+
+        if (form) {
+            console.log(`Button ${index + 1} clicked`); // Debugging log
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to remove this skill from this teacher?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, remove it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we delete the skill',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });form.submit();  
+                }
+            }); 
+        } else {
+            console.error(`Form not found for button ${index + 1}`);
+        }
+    });
+});
+document.querySelectorAll('.removeCertification').forEach((button, index) => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah form di-submit secara otomatis
+
+        // Cari form terdekat dari tombol yang diklik
+        const form = button.closest('.deleteCertificationFormTeacher');
+
+        if (form) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to remove this certification?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, remove it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we delete the certification',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                        form.submit(); // Submit form setelah konfirmasi SweetAlert
+                }
             });
-            document.getElementById('removeCertification').addEventListener('click', function(event) {
-                event.preventDefault(); // Mencegah form di-submit secara otomatis
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Are you sure you want to remove this certification from this teacher?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, remove it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Processing...',
-                            text: 'Please wait while we delete the Certification',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                        document.getElementById('deleteCertificationFormTeacher')
-                    .submit(); // Submit form setelah konfirmasi SweetAlert
-                    }
-                });
-            });
-        });
+        } else {
+            console.error(`Form not found for button ${index + 1}`);
+        }
+    });
+});
+
+});
     </script>
 </x-app-layout>

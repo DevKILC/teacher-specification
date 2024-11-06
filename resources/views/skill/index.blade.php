@@ -106,15 +106,16 @@
                                                         {{ __('EDIT') }}
                                                     </x-button>
 
-                                                    <form id="deleteSkill"
+                                                    <form class="deleteSkillForm"
                                                         action="{{ route('skill.destroy', $skill->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <x-button type="submit" id="deleteSkillButton">
+                                                        <x-button type="submit" class="deleteSkillButton">
                                                             {{ __('DELETE') }}
                                                         </x-button>
                                                     </form>
+
                                                 </td>
                                             @endif
                                         </tr>
@@ -152,8 +153,7 @@
                                         <x-label for="category_id" value="{{ __('Skill Category') }}" />
                                         <select style="border-radius:5px ;  border-style: solid;
   border-color: gray;"
-                                            id="skillCategory" class="w-full" name="category_id"
-                                            required>
+                                            id="skillCategory" class="w-full" name="category_id" required>
                                             <option value="">{{ __('Select a category') }}</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}"
@@ -171,7 +171,7 @@
                                         <select id="type" class="w-full"
                                             style="border-radius:5px ;  border-style: solid;
   border-color: gray;"
-                                            name="type"  required>
+                                            name="type" required>
                                             <option value="">{{ __('Select Type') }}</option>
                                             <option value="ONLINE" {{ old('type') == 'ONLINE' ? 'selected' : '' }}>
                                                 {{ __('Online') }}</option>
@@ -394,15 +394,16 @@
                                             ">
                                                 {{ __('EDIT') }}
                                             </x-button>
-                                            <form id="deleteCategory"
+                                            <form class="deleteCategoryForm"
                                                 action="{{ route('category.destroy', $category->id) }}"
                                                 method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <x-button type="submit" id="deleteCategoryButton">
+                                                <x-button type="submit" class="deleteCategoryButton">
                                                     {{ __('DELETE') }}
                                                 </x-button>
                                             </form>
+
                                         </td>
                                     @endif
                                 </tr>
@@ -496,62 +497,72 @@
                 });
             }
 
-            // Delete Skill
-            document.getElementById('deleteSkillButton').addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent automatic form submission
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Are you sure you want to delete this skill?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, remove it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Processing...',
-                            text: 'Please wait while we are deleting the skill',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                        document.getElementById('deleteSkill')
-                            .submit(); // Submit form after confirmation
-                    }
-                });
-            });
+            // Delete Skill - Using event delegation for all pages in DataTable
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.deleteSkillButton')) {
+                event.preventDefault();
 
-            // Delete Category
-            document.getElementById('deleteCategoryButton').addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent automatic form submission
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'This will also delete all skills associated with this category. Do you want to continue?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, remove it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Processing...',
-                            text: 'Please wait while we are deleting the category',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-                        document.getElementById('deleteCategory')
-                            .submit(); // Submit form after confirmation
-                    }
-                });
-            });
-
+                const form = event.target.closest('.deleteSkillForm');
+                if (form) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Are you sure you want to delete this skill?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, remove it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Processing...',
+                                text: 'Please wait while we delete the skill',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                            form.submit();
+                        }
+                    });
+                }
+            }
         });
-    </script>
+
+        // Delete Category - Using event delegation for all pages in DataTable
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.deleteCategoryButton')) {
+                event.preventDefault();
+
+                const form = event.target.closest('.deleteCategoryForm');
+                if (form) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This will also delete all skills associated with this category. Do you want to continue?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, remove it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Processing...',
+                                text: 'Please wait while we are deleting the category',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                            form.submit();
+                        }
+                    });
+                }
+            }
+        });
+
+    });
+</script>
 </x-app-layout>
