@@ -98,6 +98,7 @@
                                 <th>No</th>
                                 <th>Teacher Name</th>
                                 <th>Skill</th>
+                                <th>Type</th>
                                 <th>Description</th>
                                 <th>Certification 1</th>
                                 <th>Certification 2</th>
@@ -110,6 +111,7 @@
                                 <td class="border-b px-4 py-2">{{ $loop->iteration }}</td>
                                 <td class="border-b px-4 py-2">{{ $teacher->teachers->username ?? 'N/A' }}</td>
                                 <td class="border-b px-4 py-2">{{ $teacher->skills->name ?? 'N/A' }}</td>
+                                <td class="border-b px-4 py-2">{{ $teacher->skills->type ?? 'N/A' }}</td>
                                 <td class="border-b px-4 py-2 text-ellipsis">
                                     {{ Str::limit($teacher->skills->description ?? "Not Found", 50) }}
                                 </td>    
