@@ -224,13 +224,13 @@
                                                     @if (userHasPath('delete-activity-category'))
                                                         <td class="flex justify-center">
                                                             <!-- Form to Delete Category -->
-                                                            <form id="deleteActivityCategory"
+                                                            <form class="deleteActivityCategoryForm"
                                                                 action="{{ route('categoryactivity.destroy', $category->id) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <x-button type="submit"
-                                                                    id="deteleActivityCategoryButton">
+                                                                    class="deteleActivityCategoryButton">
                                                                     {{ __('DELETE') }}
                                                                 </x-button>
                                                             </form>
@@ -280,8 +280,6 @@
 
 
             <div class="w-full bg-white shadow-md rounded-md h-auto py-10 relative mt-auto flex justify-center">
-
-
 
                 <div class="flex flex-col w-full justify-center">
                     <!-- date filter -->
@@ -340,12 +338,12 @@
                                             <td class="border-b px-4 py-2">{{ $activity->date ?? 'N/A' }}</td>
                                             @if (userHasPath('delete-record-activity'))
                                                 <td class=" border-b px-4 py-2 flex justify-center">
-                                                    <form id="deleteActivity"
+                                                    <form class="deleteActivityForm"
                                                         action="{{ route('record.destroy', $activity->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <x-button type="submit" id="deteleActivityButton">
+                                                        <x-button type="submit" class="deteleActivityButton">
                                                             {{ __('DELETE') }}
                                                         </x-button>
                                                     </form>
@@ -358,7 +356,7 @@
                     @endif
                 </div>
             </div>
-
+            </div>
 
             <div class="flex h-auto items-center text-center mt-4 mb-4">
                 <span class="bg-white w-16 h-16 flex items-center text-center rounded-md shadow-md mr-2">
@@ -418,7 +416,7 @@
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit"
-                                                                    class="bg-red-500 rounded-md px-2 py-2 text-white">ifcel</button>
+                                                                    class="bg-red-500 rounded-md px-2 py-2 text-white">Delete</button>
                                                             </form>
                                                         @endunlessrole
                                                     </div>
@@ -495,35 +493,69 @@
                 });
                 $('#activitycategory-table').DataTable();
 
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.getElementById('deleteActivityButton').addEventListener('click',
-                        function(event) {
-                            event.preventDefault(); // Prevent automatic form submission
-                            Swal.fire({
-                                title: 'Are you sure?',
+                document.addEventListener('click', function(event) {
+            if (event.target.matches('.deleteActivityButton')) {
+                event.preventDefault();
+
+                const form = event.target.closest('.deleteActivityForm');
+                if (form) {
+                    Swal.fire({
+                        title: 'Are you sure?',
                                 text: 'Are you sure you want to delete this activity?',
                                 icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#d33',
-                                cancelButtonColor: '#3085d6',
-                                confirmButtonText: 'Yes, remove it!',
-                                cancelButtonText: 'Cancel'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    Swal.fire({
-                                        title: 'Processing...',
-                                        text: 'Please wait while we are deleting the activity',
-                                        allowOutsideClick: false,
-                                        didOpen: () => {
-                                            Swal.showLoading();
-                                        }
-                                    });
-                                    document.getElementById('deleteActivity')
-                                        .submit(); // Submit form after confirmation
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, remove it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Processing...',
+                                text: 'Please wait while we are deleting the activity',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
                                 }
                             });
-                        });
+                            form.submit();
+                        }
+                    });
+                }
+            }
+        });
 
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.deleteActivityCategoryButton')) {
+                event.preventDefault();
+
+                const form = event.target.closest('.deleteActivityCategoryForm');
+                if (form) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                                text: 'Are you sure you want to delete this activity category?',
+                                icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, remove it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Processing...',
+                                text: 'Please wait while we are deleting the category',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                            form.submit();
+                        }
+                    });
+                }
+            }
+        });
                     const requestActivityForm = document.getElementById('addActivity');
                     if (requestActivityForm) {
                         requestActivityForm.addEventListener('submit', function() {
@@ -581,6 +613,6 @@
                     }
                 });
             });
-        });
+      
     </script>
 </x-app-layout>
