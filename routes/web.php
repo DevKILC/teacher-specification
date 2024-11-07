@@ -20,6 +20,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use OpenSpout\Common\Entity\Row;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\Auth\SocialController;
+
+Route::get('/auth/{provider}', [SocialController::class, 'redirectToProvider'])->name('auth.google');
+Route::get('/auth/{provider}/callback', [SocialController::class, 'handleProviderCallback']);
+
 
 Route::resource('/', WelcomeViewController::class);
 
