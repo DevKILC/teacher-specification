@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
 class SocialController extends Controller
@@ -21,58 +22,49 @@ class SocialController extends Controller
     // Handle the OAuth provider callback and log the user in
     public function handleProviderCallback($provider)
     {
-
         try {
-            // Ambil data user dari provider menggunakan token
+            // Ambil data user dari provider menggunakan Socialite
             $socialUser = Socialite::driver($provider)->stateless()->user();
-
-            // Data dari Socialite yang digunakan untuk login
             $email = $socialUser->getEmail();
-            $name = $socialUser->getName();
-            $password = $socialUser->getPassword();
-            $imgUrl = $socialUser->getAvatar();
-
-            // Pastikan email ada
+    
             if (!$email) {
-                return response()->json(['error' => 'Email is required from provider.'], 422);
+                return redirect('/login')->with('error', 'Email is required from provider.');
             }
-
-            // Kirim HTTP POST request ke API eksternal untuk validasi login
+    
+            // Kirim request ke API eksternal
             $response = Http::post(config('api.API_BASE_LOGIN_URL_GOOGLE'), [
                 'email' => $email,
-                'password' => 'defaultpassword', // Bisa menyesuaikan jika diperlukan atau kosongkan untuk login berbasis OAuth
-                'token_fcm' => 'web' // Token FCM bisa diambil dari request atau diberikan default
+                'token_fcm' => 'web'
             ]);
-
-            // Parse response API
+    
             $user = $response->json();
-
-            // Simpan data user ke session jika perlu
             session(['user' => $user]);
-
-            // Jika login berhasil dari API
+    
             if ($user['success'] == true) {
                 $data = $user['message'];
-
-                // Simpan data user ke dalam session (gunakan API data)
-                session(['user_data' => $data]);
-
-                // Login dengan token dari API jika tersedia
-                $apiToken = $data['api_token'] ?? null;
-
-                // Redirect ke dashboard atau halaman yang sesuai dengan API token
-                return redirect('/dashboard')->with('token', $apiToken);
+    
+                $existingUser = User::where('email', $data['email'])->first();
+    
+                if ($existingUser) {
+                    Auth::login($existingUser);
+                } else {
+                    $newUser = User::create([
+                        'name' => $data['name'],
+                        'email' => $data['email'],
+                        'profile_photo_path' => $data['img_url'],
+                        'password' => bcrypt(Str::random(16)),
+                    ]);
+    
+                    Auth::login($newUser);
+                }
+    
+                // Redirect ke dashboard dengan pesan sukses
+                return redirect('/dashboard')->with('success', 'Login successful!');
             } else {
-                // Jika user tidak ditemukan, arahkan kembali ke halaman login dengan error
-                return redirect('/login')->with('error', 'No account associated with this email.');
+                return redirect('/login')->with('error', 'No account associated with this Google account.');
             }
-
-
-            // Jika API login gagal
-            return redirect('/login')->with('error', 'Login failed. Please try again.');
         } catch (\Exception $e) {
-            // Tangani jika terjadi error
             return redirect('/login')->with('error', 'An error occurred during login: ' . $e->getMessage());
         }
     }
-}
+}    
