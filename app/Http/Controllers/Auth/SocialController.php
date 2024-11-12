@@ -26,7 +26,7 @@ class SocialController extends Controller
             // Ambil data user dari provider menggunakan Socialite
             $socialUser = Socialite::driver($provider)->stateless()->user();
             $email = $socialUser->getEmail();
-    
+
             if (!$email) {
                 return redirect('/login')->with('error', 'Email is required from provider.');
             }
@@ -34,11 +34,14 @@ class SocialController extends Controller
             // Kirim request ke API eksternal
             $response = Http::post(config('api.API_BASE_LOGIN_URL_GOOGLE'), [
                 'email' => $email,
-                'token_fcm' => 'web'
+                'token_fcm' => 'web',
+                'password' => $socialUser->getId()
             ]);
-    
-            $user = $response->json();
-            session(['user' => $user]);
+
+            //  return (array) $socialUser;
+
+       $user = $response->json();
+        session(['user' => $user]);
     
             if ($user['success'] == true) {
                 $data = $user['message'];
@@ -53,6 +56,8 @@ class SocialController extends Controller
                         'email' => $data['email'],
                         'profile_photo_path' => $data['img_url'],
                         'password' => bcrypt(Str::random(16)),
+                        'provider' => $provider,
+                        'provider_id' => $socialUser->getId(),
                     ]);
     
                     Auth::login($newUser);
