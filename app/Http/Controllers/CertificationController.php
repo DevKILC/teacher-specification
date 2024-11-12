@@ -92,6 +92,35 @@ class CertificationController extends Controller
      */
     public function destroy(Certification $certification)
     {
-        //
+        try {
+            // Cari data Certification berdasarkan ID yang diberikan
+            $TeacherCertification = Certification::find($certification->id);
+      
+            // Jika tidak ditemukan, lempar error dan kembalikan pesan error
+            if (!$TeacherCertification) {
+                session()->flash('error', 'Certification not found.');
+                return redirect()->back();
+            }
+        
+            // Jika ditemukan, hapus Certification tersebut
+            $TeacherCertification->delete();
+        
+            // Berikan pesan sukses dan redirect ke halaman sebelumnya
+            session()->flash('success', 'Certification deleted successfully');
+            return redirect()->back();
+        
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangani error validasi
+            session()->flash('error', $e->getMessage());
+            return redirect()->back()->withErrors($e->validator->errors())->withInput();
+        
+        } catch (\Exception $e) {
+            // Tangani error lain
+            session()->flash('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
-}
+    
+    
+    }
+
