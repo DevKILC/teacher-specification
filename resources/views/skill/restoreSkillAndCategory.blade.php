@@ -3,7 +3,7 @@
         <div x-data="{ open: false }">
             <!-- Header Title -->
             <h2 class="font-medium text-2xl text-gray-800 leading-tight">
-                <a href="{{ route('skill.index') }}" class="underline">{{ __('Skill & Category') }}</a> - {{ __('Restore') }}
+                <a href="{{ route('skill.index') }}">{{ __('Skill & Category') }}</a> - {{ __('Restore') }}
             </h2>   
         </div>
     </x-slot>
