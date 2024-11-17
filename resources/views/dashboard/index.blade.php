@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div x-data="{ open: false }">
             <!-- Header Title -->
-            <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
                 {{ __('Dashboard') }}
             </h2>
         </div>

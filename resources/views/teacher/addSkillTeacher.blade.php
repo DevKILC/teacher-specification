@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Teacher Profile') }}
-        </h2>
+        <div x-data="{ open: false }">
+            <!-- Header Title -->
+            <h2 class="font-medium text-2xl text-gray-800 leading-tight">
+                <a href="{{ route('teacher.index') }}">{{ __('Teacher Profile') }}</a> - {{ __('Add') }}
+            </h2>            
+        </div>
     </x-slot>
 
     <div class="py-12 flex-col justify-center">
@@ -17,7 +20,7 @@
                     </svg>
                 </span>
                 <h1 class="text-2xl">
-                    Add Skill to Mr/Mrs {{ $teachers->name ?? '' }}
+                    Add skill to {{ $teachers->name ?? '' }}
                 </h1>
             </div>
 

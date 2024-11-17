@@ -1,9 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Records') }}
+    <div x-data="{ open: false }">
+        <!-- Header Title -->
+        <h2 class="font-medium text-2xl text-gray-800 leading-tight">
+            {{ __('Records Activity') }}
         </h2>
-    </x-slot>
+    </div>
 
     <div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-y-14">
