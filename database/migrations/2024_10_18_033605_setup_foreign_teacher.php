@@ -19,14 +19,14 @@ return new class extends Migration {
         DB::statement("
             CREATE SERVER kimo
             FOREIGN DATA WRAPPER mysql_fdw
-            OPTIONS (host '103.74.5.92', port '2024');
+            OPTIONS (host '109.123.234.160', port '2080');
         ");
 
         // Create user mapping for the current user
         DB::statement("
             CREATE USER MAPPING FOR CURRENT_USER
             SERVER kimo
-            OPTIONS (username 'root', password 'bhBtMZL2bV@uTqS');
+            OPTIONS (username 'root', password 'lcbisa88');
         ");
 
         // Drop the foreign table if it exists

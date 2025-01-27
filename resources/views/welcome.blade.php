@@ -88,11 +88,11 @@
                     </form>
                 </div>
 
-                    <div class="text-black bg-white w-full h-auto justify-center py-20 mx-auto flex shadow-lg rounded-lg mt-5 border">
+                    <div class="text-black bg-white w-full h-auto justify-center py-20 px-20 mx-auto flex shadow-lg rounded-lg mt-5 border">
                         @if($teachers->isEmpty())
                         <p class="text-center">No teachers available.</p>
                         @else
-                    <table class="stripe table-auto border-collapse py-10 w-full " id="table">
+                    <table class=" stripe table-auto border-collapse py-10 w-full " id="table">
                         <thead>
                             <tr>
                                 <th>No</th>
