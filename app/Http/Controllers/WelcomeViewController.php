@@ -28,6 +28,7 @@ class WelcomeViewController extends Controller
         $teacherSkills = TeacherSkill::with('skills.category')->get();  // with skills and category relationship
 
         $results = [];
+        $teacherSkillCounts = [];
 
         foreach ($categories as $category) {
             // Filter teacherSkills for the current category
@@ -92,7 +93,7 @@ class WelcomeViewController extends Controller
             'categories' => $results,
             'skills' => $skills,
             'teachers' => $teachers,
-            'teacher_skill_count' => $teacherSkillCounts,
+            'teacher_skill_count' => $teacherSkillCounts
         ]);
     }
 
